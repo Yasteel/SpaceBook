@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Spacebook;
 using Spacebook.Data;
+using Spacebook.Interfaces;
+using Spacebook.Services;
+
 internal class Program
 {
     private static void Main(string[] args)
@@ -15,7 +19,7 @@ internal class Program
         builder.Services.AddDefaultIdentity<SpacebookUser>(options => options.SignIn.RequireConfirmedAccount = false)
             .AddEntityFrameworkStores<AuthDbContext>();
 
-        builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
+       
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
@@ -25,6 +29,8 @@ internal class Program
             options.LoginPath = "/Auth/Index";
             options.AccessDeniedPath = "/Auth/AccessDenied";
         });
+
+        builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
 
         var app = builder.Build();
 
