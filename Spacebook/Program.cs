@@ -1,7 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using Spacebook;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var configBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+var configuration = configBuilder.Build();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("Default")));
 
 var app = builder.Build();
 
