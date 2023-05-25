@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Spacebook.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 </head>
 <body>
     <header>
@@ -25,12 +26,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Create" asp-action="Index">Create</a>
-                        </li>
                     </ul>
+                    <button class="btn" type="button" onclick="onCreateButtonClicked()" data-toggle="modal" data-target="#uploadMediaModal">
+                        <i class="fa-solid fa-plus fa-lg"></i>
+                        Create
+                    </button>
                 </div>
+
                 <partial name="_LoginPartial" />
+                <partial name="_ModalPartial" />
             </div>
         </nav>
     </header>
@@ -51,3 +55,4 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
