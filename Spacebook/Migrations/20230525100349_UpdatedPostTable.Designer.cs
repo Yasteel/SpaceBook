@@ -12,8 +12,8 @@ using Spacebook;
 namespace Spacebook.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230525085726_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230525100349_UpdatedPostTable")]
+    partial class UpdatedPostTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,7 +156,10 @@ namespace Spacebook.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PostId"));
 
-                    b.Property<string>("Media")
+                    b.Property<string>("Caption")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MediaUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProfileId")

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Spacebook.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class UpdatedPostTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -65,7 +65,8 @@ namespace Spacebook.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     fkProfileId = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Media = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MediaUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Caption = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Tags = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },

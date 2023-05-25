@@ -153,7 +153,10 @@ namespace Spacebook.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PostId"));
 
-                    b.Property<string>("Media")
+                    b.Property<string>("Caption")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MediaUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProfileId")
