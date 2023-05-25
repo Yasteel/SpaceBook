@@ -36,7 +36,7 @@ namespace Spacebook.Services
             headers.ContentType = file.ContentType;
             blobClient.SetHttpHeaders(headers);
 
-            return "https://payconnect.blob.core.windows.net" + containerName + "/" + fileName;
+            return "https://payconnect.blob.core.windows.net/" + containerName + "/" + fileName;
         }
 
         public void DeleteContainer(string containerName)

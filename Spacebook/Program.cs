@@ -1,7 +1,13 @@
+using Spacebook.Interfaces;
+using Spacebook.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
+
 
 var app = builder.Build();
 
