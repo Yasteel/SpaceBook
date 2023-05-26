@@ -26,5 +26,7 @@
         public DbSet<Message> Message { get; set; }
 
         public DbSet<HashTag> HashTags { get; set; }
+
+        public DbSet<SharedPost> SharedPosts { get; set; }
     }
 }
