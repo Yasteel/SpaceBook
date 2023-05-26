@@ -1,13 +1,10 @@
-﻿using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
-using Spacebook.Interfaces;
-
-namespace Spacebook.Services
+﻿namespace Spacebook.Services
 {
+    using Azure.Storage.Blobs;
+    using Azure.Storage.Blobs.Models;
+    using Spacebook.Interfaces;
     public class AzureBlobStorageService : IAzureBlobStorageService
     {
-
-
         public BlobContainerClient CreateContainer(string containerName)
         {
             var blobServiceClient = CreateConnection();
