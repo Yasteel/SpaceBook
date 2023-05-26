@@ -75,13 +75,15 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(Register model, string? returnUrl = null)
+        public async Task<IActionResult> Register(Profile model, string? returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
 
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+
+                user.DisplayName = model.DisplayName;
 
                 await userStore.SetUserNameAsync(user, model.Username, CancellationToken.None);
                 await emailStore.SetEmailAsync(user, model.Email, CancellationToken.None);

@@ -29,6 +29,6 @@
         public Conversation? ConversationEntity { get; set; }
 
         [ForeignKey(nameof(this.SenderId))]
-        public Profile? ProfileEntity { get; set; }
+        public Profile1? ProfileEntity { get; set; }
     }
 }

@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Spacebook.Data;
 
 #nullable disable
 
-namespace Spacebook.Migrations
+namespace Spacebook.Migrations.AuthDb
 {
     [DbContext(typeof(AuthDbContext))]
-    partial class AuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230525131615_profileProperties")]
+    partial class profileProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
