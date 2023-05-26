@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Spacebook;
 using Spacebook.Data;
+using Spacebook.Hubs;
 using Spacebook.Interfaces;
 using Spacebook.Services;
 
@@ -19,18 +20,21 @@ internal class Program
         builder.Services.AddDefaultIdentity<SpacebookUser>(options => options.SignIn.RequireConfirmedAccount = false)
             .AddEntityFrameworkStores<AuthDbContext>();
 
-       
+       builder.Services.AddScoped<IMessageService, MessageService>();
 
         // Add services to the container.
         builder.Services.AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+		builder.Services.AddSignalR();
 
-        builder.Services.ConfigureApplicationCookie(options =>
+
+		builder.Services.ConfigureApplicationCookie(options =>
         {
             options.LoginPath = "/Auth/Index";
             options.AccessDeniedPath = "/Auth/AccessDenied";
         });
 
         builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
+
 
         var app = builder.Build();
 
@@ -54,8 +58,10 @@ internal class Program
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
 
-        app.MapRazorPages();
+		app.MapHub<ConnectionHub>("/ConnectionHub");
 
+		app.MapRazorPages();
+        
         app.Run();
     }
 }

@@ -1,0 +1,33 @@
+﻿@{
+	ViewData["Title"] = "Messages";
+}
+<head>
+	<link href="~/css/chatstyles.css" rel="stylesheet" />
+</head>
+
+<div class="main-container">
+	<div class="contact-container">
+		<div class="search">
+			<p>Search</p>
+		</div>
+		<div class="contact-list">
+
+		</div>
+	</div>
+	<div class="message-container" data-conversation-id="1">
+		<div class="messages">
+			<ul id="messagesList"></ul>
+		</div>
+		<div class="controls">
+			@*<input type="text" class="form-control" id="userInput" value="" placeholder="User" />
+			<input type="text" class="form-control" id="toUser" value="" placeholder="To User" />*@
+			<input type="text" class="form-control" id="messageInput" value="" placeholder="Type Message" />
+			<button id="sendButton" class="btn btn-outline-success">Send</button>
+
+		</div>
+	</div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/signalr/clientHub.js"></script>
