@@ -18,10 +18,10 @@
         public int? ParticipantTwo { get; set; }
 
         
-        [ForeignKey(nameof(this.ParticipantOne))]
+        /*[ForeignKey(nameof(this.ParticipantOne))]
         public Profile? ParticipantOneEntity { get; set; }
 
         [ForeignKey(nameof(this.ParticipantTwo))]
-        public Profile? ParticipantTwoEntity { get; set; }
+        public Profile? ParticipantTwoEntity { get; set; }*/
     }
 }

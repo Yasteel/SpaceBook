@@ -23,6 +23,11 @@ namespace Spacebook.Services
             var blobServiceClient = CreateConnection();
             var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
 
+            if (!containerClient.Exists()) 
+            { 
+                this.CreateContainer(containerName);
+            }
+
             string fileName = containerName + Guid.NewGuid().ToString();
             BlobClient blobClient = containerClient.GetBlobClient(fileName);
 

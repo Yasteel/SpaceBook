@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Spacebook;
 
 #nullable disable
 
-namespace Spacebook.Migrations
+namespace Spacebook.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230526090511_ModifiedMigration")]
+    partial class ModifiedMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,10 +44,6 @@ namespace Spacebook.Migrations
 
                     b.HasKey("CommentId");
 
-                    b.HasIndex("CommentPost");
-
-                    b.HasIndex("OriginalPost");
-
                     b.ToTable("Comment");
                 });
 
@@ -70,10 +69,6 @@ namespace Spacebook.Migrations
 
                     b.HasKey("ConversationId");
 
-                    b.HasIndex("ParticipantOne");
-
-                    b.HasIndex("ParticipantTwo");
-
                     b.ToTable("Conversation");
                 });
 
@@ -98,10 +93,6 @@ namespace Spacebook.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("LikeId");
-
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("ProfileId");
 
                     b.ToTable("Likes");
                 });
@@ -137,10 +128,6 @@ namespace Spacebook.Migrations
 
                     b.HasKey("MessageId");
 
-                    b.HasIndex("ConversationId");
-
-                    b.HasIndex("SenderId");
-
                     b.ToTable("Message");
                 });
 
@@ -174,8 +161,6 @@ namespace Spacebook.Migrations
 
                     b.HasKey("PostId");
 
-                    b.HasIndex("ProfileId");
-
                     b.ToTable("Post");
                 });
 
@@ -195,8 +180,6 @@ namespace Spacebook.Migrations
                         .HasColumnName("fkProfileId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProfileId");
 
                     b.ToTable("Preference");
                 });
@@ -242,86 +225,24 @@ namespace Spacebook.Migrations
                     b.ToTable("Profile");
                 });
 
-            modelBuilder.Entity("Spacebook.Models.Comment", b =>
+            modelBuilder.Entity("Spacebook.Models.Tag", b =>
                 {
-                    b.HasOne("Spacebook.Models.Post", "CommentEntity")
-                        .WithMany()
-                        .HasForeignKey("CommentPost");
+                    b.Property<int>("TagId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.HasOne("Spacebook.Models.Post", "OriginalEntity")
-                        .WithMany()
-                        .HasForeignKey("OriginalPost");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TagId"));
 
-                    b.Navigation("CommentEntity");
+                    b.Property<int>("PostId")
+                        .HasColumnType("int")
+                        .HasColumnName("fkPostId");
 
-                    b.Navigation("OriginalEntity");
-                });
+                    b.Property<string>("TagText")
+                        .HasColumnType("nvarchar(max)");
 
-            modelBuilder.Entity("Spacebook.Models.Conversation", b =>
-                {
-                    b.HasOne("Spacebook.Models.Profile", "ParticipantOneEntity")
-                        .WithMany()
-                        .HasForeignKey("ParticipantOne");
+                    b.HasKey("TagId");
 
-                    b.HasOne("Spacebook.Models.Profile", "ParticipantTwoEntity")
-                        .WithMany()
-                        .HasForeignKey("ParticipantTwo");
-
-                    b.Navigation("ParticipantOneEntity");
-
-                    b.Navigation("ParticipantTwoEntity");
-                });
-
-            modelBuilder.Entity("Spacebook.Models.Likes", b =>
-                {
-                    b.HasOne("Spacebook.Models.Post", "PostEntity")
-                        .WithMany()
-                        .HasForeignKey("PostId");
-
-                    b.HasOne("Spacebook.Models.Profile", "ProfileEntity")
-                        .WithMany()
-                        .HasForeignKey("ProfileId");
-
-                    b.Navigation("PostEntity");
-
-                    b.Navigation("ProfileEntity");
-                });
-
-            modelBuilder.Entity("Spacebook.Models.Message", b =>
-                {
-                    b.HasOne("Spacebook.Models.Conversation", "ConversationEntity")
-                        .WithMany()
-                        .HasForeignKey("ConversationId");
-
-                    b.HasOne("Spacebook.Models.Profile", "ProfileEntity")
-                        .WithMany()
-                        .HasForeignKey("SenderId");
-
-                    b.Navigation("ConversationEntity");
-
-                    b.Navigation("ProfileEntity");
-                });
-
-            modelBuilder.Entity("Spacebook.Models.Post", b =>
-                {
-                    b.HasOne("Spacebook.Models.Profile", "ProfileEntity")
-                        .WithMany()
-                        .HasForeignKey("ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ProfileEntity");
-                });
-
-            modelBuilder.Entity("Spacebook.Models.Preference", b =>
-                {
-                    b.HasOne("Spacebook.Models.Profile", "ProfileEntity")
-                        .WithMany()
-                        .HasForeignKey("ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ProfileEntity");
+                    b.ToTable("Tags");
                 });
 #pragma warning restore 612, 618
         }

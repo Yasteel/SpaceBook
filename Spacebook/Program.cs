@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 using Spacebook;
 using Spacebook.Data;
 using Spacebook.Interfaces;
@@ -23,7 +24,7 @@ internal class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
-
+        
         builder.Services.ConfigureApplicationCookie(options =>
         {
             options.LoginPath = "/Auth/Index";
@@ -31,6 +32,8 @@ internal class Program
         });
 
         builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
+        builder.Services.AddScoped<IPostService, PostService>();
+        builder.Services.AddScoped<IHashTagService, HashTagService>();
 
         var app = builder.Build();
 
@@ -43,6 +46,7 @@ internal class Program
         }
 
         app.UseHttpsRedirection();
+        app.UseDefaultFiles();
         app.UseStaticFiles();
 
         app.UseRouting();
