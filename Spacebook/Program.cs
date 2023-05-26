@@ -31,6 +31,7 @@ internal class Program
         });
 
         builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
+        builder.Services.AddScoped<ISearchFunctionalityService, SearchFunctionalityService>();
 
         var app = builder.Build();
 
