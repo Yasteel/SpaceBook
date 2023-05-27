@@ -19,9 +19,9 @@
 
         
         [ForeignKey(nameof(this.ParticipantOne))]
-        public Profile1? ParticipantOneEntity { get; set; }
+        public Profile? ParticipantOneEntity { get; set; }
 
         [ForeignKey(nameof(this.ParticipantTwo))]
-        public Profile1? ParticipantTwoEntity { get; set; }
+        public Profile? ParticipantTwoEntity { get; set; }
     }
 }

@@ -11,7 +11,7 @@
             
         }
 
-        public DbSet<Profile1> Profile { get; set; }
+        public DbSet<Profile> Profile { get; set; }
 
         public DbSet<Post> Post { get; set; }
 

@@ -15,6 +15,6 @@
 
 
         [ForeignKey(nameof(this.ProfileId))]
-		public Profile1? ProfileEntity { get; set; }
+		public Profile? ProfileEntity { get; set; }
 	}
 }

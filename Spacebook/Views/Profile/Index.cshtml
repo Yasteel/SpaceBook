@@ -1,34 +1,44 @@
-﻿<div>
-    <h1>Open AI Chat</h1>
-</div>
-<br />
+﻿@model SpacebookUser
+
 <div class="row">
-    <div class="col-md-3 col-sm-6" style="margin-bottom:30px">
-        <h6>History</h6>
-        <div id="data-grid">
-            @(
-                Html.DevExtreme().DataGrid<Spacebook.Models.Profile>()
-                .DataSource(_ => _.Mvc()
-                .Controller("ChatWebAPI")
-                .LoadAction("Get")
-                .DeleteAction("Delete")
-                .Key("Id")
-                )
-                .Editing(_ =>
-                {
-                    _.Mode(GridEditMode.Form);
-                    _.RefreshMode(GridEditRefreshMode.Reshape);
-                    _.UseIcons(true);
-                    _.AllowDeleting(true);
-                })
-                .ShowBorders(true)
-                .ShowColumnLines(false)
-                .OnRowClick("onRowClick")
-                .Columns(_ =>
-                {
-                    _.AddFor(_ => _.UserQuestion)
-                    .HeaderCellTemplate("Click on a record to view it.");
-                })
-                )
+    <div class="col-3">
+        <div style="max-height: 50px; max-width:50px;">
+            <img src="https://images.pexels.com/photos/108157/pexels-photo-108157.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="rounded-circle" alt="Cinque Terre" width="100" height="100">
         </div>
     </div>
+    <div class="col">
+        <div class="row">
+            <div class="col-8">
+                <h2>@Model.UserName</h2>
+            </div>
+            <div class="col">
+                <form method="post" asp-controller="Profile" asp-action="Edit" asp-route-id="@Model.Id">
+                    <button class="btn btn-primary" type="submit">Edit</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>0 posts</p>
+            </div>
+            <div class="col">
+                <p>13 followers</p>
+            </div>
+            <div class="col">
+                <p>38 following</p>
+            </div>
+        </div>
+        <div class="row">
+            @{
+                var name = Model.DisplayName != null ? Model.DisplayName : Model.UserName;
+            }
+            <p class="fw-bold">@name</p>
+            @if(Model.Bio != null)
+            {
+                <p>@Model.Bio</p>
+            }
+        </div>
+    </div>
+</div>
+<hr />
+

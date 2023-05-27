@@ -9,7 +9,6 @@
     using Microsoft.AspNetCore.Mvc;
 
     using Spacebook.Models;
-    using Spacebook.Data;
 
     public class AuthController : Controller
     {

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Spacebook;
-using Spacebook.Data;
 using Spacebook.Interfaces;
+using Spacebook.Models;
 using Spacebook.Services;
 
 internal class Program

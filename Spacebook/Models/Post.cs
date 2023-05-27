@@ -26,7 +26,7 @@
 
         // Name inside parenthesis here needs to be the same as the Variable Name
         [ForeignKey(nameof(this.ProfileId))] 
-        public Profile1? ProfileEntity { get; set; }
+        public Profile? ProfileEntity { get; set; }
 
     }
 }
