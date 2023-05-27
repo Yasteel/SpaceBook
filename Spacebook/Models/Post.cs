@@ -24,6 +24,11 @@
 
         public DateTime Timestamp { get; set; }
 
+        public string AccessLevel { get; set; }
+
+        [NotMapped]
+        public List<string>? ProfileIDs { get; set; }
+
         [NotMapped]
         public IFormFile? Media { get; set; }
 

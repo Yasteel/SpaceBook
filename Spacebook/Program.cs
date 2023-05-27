@@ -1,5 +1,5 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Azure;
+﻿using Microsoft.EntityFrameworkCore;
+
 using Spacebook;
 using Spacebook.Data;
 using Spacebook.Interfaces;
@@ -19,7 +19,6 @@ internal class Program
 
         builder.Services.AddDefaultIdentity<SpacebookUser>(options => options.SignIn.RequireConfirmedAccount = false)
             .AddEntityFrameworkStores<AuthDbContext>();
-
        
 
         // Add services to the container.
@@ -34,6 +33,7 @@ internal class Program
         builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
         builder.Services.AddScoped<IPostService, PostService>();
         builder.Services.AddScoped<IHashTagService, HashTagService>();
+        builder.Services.AddScoped<IProfileService, ProfileService>();
 
         var app = builder.Build();
 
@@ -59,6 +59,8 @@ internal class Program
             pattern: "{controller=Home}/{action=Index}/{id?}");
 
         app.MapRazorPages();
+
+                    
 
         app.Run();
     }

@@ -21,9 +21,10 @@
     </PackageReference>
     <PackageReference Include="DevExtreme.AspNet.Core" Version="22.2.4" />
     <PackageReference Include="DevExtreme.AspNet.Data" Version="2.9.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="WebApi\" />
     <Folder Include="wwwroot\js\pages\" />
   </ItemGroup>
 </Project>
