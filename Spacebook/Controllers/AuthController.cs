@@ -10,22 +10,32 @@
 
     using Spacebook.Models;
     using Spacebook.Data;
+	using Spacebook.Interfaces;
 
-    public class AuthController : Controller
+	public class AuthController : Controller
     {
         private readonly SignInManager<SpacebookUser> signInManager;
         private readonly UserManager<SpacebookUser> userManager;
         private readonly IUserStore<SpacebookUser> userStore;
-        private readonly IUserEmailStore<SpacebookUser> emailStore;
+		private readonly IProfileService profileService;
+		private readonly IUserEmailStore<SpacebookUser> emailStore;
         private readonly ILogger<AuthController> logger;
 
-        public AuthController(SignInManager<SpacebookUser> signInManager, UserManager<SpacebookUser> userManager, ILogger<AuthController> logger, IUserStore<SpacebookUser> userStore)
+        public AuthController
+        (
+            SignInManager<SpacebookUser> signInManager, 
+            UserManager<SpacebookUser> userManager, 
+            ILogger<AuthController> logger, 
+            IUserStore<SpacebookUser> userStore, 
+            IProfileService profileService
+        )
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.logger = logger;
             this.userStore = userStore;
-            this.emailStore = GetEmailStore();
+			this.profileService = profileService;
+			this.emailStore = GetEmailStore();
         }
 
         public string ReturnUrl { get; set; }
@@ -91,7 +101,13 @@
                 if (result.Succeeded)
                 {
                     await signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
+					
+                    this.profileService.Add(new Profile
+					{
+						Username = model.Email,
+					});
+
+					return this.RedirectToAction(nameof(this.CompleteRegistration));
                 }
 
                 foreach (var error in result.Errors)
@@ -105,6 +121,11 @@
             }
 
             return View(model);
+        }
+
+        public IActionResult CompleteRegistration()
+        {
+            return this.View();
         }
 
         [HttpPost]
