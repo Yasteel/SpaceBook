@@ -56,6 +56,19 @@ internal class Program
 
         app.MapRazorPages();
 
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            // Add another route for the default page when there's no logged-in user
+            endpoints.MapControllerRoute(
+                name: "defaultNoUser",
+                pattern: "{controller=Auth}/{action=Index}/{id?}")
+                .RequireAuthorization(); // Restrict access to this route to authenticated users
+        });
+
         app.Run();
     }
 }

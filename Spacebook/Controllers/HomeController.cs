@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Spacebook.Models;
-using System.Diagnostics;
-
-namespace Spacebook.Controllers
+﻿namespace Spacebook.Controllers
 {
+    using System.Diagnostics;
+    
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+
+    using Spacebook.Models;
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -13,6 +16,7 @@ namespace Spacebook.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             return View();
