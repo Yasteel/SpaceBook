@@ -1,20 +1,28 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Spacebook.Data;
+using Spacebook.Interfaces;
+using Spacebook.Models;
 
 namespace Spacebook.WebApiController
 {
     public class ProfileWebApiController : Controller
     {
         private readonly UserManager<SpacebookUser> userManager;
+        private readonly IProfileService profileService;
 
-        public ProfileWebApiController(UserManager<SpacebookUser> userManager)
+        public ProfileWebApiController
+        (
+            UserManager<SpacebookUser> userManager,
+            IProfileService profileService
+        )
         {
             this.userManager = userManager;
+            this.profileService = profileService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Put(SpacebookUser model)
+        public async Task<IActionResult> Put(Profile model)
         {
             if (ModelState.IsValid)
             {
@@ -23,27 +31,24 @@ namespace Spacebook.WebApiController
                 if (user == null)
                 {
                     return NotFound();
-                }
+                };
 
-                user.PhoneNumber = model.PhoneNumber;
-                user.Email = model.Email;
-                user.Bio = model.Bio;
-                user.BirthDate = model.BirthDate;
-                user.DisplayName = model.DisplayName;
-                user.Gender = model.Gender;
-                user.ProfilePicture = model.ProfilePicture;
+                var profileInfo = this.profileService.GetByUsername(model.Username);
 
-                var result = await userManager.UpdateAsync(user);
+                profileInfo.Name = model.Name;
+                profileInfo.Surname = model.Surname;
+                profileInfo.Email = model.Email;
+                profileInfo.Bio = model.Bio;
+                profileInfo.ProfilePicture = model.ProfilePicture;
+                profileInfo.Gender = model.Gender;
+                profileInfo.BirthDate = model.BirthDate;
+                profileInfo.JoinedDate = DateTime.UtcNow;
 
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Edit", "Profile", model);
-                }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                this.profileService.Update(profileInfo);
+
+                return this.RedirectToAction("Index", "Home");
+
             }
             else
             {

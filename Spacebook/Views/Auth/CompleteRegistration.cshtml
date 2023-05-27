@@ -30,7 +30,8 @@
                 <input class="col" type="text" asp-for="@Model.DisplayName" />
             </div>*@
             <div class="row">
-                <input class="col" type="hidden" asp-for="@Model.Username" />
+                <input class="col" type="hidden" asp-for="@Model.Username" value="@spacebookUser.Email"/>
+                <input class="col" type="hidden" asp-for="@Model.Email" value="@spacebookUser.Email" />
             </div>
             <br />
             <div class="row">
