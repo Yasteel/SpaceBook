@@ -45,3 +45,38 @@
     transition: 0.2s;
 }
 
+.inputFile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+#imageBox {
+    width: auto;
+    text-align: center;
+    padding: 15px;
+    border: 1px solid ;
+    border-block-color: black;
+}
+
+#videoBox {
+    width: auto;
+    text-align: center;
+    padding: 15px;
+    border: 1px solid;
+    border-block-color: black;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+video {
+    max-width: 100%;
+    height: auto;
+}  
+

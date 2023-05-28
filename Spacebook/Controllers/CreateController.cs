@@ -36,7 +36,7 @@
         }
 
         [HttpPost]
-        public IActionResult Post(Post model) 
+        public IActionResult Post(Post post) 
         {
             var content = Request.HttpContext;
             /*string userId = userManager.GetUserId(User);

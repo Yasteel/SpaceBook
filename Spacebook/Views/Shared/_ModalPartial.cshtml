@@ -2,6 +2,7 @@
 
 <link rel="stylesheet" type="text/css" href="~/css/main.css">
 
+
 <div class="modal fade" id="uploadMediaModal" tabindex="-1" role="dialog" aria-labelledby="uploadMediaModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -13,12 +14,20 @@
             </div>
             <div class="modal-body">
                 <form id="createPostForm" method="post" action="Create/Post" enctype="multipart/form-data">
-                    <div class="col" id="drop_zone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
-                        <p>Drag one or more files to this <i>drop zone</i>.</p>
-                        <input type="file" asp-for="MediaFile" onchange="handleImageUpload()" />
+                    <div class="col" id="mediaUpload">
+                        <label asp-for="MediaFile">
+                            <i class="fa fa-camera fa-lg" aria-hidden="true"></i>
+                        </label>
+                        <input class="inputFile" type="file" asp-for="MediaFile" onchange="handleImageUpload()" />
+                    </div>
+                    <div class="col" id="videoUpload">
+                        <label asp-for="VideoFile">
+                            <i class="fa fa-video-camera fa-lg" aria-hidden="true"></i>
+                        </label>
+                        <input class="inputFile" type="file" asp-for="VideoFile" onchange="handleVideoUpload()" />
                     </div>
                     <div class="col">
-                        <input type="text" asp-for="Caption" />
+                        <input type="text" asp-for="Caption" placeholder="Share your thoughts. Add photos, videos or hashtags"/>
                         <label asp-for="AccessLevel">Share</label>
 
                         <select asp-for="AccessLevel" onchange="accessLevelChanged(value)">
@@ -39,7 +48,14 @@
                         </div>
                     </div>
                    
-                    <img id="display-image" src="" />
+                    <div id="imageBox" style="display: none;">
+                        <img id="displayImage" src="" />
+                    </div>
+                    <div id="videoBox" style="display: none;">
+                        <video id="displayVideo" src="">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
                     <button type="submit">Share</button>
                 </form>
             </div>
@@ -48,4 +64,5 @@
 </div>
 
 <script src="~/js/pages/createPost.js"></script>
+
 

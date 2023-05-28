@@ -7,10 +7,12 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
     // Get form values
     let Caption = document.getElementById('Caption').value;
     let MediaFile = document.getElementById('MediaFile').files[0];
+    let VideoFile = document.getElementById('VideoFile').files[0];
     let AccessLevel = document.getElementById('AccessLevel').value;
     let SharedIDs = getSelectedProfileIds();
 
     const url = new URL(form.action);
+    console.log(MediaFile);
 
     // Perform form validation
     if (Caption.trim() === '') {
@@ -22,6 +24,7 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
     var formData = new FormData();
     formData.append('Caption', Caption);
     formData.append('MediaFile', MediaFile);
+    formData.append('VideoFile', VideoFile);
     formData.append('AccessLevel', AccessLevel);
     formData.append('SharedIDs', SharedIDs);
 
@@ -49,13 +52,26 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
 
 function handleImageUpload() {
     var image = document.getElementById("MediaFile").files[0];
+    document.getElementById("imageBox").style.display = "block"
     var reader = new FileReader();
 
     reader.onload = function (e) {
-        document.getElementById("display-image").src = e.target.result;
+        document.getElementById("displayImage").src = e.target.result;
     }
 
     reader.readAsDataURL(image);
+}
+
+function handleVideoUpload() {
+    var video = document.getElementById("VideoFile").files[0];
+    document.getElementById("videoBox").style.display = "block"
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+        document.getElementById("displayVideo").src = e.target.result;
+    }
+
+    reader.readAsDataURL(video);
 }
 
 function getSelectedProfileIds() {
