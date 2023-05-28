@@ -1,17 +1,41 @@
 ﻿@{
 	ViewData["Title"] = "Messages";
 }
+@using Microsoft.AspNetCore.Identity
+
+@using Spacebook.Data;
+
 <head>
 	<link href="~/css/chatstyles.css" rel="stylesheet" />
 </head>
 
+@{
+	@inject UserManager<SpacebookUser> UserManager
+
+	var spacebookUser = (SpacebookUser)await UserManager.GetUserAsync(User);
+}
+
 <div class="main-container">
 	<div class="contact-container">
 		<div class="search">
-			<p>Search</p>
+			<input type="text" placeholder="Search"/>
 		</div>
 		<div class="contact-list">
-
+			<div class="contact new">
+				<div class="details">
+					<p class="name">Yasteel Gungapursat</p>
+					<p class="username">gungas</p>
+				</div>
+				<div class="action">
+					<button class="btn">Start Chat</button>
+				</div>
+			</div>
+			<div class="contact">
+				<div class="details">
+					<p class="name">Yasteel Gungapursat</p>
+					<p class="username">gungas</p>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="message-container" data-conversation-id="1">
@@ -19,8 +43,7 @@
 			<ul id="messagesList"></ul>
 		</div>
 		<div class="controls">
-			@*<input type="text" class="form-control" id="userInput" value="" placeholder="User" />
-			<input type="text" class="form-control" id="toUser" value="" placeholder="To User" />*@
+			<input type="hidden" value="@spacebookUser.Email" id="userId"/>
 			<input type="text" class="form-control" id="messageInput" value="" placeholder="Type Message" />
 			<button id="sendButton" class="btn btn-outline-success">Send</button>
 

@@ -1,39 +1,45 @@
 ﻿namespace Spacebook.Hubs
 {
+	using System;
+	using System.Security.Claims;
 	using Microsoft.AspNetCore.Identity;
 	using Microsoft.AspNetCore.SignalR;
+
 	using Spacebook.Data;
 	using Spacebook.Interfaces;
 	using Spacebook.Models;
-	using System;
+
 
 	public class ConnectionHub : Hub
 	{
-		private readonly SignInManager<SpacebookUser> signInManager;
+		private readonly UserManager<SpacebookUser> userManager;
 		private readonly IMessageService messageService;
+		private readonly IProfileService profileService;
+		private readonly IHttpContextAccessor httpContextAccessor;
 
 		public ConnectionHub
 		(
-			SignInManager<SpacebookUser> signInManager, 
-			IMessageService messageService
+			UserManager<SpacebookUser> userManager,
+			IMessageService messageService,
+			IProfileService profileService,
+			IHttpContextAccessor httpContextAccessor
 		)
 		{
-			this.signInManager = signInManager;
+			this.userManager = userManager;
 			this.messageService = messageService;
+			this.profileService = profileService;
+			this.httpContextAccessor = httpContextAccessor;
 		}
 
-		public override Task OnConnectedAsync()
+		public async override Task OnConnectedAsync()
 		{
-			//var userId = this.signInManager.UserManager.Users.First();
-			// Not exactly sure what this will produce but will need to get the logged in users profileId/username
+			var userClaim = this.httpContextAccessor.HttpContext!.User;
+			var user = (SpacebookUser)await this.userManager.GetUserAsync(userClaim);
 
-			var userId = $"user-{ConnectedUsers.Users.Count}";
-
-
-			ConnectedUsers.Users.Add(userId, $"{Context.ConnectionId}");
+			ConnectedUsers.Users.Add(user.Email, $"{Context.ConnectionId}");
 			Console.WriteLine($"Connected - {ConnectedUsers.Users.Last()}");
 
-			return base.OnConnectedAsync();
+			await base.OnConnectedAsync();
 		}
 
 		public override Task OnDisconnectedAsync(Exception? exception)
@@ -55,6 +61,7 @@
 
 		public async Task SendPrivateMessage(string user, string message, string toUser)
 		{
+			// Checks if the recipient is online, if not - adds message to the database
 			if (ConnectedUsers.Users.ContainsKey(toUser))
 			{
 				await Clients.Client(ConnectedUsers.Users[toUser]).SendAsync("ReceiveMessage", user, message);

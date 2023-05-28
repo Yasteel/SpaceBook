@@ -23,7 +23,7 @@
 
         public string? Gender { get; set; }
 
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
         public DateTime JoinedDate { get; set; }
     }

@@ -16,16 +16,10 @@
     height: 100%;
 }
 
-.contact-container {
-    width: 25%;
-    background: rgba(0,0,0,0.6);
-    color: white;
-}
-
 .message-container {
     max-height: 100%;
     
-    width: 75%;
+    width: 70%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -46,4 +40,56 @@ ul#messagesList li{
     padding: .5rem;
     background: rgba(0,0,0,0.3);
     margin-bottom: .7rem;
+}
+
+/* Contact List Section */
+.contact-container {
+    width: 30%;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 1rem;
+    border-radius: 15px;
+}
+
+
+.search input{
+    width: 100%;
+    padding: .5rem;
+    background: none;
+    color: white;
+    border-radius: 15px; 
+    border: 1px solid white;    
+}
+
+.contact {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border: 1px solid white;
+    margin: 1rem 0;
+    border-radius: 15px;
+    padding: 1rem;
+}
+
+.contact > div{
+    /*border: 1px solid white;*/
+}
+
+.details{
+    font-size: .9rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0;
+    margin: 0
+}
+
+.details p{
+    margin-bottom: unset;
+}
+
+p.username::before{
+    content: '@';
 }

@@ -20,7 +20,9 @@ internal class Program
         builder.Services.AddDefaultIdentity<SpacebookUser>(options => options.SignIn.RequireConfirmedAccount = false)
             .AddEntityFrameworkStores<AuthDbContext>();
 
-       builder.Services.AddScoped<IMessageService, MessageService>();
+        builder.Services.AddScoped<IMessageService, MessageService>();
+        builder.Services.AddScoped<IProfileService, ProfileService>();
+        builder.Services.AddScoped<IConversationService,  ConversationService>();
 
         // Add services to the container.
         builder.Services.AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
@@ -34,9 +36,10 @@ internal class Program
         });
 
         builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
+		
+        builder.Services.AddHttpContextAccessor();
 
-
-        var app = builder.Build();
+		var app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
