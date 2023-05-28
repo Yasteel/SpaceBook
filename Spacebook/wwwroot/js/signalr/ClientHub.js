@@ -64,21 +64,40 @@ $(document).ready(function () {
 
     $(document).on("click", "div.contact", (e) => {
 
+        // contactUsername is the username/email of the contact you click on
         var contactUsername = $(e.target).closest(".contact").attr("data-username");
 
         console.log(contactUsername);
 
         $.ajax({
-            url: "/MessageWebApi/GetMessages",
-            type: "POST",
+            url: "/MessageWebApi/GetConversationId",
+            type: "GET",
             data: {
                 "contactUsername": contactUsername
             },
             success: (response) => {
+
+                $(".message-container").attr("data-conversation-id", response);
+                $(".messages").html("");
+
+                $.ajax({
+                    url: "/MessageWebApi/GetMessages",
+                    type: "GET",
+                    data: {
+                        "conversationId": response
+                    },
+                    success: (response) => {
+                        showMessages(JSON.parse(response));
+                    },
+                    error: (xhr, textStatus, errorThrown) => {
+                        console.log(`Err1: ${errorThrown}`);
+                    }
+                });
+
                 showMessages(JSON.parse(response));
             },
             error: (xhr, textStatus, errorThrown) => {
-                console.log(`Err: ${errorThrown}`);
+                console.log(`Err2: ${errorThrown}`);
             }
         });
 
@@ -106,6 +125,6 @@ function showContacts(contacts) {
 }
 
 function showMessages(messages) {
-
+    console.log(messages);
 }
 
