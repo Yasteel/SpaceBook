@@ -12,23 +12,30 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form" method="post" asp-action="Index" asp-controller="Create" enctype="multipart/form-data">
+                <form id="createPostForm" method="post" action="Create/Post" enctype="multipart/form-data">
                     <div class="col" id="drop_zone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
                         <p>Drag one or more files to this <i>drop zone</i>.</p>
-                        <input id="upload" type="file" name="Media" onchange="handleImageUpload()" />
+                        <input type="file" asp-for="MediaFile" onchange="handleImageUpload()" />
                     </div>
                     <div class="col">
-                        <label asp-for="Caption"></label>
                         <input type="text" asp-for="Caption" />
-                        <div class="dx-field-value">
+                        <label asp-for="AccessLevel">Share</label>
+
+                        <select asp-for="AccessLevel" onchange="accessLevelChanged(value)">
+                            <option value="public">public</option>
+                            <option value="private">private</option>
+                        </select>
+
+                        <div id="dx-sharebox" style="display: none;">
                             @(Html.DevExtreme().TagBox()
                                 .ID("ShareTagBox")
                                 .DataSource(d => d.Mvc().Controller("ProfileApi").LoadAction("Get").Key("UserId"))
                                 .DisplayExpr("Username")
                                 .ValueExpr("UserId")
                                 .Placeholder("Choose people to share with...")
-                                .OnSelectionChanged("update_hidden_field")
                                 )
+
+                            @Html.HiddenFor(m => m.SharedIDs)
                         </div>
                     </div>
                    
@@ -40,24 +47,5 @@
     </div>
 </div>
 
-<script>
-
-
-    function handleImageUpload() {
-        var image = document.getElementById("upload").files[0];
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            document.getElementById("display-image").src = e.target.result;
-        }
-
-        reader.readAsDataURL(image);
-    }
-
-    function update_hidden_field(args) {
-        $("#ProfileIDs").val($("#ShareTagBox").dxTagBox("option", "selectedItems"));
-
-    }
-
-</script>
+<script src="~/js/pages/createPost.js"></script>
 

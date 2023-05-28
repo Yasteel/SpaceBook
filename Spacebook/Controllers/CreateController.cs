@@ -36,9 +36,10 @@
         }
 
         [HttpPost]
-        public IActionResult Index(Post model) 
+        public IActionResult Post(Post model) 
         {
-            string userId = userManager.GetUserId(User);
+            var content = Request.HttpContext;
+            /*string userId = userManager.GetUserId(User);
 
             // use this to save to database
             var fileURI = storageService.UploadBlob(model.Media, userId);
@@ -55,7 +56,7 @@
 
             SaveHashTags(model.Caption, model.PostId);
 
-            Console.WriteLine("Post added successfully");
+            Console.WriteLine("Post added successfully");*/
 
             return RedirectToAction("Index", "Home");
         }

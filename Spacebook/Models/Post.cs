@@ -27,10 +27,10 @@
         public string AccessLevel { get; set; }
 
         [NotMapped]
-        public List<string>? ProfileIDs { get; set; }
+        public string? SharedIDs { get; set; }
 
         [NotMapped]
-        public IFormFile? Media { get; set; }
+        public IFormFile? MediaFile { get; set; }
 
         /*// Name inside parenthesis here needs to be the same as the Variable Name
         [ForeignKey(nameof(this.ProfileId))] 
