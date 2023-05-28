@@ -4,6 +4,8 @@ let form = document.getElementById('createPostForm');
 document.getElementById('createPostForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
+    $('#uploadMediaModal').modal('hide');
+
     // Get form values
     let Caption = document.getElementById('Caption').value;
     let ImageFile = document.getElementById('ImageFile').files[0];
@@ -34,24 +36,28 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
     })
         .then(function (response) {
             if (response.ok) {
-                // Clear form fields
-                document.getElementById('Caption').value = '';
-                document.getElementById('ImageFile').value = '';
-
                 alert('Post created successfully!');
+                reset();
             } else {
                 throw new Error('Error: ' + response.status);
+                reset();
             }
         })
         .catch(function (error) {
+            reset();
             alert('An error occurred: ' + error.message);
         });
 });
 
 
 function handleImageUpload() {
+    //don't allow video and images together
+    document.getElementById("videoBox").style.display = "none";
+    document.getElementById('VideoFile').value = "";
+
     var image = document.getElementById("ImageFile").files[0];
-    document.getElementById("imageBox").style.display = "block"
+    document.getElementById("mediaColumn").style.display = "block";
+    document.getElementById("imageBox").style.display = "block";
     var reader = new FileReader();
 
     reader.onload = function (e) {
@@ -62,8 +68,13 @@ function handleImageUpload() {
 }
 
 function handleVideoUpload() {
+    //don't allow video and images together
+    document.getElementById("imageBox").style.display = "none";
+    document.getElementById('ImageFile').value = "";
+
     var video = document.getElementById("VideoFile").files[0];
-    document.getElementById("videoBox").style.display = "block"
+    document.getElementById("mediaColumn").style.display = "block";
+    document.getElementById("videoBox").style.display = "block";
     var reader = new FileReader();
 
     reader.onload = function (e) {
@@ -99,4 +110,16 @@ function accessLevelChanged(value)
     {
         document.getElementById("dx-sharebox").style.display = "none";
     }
+}
+
+function reset()
+{
+    document.getElementById('ImageFile').value = "";
+    document.getElementById('ImageFile').value = "";
+    document.getElementById("videoBox").style.display = "none";
+    document.getElementById("imageBox").style.display = "none";
+    document.getElementById("mediaColumn").style.display = "none";
+    document.getElementById('Caption').value = "";
+
+    $('#uploadMediaModal').modal('hide');
 }

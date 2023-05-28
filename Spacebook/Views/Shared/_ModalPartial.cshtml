@@ -15,7 +15,7 @@
             <div class="modal-body">
                 <div class="container-fluid h-100">
                     <div class="row justify-content-center h-100">
-                        <div class="col-sm">
+                        <div id="mediaColumn" class="col-sm" style="display: none;">
                             <div id="imageBox" style="display: none;">
                                 <img id="displayImage" src="" />
                             </div>
@@ -61,6 +61,7 @@
                                         .DisplayExpr("Username")
                                         .ValueExpr("UserId")
                                         .Placeholder("Choose people to share with...")
+                                        .ShowClearButton(true)
                                         )
 
                                     @Html.HiddenFor(m => m.SharedIDs)
