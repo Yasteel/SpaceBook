@@ -15,10 +15,10 @@
             <div class="modal-body">
                 <form id="createPostForm" method="post" action="Create/Post" enctype="multipart/form-data">
                     <div class="col" id="mediaUpload">
-                        <label asp-for="MediaFile">
+                        <label asp-for="ImageFile">
                             <i class="fa fa-camera fa-lg" aria-hidden="true"></i>
                         </label>
-                        <input class="inputFile" type="file" asp-for="MediaFile" onchange="handleImageUpload()" />
+                        <input class="inputFile" type="file" asp-for="ImageFile" onchange="handleImageUpload()" />
                     </div>
                     <div class="col" id="videoUpload">
                         <label asp-for="VideoFile">
@@ -52,7 +52,7 @@
                         <img id="displayImage" src="" />
                     </div>
                     <div id="videoBox" style="display: none;">
-                        <video id="displayVideo" src="">
+                        <video id="displayVideo" src="" controls>
                             Your browser does not support the video tag.
                         </video>
                     </div>

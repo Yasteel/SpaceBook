@@ -38,6 +38,7 @@
         [HttpPost]
         public IActionResult Post(Post post) 
         {
+            Console.WriteLine("What????");
             var content = Request.HttpContext;
             /*string userId = userManager.GetUserId(User);
 

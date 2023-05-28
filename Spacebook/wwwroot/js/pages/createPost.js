@@ -6,13 +6,12 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
 
     // Get form values
     let Caption = document.getElementById('Caption').value;
-    let MediaFile = document.getElementById('MediaFile').files[0];
+    let ImageFile = document.getElementById('ImageFile').files[0];
     let VideoFile = document.getElementById('VideoFile').files[0];
     let AccessLevel = document.getElementById('AccessLevel').value;
     let SharedIDs = getSelectedProfileIds();
 
     const url = new URL(form.action);
-    console.log(MediaFile);
 
     // Perform form validation
     if (Caption.trim() === '') {
@@ -23,7 +22,7 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
     // Create FormData object and append form data
     var formData = new FormData();
     formData.append('Caption', Caption);
-    formData.append('MediaFile', MediaFile);
+    formData.append('ImageFile', ImageFile);
     formData.append('VideoFile', VideoFile);
     formData.append('AccessLevel', AccessLevel);
     formData.append('SharedIDs', SharedIDs);
@@ -37,7 +36,7 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
             if (response.ok) {
                 // Clear form fields
                 document.getElementById('Caption').value = '';
-                document.getElementById('MediaFile').value = '';
+                document.getElementById('ImageFile').value = '';
 
                 alert('Post created successfully!');
             } else {
@@ -51,7 +50,7 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
 
 
 function handleImageUpload() {
-    var image = document.getElementById("MediaFile").files[0];
+    var image = document.getElementById("ImageFile").files[0];
     document.getElementById("imageBox").style.display = "block"
     var reader = new FileReader();
 

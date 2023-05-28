@@ -30,7 +30,7 @@
         public string? SharedIDs { get; set; }
 
         [NotMapped]
-        public IFormFile? MediaFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
 
         [NotMapped]
         public IFormFile? VideoFile { get; set; }
