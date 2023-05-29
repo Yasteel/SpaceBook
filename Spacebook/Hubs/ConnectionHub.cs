@@ -15,6 +15,7 @@
 		private readonly UserManager<SpacebookUser> userManager;
 		private readonly IMessageService messageService;
 		private readonly IProfileService profileService;
+		private readonly IConversationService conversationService;
 		private readonly IHttpContextAccessor httpContextAccessor;
 
 		public ConnectionHub
@@ -22,12 +23,14 @@
 			UserManager<SpacebookUser> userManager,
 			IMessageService messageService,
 			IProfileService profileService,
+			IConversationService conversationService,
 			IHttpContextAccessor httpContextAccessor
 		)
 		{
 			this.userManager = userManager;
 			this.messageService = messageService;
 			this.profileService = profileService;
+			this.conversationService = conversationService;
 			this.httpContextAccessor = httpContextAccessor;
 		}
 
@@ -54,26 +57,31 @@
 			return base.OnDisconnectedAsync(exception);
 		}
 
-		public async Task SendMessage(string user, string message)
+		public async Task SendMessage(int conversationId, string senderUsername, string messageType, string content)
 		{
-			await Clients.All.SendAsync("ReceiveMessage", user, message);
-		}
+			var conversation = this.conversationService.GetById(conversationId);
+			var senderId = this.profileService.GetByUsername(senderUsername).UserId;
 
-		public async Task SendPrivateMessage(string user, string message, string toUser)
-		{
+			// toUser is the user that the message is being sent to / the recipient
+			int toUser = (int)(conversation.ParticipantOne == senderId ? conversation.ParticipantTwo : conversation.ParticipantOne)!;
+
+			// toUserEmail is used to get the connectionId from the Dictionary
+			var toUserEmail = this.profileService.GetById(toUser).Email!;
+
+
 			// Checks if the recipient is online, if not - adds message to the database
-			if (ConnectedUsers.Users.ContainsKey(toUser))
+			if (ConnectedUsers.Users.ContainsKey(toUserEmail))
 			{
-				await Clients.Client(ConnectedUsers.Users[toUser]).SendAsync("ReceiveMessage", user, message);
+				await Clients.Client(ConnectedUsers.Users[toUserEmail]).SendAsync("ReceiveMessage", conversationId, senderId, messageType, content);
 			}
 			else
 			{
 				var newMessage = new Message()
 				{
-					ConversationId = 1,
-					SenderId = 1,
-					MessageType = "Text",
-					Content = message,
+					ConversationId = conversationId,
+					SenderId = senderId,
+					MessageType = messageType,
+					Content = content,
 					Timestamp = DateTime.UtcNow,
 					Seen = false
 				};

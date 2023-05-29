@@ -30,14 +30,14 @@ namespace Spacebook.WebApiController
 		}
 
 		[HttpPost]
-        public IActionResult NewMessage(int conversationId, string messageType, string content, int senderId)
+        public IActionResult NewMessage(int conversationId, int senderId, string messageType, string content)
 		{
 			Console.WriteLine(content);
 
 			var newMessage = new Message()
 			{
-				ConversationId = 1,
-				SenderId = 1,
+				ConversationId = conversationId,
+				SenderId = senderId,
 				MessageType = messageType,
 				Content = content,
 				Timestamp = DateTime.UtcNow,
@@ -62,8 +62,10 @@ namespace Spacebook.WebApiController
 			var spacebookUser = (SpacebookUser)await this.userManager.GetUserAsync(User);
 			var thisUser = spacebookUser.Email;
 
+			var returnVal = JsonConvert.SerializeObject(this.messageService.GetByConversationId(conversationId));
+
 			// Finds messages that exist between the 2 users
-			return JsonConvert.SerializeObject(this.messageService.GetByConversationId(conversationId));
+			return returnVal;
 		}
 
 		[HttpGet]

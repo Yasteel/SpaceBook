@@ -40,16 +40,20 @@
 	</div>
 	<div class="message-container" data-conversation-id="">
 		<div class="messages">
-			<ul id="messagesList"></ul>
+			<ul id="messages-list"></ul>
 		</div>
 		<div class="controls">
-			<input type="hidden" value="@spacebookUser.Email" id="userId"/>
+			<input type="hidden" value="@spacebookUser.Email" id="username"/>
 			<input type="text" class="form-control" id="messageInput" value="" placeholder="Type Message" />
 			<button id="sendButton" class="btn btn-outline-success">Send</button>
 
 		</div>
 	</div>
 </div>
+
+<script>
+	var currentUser = "@spacebookUser.Email";
+</script>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/js/signalr/dist/browser/signalr.js"></script>

@@ -11,8 +11,8 @@ $(document).ready(function () {
         });
 
 
-    connection.on("ReceiveMessage", (user, message) => {
-        $("#messagesList").append(`<li>${user}: ${message}</li>`);
+    connection.on("ReceiveMessage", (conversationId, senderId, messageType, content) => {
+        $("#messages-list").append(`<li class="from">${content}</li>`);
 
 
         $.ajax({
@@ -20,12 +20,13 @@ $(document).ready(function () {
             type: "POST",
             data: {
                 "conversationId": conversationId,
-                "messageType": "Text",
-                "content": message,
-                "senderId": user
+                "senderId": senderId,
+                "messageType": messageType,
+                "content": content
+                
             },
             success: (response) => {
-                console.log("it worked")
+                console.log("Message Sent");
             },
             error: (xhr, textStatus, errorThrown) => {
                 console.log(`Err: ${errorThrown}`);
@@ -46,16 +47,28 @@ $(document).ready(function () {
 
 
     $(document).on("click", "#sendButton", (e) => {
-        var message = $("#messageInput").val();
-        var user = $("#userId").val();
-        var toUser = "";
+        var conversationId = parseInt($(".message-container").attr("data-conversation-id"));
+        var senderUsername = $("input#username").val();
+        var messageType = "";
+        var content = $("#messageInput").val();
 
-        $("#messagesList").append(`<li>${user}: ${message}</li>`);
+        if (content != null) {
+            messageType = "Text";
+        }
 
-        //connection.invoke("SendPrivateMessage", user, message, toUser)
-        //.catch((err) => {
-        //    return console.error(err.toString());
-        //});
+        console.log({
+            "conversationId": conversationId,
+            "senderUsername": senderUsername,
+            "messageType": messageType,
+            "content": content
+        });
+
+        $("#messages-list").append(`<li class="to">${content}</li>`);
+
+        connection.invoke("SendMessage", conversationId, senderUsername, messageType, content)
+        .catch((err) => {
+            return console.error(err.toString());
+        });
 
 
         $("#messageInput").val("");
@@ -78,7 +91,7 @@ $(document).ready(function () {
             success: (response) => {
 
                 $(".message-container").attr("data-conversation-id", response);
-                $(".messages").html("");
+                $("#messages-list").html("");
 
                 $.ajax({
                     url: "/MessageWebApi/GetMessages",
@@ -125,6 +138,37 @@ function showContacts(contacts) {
 }
 
 function showMessages(messages) {
-    console.log(messages);
+    $("#messages-list").html("");
+
+    if (messages.length > 0) {
+        var messageList = "";
+
+        $.each(messages, (i, v) => {
+            messageList += `<li class="${v.SenderId == currentUser ? "to" : "from"}">`;
+
+            switch (v.MessageType) {
+                case "Text":
+                    messageList += v.Content;
+                    break;
+
+                case "Image":
+                    messageList += `<img src="${v.Content}" alt="Image Not Found" />`;
+                    break;
+
+                case "Video":
+                    messageList += `<video controls> <source src="${v.Content}"></source> </video>`;
+                    break;
+
+                case "Post":
+                    // Need to find a way to display a Post
+                    //messageList += `${v.Content}`;
+                    break;
+            }
+
+            messageList += `</li>`
+        });
+
+        $("#messages-list").append(messageList);
+    }
 }
 
