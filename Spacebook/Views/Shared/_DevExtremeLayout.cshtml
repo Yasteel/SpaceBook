@@ -1,3 +1,10 @@
+@using Microsoft.AspNetCore.Identity
+
+@using Spacebook.Models;
+
+@inject SignInManager<SpacebookUser> SignInManager
+@inject UserManager<SpacebookUser> UserManager
+
 <!DOCTYPE html>
 
 <html>
@@ -36,6 +43,7 @@
 
     <script src="~/js/devextreme/jquery.js"></script>
     <script src="~/js/devextreme/bootstrap.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 
     
 
@@ -66,40 +74,72 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 </head>
 
-<body style="padding-top: 5rem;">
+<body>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="row">
+            <div class="col-2">
+                <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                    <div class="container-fluid">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="row navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                            <div class="col-auto bg-dark">
+                                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                                    <h2>Spacebook</h2>
+                                    <hr />
+                                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                                        <li class="nav-item"><a href="#" class="nav-link">Home / Feed</a></li>
+                                        <br />
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-controller="Profile" asp-action="Index">Profile</a>
+                                        </li>
+                                        <br />
+                                        <li class="nav-item">
+                                            <a class="nav-link" onclick="onCreateButtonClicked()" data-toggle="modal" data-target="#uploadMediaModal">
+                                                Create
+                                            </a>
+                                        </li>
+                                        <br />
+                                        <li class="nav-item"><a href="#contact" class="nav-link">Search</a></li>
+                                        <br />
+                                        <li class="nav-item"><a href="#contact" class="nav-link">Notifications</a></li>
+                                        <br />
+                                        <li class="nav-item"><a href="#contact" class="nav-link">Explore</a></li>
+                                        <br />
+                                        <li class="nav-item"><a href="#contact" class="nav-link">Messages</a></li>
+                                        <br />
+                                        <li class="nav-item"><a href="#contact" class="nav-link">Share</a></li>
+                                        <br />
+                                        <partial name="_LoginPartial" />
+                                    </ul>
+                                    
+                                </div>
+                            </div>
 
-    <nav class="navbar navbar-light bg-light fixed-top navbar-expand-md">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Spacebook</a>
+                        </div>
 
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div id="navbar" class="collapse navbar-collapse">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a href="#" class="nav-link active">Home</a></li>
-                    <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
-                    <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
-                </ul>
+                    </div>
+                </nav>
             </div>
-            
-            <button class="btn" type="button" onclick="onCreateButtonClicked()" data-toggle="modal" data-target="#uploadMediaModal">
-                <i class="fa-solid fa-plus fa-lg"></i>
-                Create
-            </button>
-            
-            
-           
-            <partial name="_LoginPartial" />
+
+            <div class="col" style="padding-top : 50px; margin-right: 100px; margin-left:50px;">
+                <main class="container">
+                    @RenderBody()
+                </main>
+            </div>
         </div>
-        
-    </nav>
-   
-    <main class="container">
-        @RenderBody()
-    </main>
-    @await RenderSectionAsync("Scripts", required: false)
-    <partial name="_ModalPartial" />
+
+        <partial name="_ModalPartial" />
+    } 
+    else
+    {
+        <main class="container">
+            @RenderBody()
+        </main>
+    }
+
 </body>
 </html>

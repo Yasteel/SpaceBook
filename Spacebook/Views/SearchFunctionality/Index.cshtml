@@ -1,0 +1,44 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h2>This is where we search</h2>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<input type="text" id="searchTerm" placeholder="Search posts..." />
+
+<ul id="results" class="list-group"></ul>
+
+<script>
+    $(document).ready(function () {
+        $('#searchTerm').on('input', function () {
+            var searchTerm = $(this).val();
+
+            $.ajax({
+                url: '/SearchFunctionality/Search',
+                data: { 'searchTerm': searchTerm },
+                success: function (results) {
+                    // Empty the results list
+                    $('#results').empty();
+
+                    // Add each result to the list
+                    results.forEach(function (search) {
+                        $('#results').append(
+                            '<li class="list-group-item">' +
+                            '<h5>' + search.Type + '</h5>' +
+                            '<a href="' + search.MediaUrl + '">View Post</a>' +
+                            '</li>'
+                        );
+                    });
+                }
+            });
+        });
+    });
+</script>

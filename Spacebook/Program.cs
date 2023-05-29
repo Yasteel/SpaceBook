@@ -3,7 +3,6 @@
 using Microsoft.EntityFrameworkCore;
 
 using Spacebook;
-using Spacebook.Data;
 using Spacebook.Interfaces;
 using Spacebook.Models;
 using Spacebook.Services;
@@ -23,7 +22,8 @@ internal class Program
 
         builder.Services.AddDefaultIdentity<SpacebookUser>(options => options.SignIn.RequireConfirmedAccount = false)
             .AddEntityFrameworkStores<AuthDbContext>();
-       
+
+        builder.Services.AddScoped<IProfileService, ProfileService>();
 
         // Add services to the container.
         builder.Services.AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
@@ -41,6 +41,7 @@ internal class Program
         builder.Services.AddScoped<ISharedPostService, SharedPostService>();
 
         builder.Services.AddScoped<IValidator<Post>, PostValidator>();
+        builder.Services.AddScoped<ISearchFunctionalityService, SearchFunctionalityService>();
 
         var app = builder.Build();
 
@@ -67,7 +68,18 @@ internal class Program
 
         app.MapRazorPages();
 
-                    
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            // Add another route for the default page when there's no logged-in user
+            endpoints.MapControllerRoute(
+                name: "defaultNoUser",
+                pattern: "{controller=Auth}/{action=Index}/{id?}")
+                .RequireAuthorization(); // Restrict access to this route to authenticated users
+        });
 
         app.Run();
     }

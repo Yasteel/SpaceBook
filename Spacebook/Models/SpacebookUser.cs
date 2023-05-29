@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Spacebook.Data;
+namespace Spacebook.Models;
 
 public class SpacebookUser : IdentityUser
 {
