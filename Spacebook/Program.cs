@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+
+using Microsoft.EntityFrameworkCore;
 
 using Spacebook;
 using Spacebook.Data;
 using Spacebook.Interfaces;
 using Spacebook.Services;
+using Spacebook.Validation;
 
 internal class Program
 {
@@ -34,6 +37,8 @@ internal class Program
         builder.Services.AddScoped<IPostService, PostService>();
         builder.Services.AddScoped<IHashTagService, HashTagService>();
         builder.Services.AddScoped<IProfileService, ProfileService>();
+
+        builder.Services.AddScoped<IValidator, PostValidator>();
 
         var app = builder.Build();
 
