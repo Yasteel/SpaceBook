@@ -27,7 +27,7 @@
                             </div>
                         </div>
                         <div class="col-sm">
-                            <form id="createPostForm" method="post" action="Create/Post" enctype="multipart/form-data">
+                            <form id="createPostForm" method="post" action="CreatePostApi/Post" enctype="multipart/form-data">
                                 
                                 <div id="captionPost">
                                     <textarea asp-for="Caption" placeholder="Share your thoughts. Add photos, videos or hashtags" onclick="clearErrorMessage()"></textarea>
@@ -38,13 +38,13 @@
                                         <label asp-for="ImageFile">
                                             <i class="fa fa-camera fa-lg" aria-hidden="true" onclick="clearErrorMessage()"></i>
                                         </label>
-                                        <input class="inputFile" type="file" asp-for="ImageFile" onchange="handleImageUpload()"  />
+                                        <input class="inputFile" type="file" accept="image/*" asp-for="ImageFile" onchange="handleImageUpload()" />
                                     </div>
                                     <div class="flex-child" id="videoUpload">
                                         <label asp-for="VideoFile">
                                             <i class="fa fa-video-camera fa-lg" aria-hidden="true" onclick="clearErrorMessage()"></i>
                                         </label>
-                                        <input class="inputFile" type="file" asp-for="VideoFile" onchange="handleVideoUpload()"/>
+                                        <input class="inputFile" type="file" accept="video/*" asp-for="VideoFile" onchange="handleVideoUpload()" />
                                     </div>
                                 </div>
                                    

@@ -12,6 +12,7 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
     let SharedIDs = getSelectedProfileIds();
 
     const url = new URL(form.action);
+    console.log(url);
 
     // Perform form validation
     if (Caption.trim() === '') {
@@ -44,6 +45,7 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
         .catch(function (error) {
             reset();
             alert('An error occurred: ' + error.message);
+            console.log(error);
         });
 });
 
@@ -63,7 +65,7 @@ function handleImageUpload() {
         showError("File size too large to upload");
         return false;
     }
-    else if (type !== "image/jpeg")
+    else if (type.includes("image"))
     {
         showError("Incorrect file type selected");
         return false;
@@ -95,7 +97,7 @@ function handleVideoUpload() {
         showError("File size too large to upload");
         return false;
     }
-    else if (type != "video/mp4") {
+    else if (type.includes("video")) {
         showError("Incorrect file type selected");
         return false;
     }

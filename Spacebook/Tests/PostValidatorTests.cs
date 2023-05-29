@@ -2,7 +2,6 @@
 {
     using FluentValidation.TestHelper;
 
-    using Spacebook.Interfaces;
     using Spacebook.Tests.Helpers;
     using Spacebook.Validation;
     using Xunit;

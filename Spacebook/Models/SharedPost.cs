@@ -9,7 +9,7 @@
         public int SharedPostId { get; set; }
 
         [Column("fkPostId")]
-        public int PostId { get; set; }
+        public int OriginalPostId { get; set; }
 
         [Column("fkProfileId")]
         public int ProfileId { get; set; }
