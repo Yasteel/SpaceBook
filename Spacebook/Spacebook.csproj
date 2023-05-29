@@ -32,7 +32,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\js\pages\" />
   </ItemGroup>
 </Project>

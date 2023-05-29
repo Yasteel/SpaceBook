@@ -55,7 +55,7 @@
             {
                 return false;
             }
-            else if (file.ContentType != "image/jpeg" || file.ContentType != "image/png" || file.ContentType != "image/gif")
+            else if (!file.ContentType.Contains("image"))
             {
                 return false;
             }
