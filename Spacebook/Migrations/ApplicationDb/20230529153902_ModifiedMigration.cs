@@ -41,6 +41,20 @@ namespace Spacebook.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
+                name: "HashTags",
+                columns: table => new
+                {
+                    pkHashTagId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    fkPostId = table.Column<int>(type: "int", nullable: false),
+                    HashTagText = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HashTags", x => x.pkHashTagId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Likes",
                 columns: table => new
                 {
@@ -82,9 +96,10 @@ namespace Spacebook.Migrations.ApplicationDb
                     fkProfileId = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MediaUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Caption = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Caption = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Tags = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AccessLevel = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -127,17 +142,17 @@ namespace Spacebook.Migrations.ApplicationDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tags",
+                name: "SharedPosts",
                 columns: table => new
                 {
-                    TagId = table.Column<int>(type: "int", nullable: false)
+                    pkSharedPostId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     fkPostId = table.Column<int>(type: "int", nullable: false),
-                    TagText = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    fkProfileId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tags", x => x.TagId);
+                    table.PrimaryKey("PK_SharedPosts", x => x.pkSharedPostId);
                 });
         }
 
@@ -149,6 +164,9 @@ namespace Spacebook.Migrations.ApplicationDb
 
             migrationBuilder.DropTable(
                 name: "Conversation");
+
+            migrationBuilder.DropTable(
+                name: "HashTags");
 
             migrationBuilder.DropTable(
                 name: "Likes");
@@ -166,7 +184,7 @@ namespace Spacebook.Migrations.ApplicationDb
                 name: "Profile");
 
             migrationBuilder.DropTable(
-                name: "Tags");
+                name: "SharedPosts");
         }
     }
 }

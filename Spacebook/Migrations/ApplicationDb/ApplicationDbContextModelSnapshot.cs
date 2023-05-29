@@ -69,6 +69,27 @@ namespace Spacebook.Migrations.ApplicationDb
                     b.ToTable("Conversation");
                 });
 
+            modelBuilder.Entity("Spacebook.Models.HashTag", b =>
+                {
+                    b.Property<int>("TagId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("pkHashTagId");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TagId"));
+
+                    b.Property<string>("HashTagText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int")
+                        .HasColumnName("fkPostId");
+
+                    b.HasKey("TagId");
+
+                    b.ToTable("HashTags");
+                });
+
             modelBuilder.Entity("Spacebook.Models.Likes", b =>
                 {
                     b.Property<int>("LikeId")
@@ -137,7 +158,12 @@ namespace Spacebook.Migrations.ApplicationDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PostId"));
 
+                    b.Property<string>("AccessLevel")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Caption")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MediaUrl")
@@ -222,24 +248,26 @@ namespace Spacebook.Migrations.ApplicationDb
                     b.ToTable("Profile");
                 });
 
-            modelBuilder.Entity("Spacebook.Models.Tag", b =>
+            modelBuilder.Entity("Spacebook.Models.SharedPost", b =>
                 {
-                    b.Property<int>("TagId")
+                    b.Property<int>("SharedPostId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("pkSharedPostId");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TagId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SharedPostId"));
 
-                    b.Property<int>("PostId")
+                    b.Property<int>("OriginalPostId")
                         .HasColumnType("int")
                         .HasColumnName("fkPostId");
 
-                    b.Property<string>("TagText")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ProfileId")
+                        .HasColumnType("int")
+                        .HasColumnName("fkProfileId");
 
-                    b.HasKey("TagId");
+                    b.HasKey("SharedPostId");
 
-                    b.ToTable("Tags");
+                    b.ToTable("SharedPosts");
                 });
 #pragma warning restore 612, 618
         }

@@ -13,9 +13,10 @@
     using Spacebook.Data;
     using Spacebook.Interfaces;
     using Spacebook.Models;
+    using Microsoft.IdentityModel.Tokens;
 
     [Authorize]
-    public class CreatePostApiController: ControllerBase
+    public class CreateApiController: Controller
     {
         private readonly IAzureBlobStorageService storageService;
         private readonly IPostService postService;
@@ -25,7 +26,7 @@
         private readonly IProfileService profileService;
         private readonly ISharedPostService sharedPostService;
 
-        public CreatePostApiController(IAzureBlobStorageService storageService,
+        public CreateApiController(IAzureBlobStorageService storageService,
                                IPostService postService,
                                IProfileService profileService,
                                UserManager<SpacebookUser> userManager,
@@ -42,24 +43,21 @@
             this.sharedPostService = sharedPostService;
         }
 
-        [HttpPost]
-        [Route("api/CreatePostApi/Post")]
-        
-        public IActionResult Post(Post model)
+        public IActionResult Post(Post post)
         {
-            if (model == null)
+            if (post == null)
             {
                 return this.BadRequest("{\"Error\":[\"Could not complete request. Invalid data.\"]}");
             }
 
-            ValidationResult result = this.validator.Validate(model);
+            ValidationResult result = this.validator.Validate(post);
 
             if (!result.IsValid)
             {
                 return this.BadRequest(result.Errors);
             }
 
-            if (!this.AllProfilesExist(model.SharedIDs))
+            if (!this.AllProfilesExist(post.SharedIDs))
             {
                 return this.BadRequest("{\"Error\":[\"Could not complete request. Invalid data.\"]}");
             }
@@ -68,28 +66,28 @@
 
             // use this to save to database
             string? fileURI;
-            if (model.ImageFile != null) 
+            if (post.ImageFile != null) 
             {
-                fileURI = storageService.UploadBlob(model.ImageFile, userId);
-                model.MediaUrl = fileURI;
-                model.Type = model.ImageFile.ContentType;
+                fileURI = storageService.UploadBlob(post.ImageFile, userId);
+                post.MediaUrl = fileURI;
+                post.Type = post.ImageFile.ContentType;
             }
-            else if (model.VideoFile != null)
+            else if (post.VideoFile != null)
             {
-                fileURI = storageService.UploadBlob(model.VideoFile, userId);
-                model.MediaUrl = fileURI;
-                model.Type = model.VideoFile.ContentType;
+                fileURI = storageService.UploadBlob(post.VideoFile, userId);
+                post.MediaUrl = fileURI;
+                post.Type = post.VideoFile.ContentType;
             }
 
-            model.Timestamp = DateTime.Now;
+            post.Timestamp = DateTime.Now;
 
             //TODO get profile ID
-            model.ProfileId = 1;
+            post.ProfileId = 1;
 
-            this.postService.Add(model);
+            this.postService.Add(post);
 
-            SaveHashTags(model.Caption, model.PostId);
-            SaveSharedPosts(model.SharedIDs, model.ProfileId);
+            SaveHashTags(post.Caption, post.PostId);
+            SaveSharedPosts(post.SharedIDs, post.ProfileId);
 
             return Ok();
         }
@@ -126,7 +124,7 @@
 
         private bool AllProfilesExist(string? ids)
         {
-            if ( ids == null)
+            if (ids.IsNullOrEmpty())
             {
                 return true;
             }

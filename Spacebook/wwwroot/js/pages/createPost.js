@@ -12,7 +12,6 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
     let SharedIDs = getSelectedProfileIds();
 
     const url = new URL(form.action);
-    console.log(url);
 
     // Perform form validation
     if (Caption.trim() === '') {
@@ -55,6 +54,8 @@ function handleImageUpload() {
     document.getElementById("videoBox").style.display = "none";
     document.getElementById('VideoFile').value = "";
 
+    
+
     var image = document.getElementById("ImageFile").files[0];
 
     //validate correct filetype and size
@@ -65,7 +66,7 @@ function handleImageUpload() {
         showError("File size too large to upload");
         return false;
     }
-    else if (type.includes("image"))
+    else if (!type.includes("image"))
     {
         showError("Incorrect file type selected");
         return false;
@@ -97,7 +98,7 @@ function handleVideoUpload() {
         showError("File size too large to upload");
         return false;
     }
-    else if (type.includes("video")) {
+    else if (!type.includes("video")) {
         showError("Incorrect file type selected");
         return false;
     }

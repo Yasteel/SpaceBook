@@ -4,8 +4,6 @@
 
     using Spacebook.Models;
 
-    using System.Collections.Generic;
-
     public class PostValidator: AbstractValidator<Post>
     {
         public PostValidator() 
@@ -57,7 +55,7 @@
             {
                 return false;
             }
-            else if (file.ContentType != "image/jpeg")
+            else if (file.ContentType != "image/jpeg" || file.ContentType != "image/png" || file.ContentType != "image/gif")
             {
                 return false;
             }

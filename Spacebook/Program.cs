@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Spacebook;
 using Spacebook.Data;
 using Spacebook.Interfaces;
+using Spacebook.Models;
 using Spacebook.Services;
 using Spacebook.Validation;
 
@@ -39,7 +40,7 @@ internal class Program
         builder.Services.AddScoped<IProfileService, ProfileService>();
         builder.Services.AddScoped<ISharedPostService, SharedPostService>();
 
-        builder.Services.AddScoped<IValidator, PostValidator>();
+        builder.Services.AddScoped<IValidator<Post>, PostValidator>();
 
         var app = builder.Build();
 
