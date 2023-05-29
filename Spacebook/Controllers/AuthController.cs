@@ -3,16 +3,15 @@
     using System;
     using System.Threading.Tasks;
 
+    using global::Spacebook.Interfaces;
+    using global::Spacebook.Models;
+
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.Extensions.Logging;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
 
-    using Spacebook.Models;
-    using Spacebook.Data;
-	using Spacebook.Interfaces;
-
-	public class AuthController : Controller
+    public class AuthController : Controller
     {
         private readonly SignInManager<SpacebookUser> signInManager;
         private readonly UserManager<SpacebookUser> userManager;
@@ -47,6 +46,7 @@
         {
             return this.View();
         }
+        
         public IActionResult Index()
         {
             return View();
@@ -85,7 +85,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(Register model, string? returnUrl = null)
+        public async Task<IActionResult> Register(Profile model, string? returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
 
@@ -93,7 +93,7 @@
             {
                 var user = CreateUser();
 
-                await userStore.SetUserNameAsync(user, model.Username, CancellationToken.None);
+                await emailStore.SetUserNameAsync(user, model.Email, CancellationToken.None);
                 await emailStore.SetEmailAsync(user, model.Email, CancellationToken.None);
 
                 var result = await userManager.CreateAsync(user, model.Password);
@@ -104,10 +104,10 @@
 					
                     this.profileService.Add(new Profile
 					{
-						Username = model.Email,
+						Email = model.Email,
 					});
 
-					return this.RedirectToAction(nameof(this.CompleteRegistration));
+                    return RedirectToAction("Edit", "Profile");
                 }
 
                 foreach (var error in result.Errors)
@@ -121,11 +121,6 @@
             }
 
             return View(model);
-        }
-
-        public IActionResult CompleteRegistration()
-        {
-            return this.View();
         }
 
         [HttpPost]

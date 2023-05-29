@@ -1,13 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
-
-@using Spacebook.Data;
-
-@inject UserManager<SpacebookUser> UserManager
-
-@{
-    var spacebookUser = (SpacebookUser)await UserManager.GetUserAsync(User);
-}
-@model Profile
+﻿@model Profile
 <div>
     <h1>Edit Profile</h1>
     <br />
@@ -18,41 +9,28 @@
             </div>
         </div>
         <div class="col">
-            <p>@spacebookUser.Email</p>
+            <p>@Model.Username</p>
             <p>Change profile photo</p> @*Use mandys pop up thingy*@
         </div>
     </div>
     <br />
     <div class="row">
-        <form method="post" enctype="multipart/form-data" asp-controller="ProfileWebAPI" asp-action="Put" onsubmit="submitForm(event)">
-            @*<div class="row">
+        <form method="post" id="myForm" enctype="multipart/form-data" onsubmit="submitForm(event)">
+            <input type="hidden" asp-for="@Model.UserId" />
+            <div class="row">
                 <label class="col-2" asp-for="@Model.DisplayName"></label>
                 <input class="col" type="text" asp-for="@Model.DisplayName" />
-            </div>*@
-            <div class="row">
-                <input class="col" type="hidden" asp-for="@Model.Username" value="@spacebookUser.Email"/>
-                <input class="col" type="hidden" asp-for="@Model.Email" value="@spacebookUser.Email" />
             </div>
             <br />
             <div class="row">
-                <label class="col-2" asp-for="@Model.Name"> </label>
-                <input class="col" type="text" asp-for="@Model.Name" />
-            </div>
-            <br />
-            <div class="row">
-                <label class="col-2" asp-for="@Model.Surname"> </label>
-                <input class="col" type="text" asp-for="@Model.Surname" />
+                <label class="col-2" asp-for="@Model.Email"> </label>
+                <input class="col" type="text" asp-for="@Model.Email" />
             </div>
             <br />
             <div class="row">
                 <label class="col-2" asp-for="@Model.Bio"> </label>
                 <input class="col" type="text" asp-for="@Model.Bio" />
             </div>
-            <br />
-            @*<div class="row">
-                <label class="col-2" asp-for="@Model.ProfilePicture"> </label>
-                <input class="col" type="text" asp-for="@Model.ProfilePicture" />
-            </div>*@
             <br />
             <div class="row">
                 <label class="col-2" asp-for="@Model.Gender"> </label>
@@ -68,3 +46,27 @@
         </form>
     </div>
 </div>
+
+<script>
+    function submitForm(event) {
+        event.preventDefault();
+
+        var formData = new FormData(document.getElementById("myForm"));
+        
+        var formObject = {};
+
+        formData.forEach(function(value, key){
+            formObject[key] = value;
+        });
+
+        $.ajax({
+            url: "https://localhost:7232/api/ProfileWebApi",
+            type: "POST",
+            dataType: "JSON",
+            data: { values: JSON.stringify(formObject)},
+            success: function (response) {
+                console.log("it worked");
+            }
+        });
+    }
+</script>

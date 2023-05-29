@@ -18,5 +18,10 @@ namespace Spacebook.Services
             return this.context.Profile.FirstOrDefault(_ => _.Username == username)!;
         }
 
+        public Profile GetByEmail(string email)
+        {
+            return this.context.Profile.FirstOrDefault(_ => _.Email == email)!;
+        }
+
     }
 }
