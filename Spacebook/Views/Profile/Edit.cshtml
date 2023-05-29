@@ -15,7 +15,8 @@
     </div>
     <br />
     <div class="row">
-        <form method="post" enctype="multipart/form-data" asp-controller="ProfileWebAPI" asp-action="Put" onsubmit="submitForm(event)">
+        <form method="post" id="myForm" enctype="multipart/form-data" onsubmit="submitForm(event)">
+            <input type="hidden" asp-for="@Model.Id" />
             <div class="row">
                 <label class="col-2" asp-for="@Model.DisplayName"></label>
                 <input class="col" type="text" asp-for="@Model.DisplayName" />
@@ -51,3 +52,26 @@
     </div>
 </div>
 
+<script>
+    function submitForm(event) {
+        event.preventDefault();
+
+        var formData = new FormData(document.getElementById("myForm"));
+        
+        var formObject = {};
+
+        formData.forEach(function(value, key){
+            formObject[key] = value;
+        });
+
+        $.ajax({
+            url: "https://localhost:7232/api/ProfileWebAPI",
+            type: "POST",
+            dataType: "JSON",
+            data: { values: JSON.stringify(formObject)},
+            success: function (response) {
+                console.log("it worked");
+            }
+        });
+    }
+</script>

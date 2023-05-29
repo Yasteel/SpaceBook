@@ -3,6 +3,8 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
+    using Newtonsoft.Json;
+
     using Spacebook.Models;
 
     [Route("api/[controller]")]
@@ -16,7 +18,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Put(SpacebookUser model)
+        public async Task<IActionResult> Put(string values)
         {
             if (ModelState.IsValid)
             {
@@ -27,19 +29,13 @@
                     return NotFound();
                 }
 
-                user.PhoneNumber = model.PhoneNumber;
-                user.Email = model.Email;
-                user.Bio = model.Bio;
-                user.BirthDate = model.BirthDate;
-                user.DisplayName = model.DisplayName;
-                user.Gender = model.Gender;
-                user.ProfilePicture = model.ProfilePicture;
+                JsonConvert.PopulateObject(values, user);
 
                 var result = await userManager.UpdateAsync(user);
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Edit","Profile", model);
+                    return RedirectToAction("Edit", "Profile", user);
                 }
 
                 foreach (var error in result.Errors)
@@ -52,7 +48,7 @@
                 this.ModelState.AddModelError(string.Empty, "Invalid registration attempt.");
             }
 
-            return RedirectToAction("Edit", "Profile", model);
+            return RedirectToAction("Edit", "Profile");
         }
     }
 }
