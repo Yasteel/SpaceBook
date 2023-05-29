@@ -19,7 +19,7 @@ internal class Program
         builder.Services.AddDefaultIdentity<SpacebookUser>(options => options.SignIn.RequireConfirmedAccount = false)
             .AddEntityFrameworkStores<AuthDbContext>();
 
-       
+        builder.Services.AddScoped<IProfileService, ProfileService>();
 
         // Add services to the container.
         builder.Services.AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
@@ -31,6 +31,7 @@ internal class Program
         });
 
         builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
+        builder.Services.AddScoped<ISearchFunctionalityService, SearchFunctionalityService>();
 
         var app = builder.Build();
 

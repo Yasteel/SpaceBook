@@ -1,12 +1,13 @@
 ﻿namespace Spacebook.Controllers
 {
     using System.Diagnostics;
-    
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using Spacebook.Models;
 
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
