@@ -14,7 +14,7 @@
         public string? Preferences { get; set; }
 
 
-        [ForeignKey(nameof(this.ProfileId))]
-		public Profile? ProfileEntity { get; set; }
+        /*[ForeignKey(nameof(this.ProfileId))]
+		public Profile? ProfileEntity { get; set; }*/
 	}
 }

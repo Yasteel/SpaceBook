@@ -1,0 +1,125 @@
+﻿.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    max-width: 100%;
+    height: 600px;
+    max-height: 100%;
+    overflow: hidden;
+    background-color:white;
+}
+
+.modal-dialog {
+    position: absolute;
+    top: 5%;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.modal-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 20px 50px 20px 20px;
+    overflow: auto;
+}
+
+.model-body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.inputFile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+#createPostForm {
+    width: 100%;
+    height: 100%;
+}
+
+#captionPost {
+    width: 100%;
+    height: 70%;
+}
+
+#Caption {
+    width: 100%;
+    height: 100%;
+}
+
+.flex-container {
+    padding: 5px;
+}
+
+.flex-child {
+    padding: 5px;
+    float: left;
+}
+
+#accessLabel label {
+    color: darkslateblue;
+    font-weight: bold;
+}
+
+#imageBox {
+    width: auto;
+    text-align: center;
+}
+
+#videoBox {
+    width: auto;
+    text-align: center;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+#postButton {
+    float:right;
+}
+
+#errorField {
+    width: auto;
+    height:contain;
+    color:red;
+}
+
+
+

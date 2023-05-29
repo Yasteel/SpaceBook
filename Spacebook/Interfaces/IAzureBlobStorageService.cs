@@ -1,7 +1,6 @@
-﻿using Azure.Storage.Blobs;
-
-namespace Spacebook.Interfaces
+﻿namespace Spacebook.Interfaces
 {
+    using Azure.Storage.Blobs;
     public interface IAzureBlobStorageService
     {
 

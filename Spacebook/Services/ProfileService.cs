@@ -1,8 +1,8 @@
-﻿using Spacebook.Interfaces;
-using Spacebook.Models;
-
-namespace Spacebook.Services
+﻿namespace Spacebook.Services
 {
+    using Spacebook.Interfaces;
+    using Spacebook.Models;
+
 	public class ProfileService : GenericService<Profile>, IProfileService
 	{
 		private readonly ApplicationDbContext context;
