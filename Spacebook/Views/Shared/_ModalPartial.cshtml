@@ -5,7 +5,7 @@
 <div class="modal fade modal-lg" id="uploadMediaModal" tabindex="-1" role="dialog" aria-labelledby="uploadMediaModalLabel" aria-hidden="true">
     <div class="modal-header">
         <h5 class="modal-title" id="modalHeader">Create new post</h5>
-        <button id="closeModal" type="button" data-bs-dismiss="modal">
+        <button id="closeModal" type="button" data-bs-dismiss="modal" onclick="reset()">
             <span class="close" aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -13,6 +13,7 @@
         <div class="modal-content">
            
             <div class="modal-body">
+                <p id="errorField" style="display: none;">error</p>
                 <div class="container-fluid h-100">
                     <div class="row justify-content-center h-100">
                         <div id="mediaColumn" class="col-sm" style="display: none;">
@@ -29,21 +30,21 @@
                             <form id="createPostForm" method="post" action="Create/Post" enctype="multipart/form-data">
                                 
                                 <div id="captionPost">
-                                    <textarea asp-for="Caption" placeholder="Share your thoughts. Add photos, videos or hashtags"></textarea>
+                                    <textarea asp-for="Caption" placeholder="Share your thoughts. Add photos, videos or hashtags" onclick="clearErrorMessage()"></textarea>
                                 </div>
 
                                 <div class="flex-container">
                                     <div class="flex-child" id="mediaUpload">
                                         <label asp-for="ImageFile">
-                                            <i class="fa fa-camera fa-lg" aria-hidden="true"></i>
+                                            <i class="fa fa-camera fa-lg" aria-hidden="true" onclick="clearErrorMessage()"></i>
                                         </label>
-                                        <input class="inputFile" type="file" asp-for="ImageFile" onchange="handleImageUpload()" />
+                                        <input class="inputFile" type="file" asp-for="ImageFile" onchange="handleImageUpload()"  />
                                     </div>
                                     <div class="flex-child" id="videoUpload">
                                         <label asp-for="VideoFile">
-                                            <i class="fa fa-video-camera fa-lg" aria-hidden="true"></i>
+                                            <i class="fa fa-video-camera fa-lg" aria-hidden="true" onclick="clearErrorMessage()"></i>
                                         </label>
-                                        <input class="inputFile" type="file" asp-for="VideoFile" onchange="handleVideoUpload()" />
+                                        <input class="inputFile" type="file" asp-for="VideoFile" onchange="handleVideoUpload()"/>
                                     </div>
                                 </div>
                                    

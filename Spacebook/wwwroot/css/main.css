@@ -115,5 +115,11 @@ video {
     float:right;
 }
 
+#errorField {
+    width: auto;
+    height:contain;
+    color:red;
+}
+
 
 

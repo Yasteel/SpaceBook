@@ -4,8 +4,6 @@ let form = document.getElementById('createPostForm');
 document.getElementById('createPostForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
-    $('#uploadMediaModal').modal('hide');
-
     // Get form values
     let Caption = document.getElementById('Caption').value;
     let ImageFile = document.getElementById('ImageFile').files[0];
@@ -17,8 +15,8 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
 
     // Perform form validation
     if (Caption.trim() === '') {
-        alert('Caption is required.');
-        return;
+        showError("Caption is required");
+        return false;
     }
 
     // Create FormData object and append form data
@@ -56,6 +54,21 @@ function handleImageUpload() {
     document.getElementById('VideoFile').value = "";
 
     var image = document.getElementById("ImageFile").files[0];
+
+    //validate correct filetype and size
+    let size = image.size;
+    let type = image.type;
+
+    if (size / ((1024 * 1024)) > 20) {
+        showError("File size too large to upload");
+        return false;
+    }
+    else if (type !== "image/jpeg")
+    {
+        showError("Incorrect file type selected");
+        return false;
+    }
+    
     document.getElementById("mediaColumn").style.display = "block";
     document.getElementById("imageBox").style.display = "block";
     var reader = new FileReader();
@@ -73,6 +86,20 @@ function handleVideoUpload() {
     document.getElementById('ImageFile').value = "";
 
     var video = document.getElementById("VideoFile").files[0];
+
+    //validate correct filetype and size
+    let size = video.size;
+    let type = video.type;
+
+    if (size / ((1024 * 1024)) > 20) {
+        showError("File size too large to upload");
+        return false;
+    }
+    else if (type != "video/mp4") {
+        showError("Incorrect file type selected");
+        return false;
+    }
+    
     document.getElementById("mediaColumn").style.display = "block";
     document.getElementById("videoBox").style.display = "block";
     var reader = new FileReader();
@@ -94,7 +121,6 @@ function getSelectedProfileIds() {
 
     let IdString = Array.from(profileIdSet).join(',');
     $('#SharedIDs').val(IdString);
-    console.log(profileIdSet);
 
     return IdString;
 }
@@ -114,12 +140,20 @@ function accessLevelChanged(value)
 
 function reset()
 {
-    document.getElementById('ImageFile').value = "";
-    document.getElementById('ImageFile').value = "";
-    document.getElementById("videoBox").style.display = "none";
-    document.getElementById("imageBox").style.display = "none";
-    document.getElementById("mediaColumn").style.display = "none";
-    document.getElementById('Caption').value = "";
-
     $('#uploadMediaModal').modal('hide');
+    location.reload(true);
+}
+
+function showError(errorMessages)
+{
+    let errorLabel = document.getElementById("errorField");
+    errorLabel.innerText = errorMessages;
+    errorLabel.style.display = "block";
+}
+
+function clearErrorMessage()
+{
+    let errorLabel = document.getElementById("errorField");
+    errorLabel.innerText = "error";
+    errorLabel.style.display = "none";
 }
