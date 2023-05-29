@@ -77,6 +77,10 @@ $(document).ready(function () {
 
     $(document).on("click", "div.contact", (e) => {
 
+        $(".contact").removeClass("active");
+        $(e.target).closest(".contact").addClass("active");
+
+
         // contactUsername is the username/email of the contact you click on
         var contactUsername = $(e.target).closest(".contact").attr("data-username");
 
@@ -101,13 +105,12 @@ $(document).ready(function () {
                     },
                     success: (response) => {
                         showMessages(JSON.parse(response));
+                        console.log(response);
                     },
                     error: (xhr, textStatus, errorThrown) => {
                         console.log(`Err1: ${errorThrown}`);
                     }
                 });
-
-                showMessages(JSON.parse(response));
             },
             error: (xhr, textStatus, errorThrown) => {
                 console.log(`Err2: ${errorThrown}`);
@@ -137,31 +140,76 @@ function showContacts(contacts) {
     $(".contact-list").append(contactList);
 }
 
-function showMessages(messages) {
+function showMessages(messageProperties) {
     $("#messages-list").html("");
 
-    if (messages.length > 0) {
+    if (messageProperties.length > 0) {
         var messageList = "";
 
-        $.each(messages, (i, v) => {
+        $.each(messageProperties, (i, v) => {
             messageList += `<li class="${v.SenderId == currentUser ? "to" : "from"}">`;
 
-            switch (v.MessageType) {
+            switch (v.Message.MessageType) {
                 case "Text":
-                    messageList += v.Content;
+                    messageList += v.Message.Content;
                     break;
 
                 case "Image":
-                    messageList += `<img src="${v.Content}" alt="Image Not Found" />`;
+                    messageList += `<img src="${v.Message.Content}" alt="Image Not Found" />`;
                     break;
 
                 case "Video":
-                    messageList += `<video controls> <source src="${v.Content}"></source> </video>`;
+                    messageList += `<video controls> <source src="${v.Message.Content}"></source> </video>`;
                     break;
 
                 case "Post":
-                    // Need to find a way to display a Post
-                    //messageList += `${v.Content}`;
+
+                    messageList += 
+                    `<div class="message-post">
+                        <div class="post-head">
+                            <div class="profile-picture"></div>
+                            <div class="full-name"></div>
+                        </div>
+                        <div class="post-body">`;
+
+                    switch (v.Post.Type) {
+                        case "Text":
+                            messageList +=
+                            `<p>${v.Post.Caption}</p>
+                        </div>
+                    </div>`;
+                            break;
+
+                        case "Image":
+                            messageList +=
+                            `<img src="${v.Post.MediaUrl}" alt="Image Not Found" />
+                            </div>
+                        <div class="post-footer">
+                            <div class="caption">
+                                <p>${v.Post.Caption}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                            `;
+                            break;
+
+                        case "Video":
+                            messageList +=
+                                `<video controls> 
+                                    <source src="${v.Post.MediaUrl}"></source> 
+                                </video>
+                            </div>
+                        <div class="post-footer">
+                            <div class="caption">
+                                <p>${v.Post.Caption}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                            `;
+                            break;
+                    }
                     break;
             }
 

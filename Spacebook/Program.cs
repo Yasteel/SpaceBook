@@ -23,6 +23,7 @@ internal class Program
         builder.Services.AddScoped<IMessageService, MessageService>();
         builder.Services.AddScoped<IProfileService, ProfileService>();
         builder.Services.AddScoped<IConversationService,  ConversationService>();
+        builder.Services.AddScoped<IPostService, PostService>();
 
         // Add services to the container.
         builder.Services.AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);

@@ -12,6 +12,7 @@ namespace Spacebook.WebApiController
 	{
 		private readonly IMessageService messageService;
 		private readonly IConversationService conversationService;
+		private readonly IPostService postService;
 		private readonly UserManager<SpacebookUser> userManager;
 		private readonly IProfileService profileService;
 
@@ -20,11 +21,13 @@ namespace Spacebook.WebApiController
 			IMessageService messageService,
 			IProfileService profileService,
 			IConversationService conversationService,
+			IPostService postService,
 			UserManager<SpacebookUser> userManager
 		)
         {
 			this.messageService = messageService;
 			this.conversationService = conversationService;
+			this.postService = postService;
 			this.userManager = userManager;
 			this.profileService = profileService;
 		}
@@ -62,10 +65,41 @@ namespace Spacebook.WebApiController
 			var spacebookUser = (SpacebookUser)await this.userManager.GetUserAsync(User);
 			var thisUser = spacebookUser.Email;
 
-			var returnVal = JsonConvert.SerializeObject(this.messageService.GetByConversationId(conversationId));
-
 			// Finds messages that exist between the 2 users
-			return returnVal;
+			var messages = this.messageService.GetByConversationId(conversationId);
+
+			var returnObj = new List<Object>();
+
+
+			foreach (var message in messages)
+			{
+				if (message.MessageType == "Post")
+				{
+					var post = this.postService.GetById(Int32.Parse(message.Content!));
+					var userProfile = this.profileService.GetById(post.ProfileId);
+
+					returnObj.Add(new
+					{
+						Message = message,
+						Post = post,
+						UserProfile = new
+						{
+							UserId = userProfile.UserId,
+							Username = userProfile.Username,
+							FullName = $"{userProfile.Name} {userProfile.Surname}",
+							ProfilePicture = userProfile.ProfilePicture,
+						}
+					});
+				}
+				else
+				{
+					returnObj.Add(new
+					{
+						Message = message,
+					});
+				}
+			}
+			return JsonConvert.SerializeObject(returnObj);
 		}
 
 		[HttpGet]
@@ -105,5 +139,37 @@ namespace Spacebook.WebApiController
 			return conversationId[0];
 		}
 
+
+		[HttpGet]
+		//[Route("/GetPost/{postId}")]
+		public Object GetPost(int postId)
+		{
+			var post = this.postService.GetById(postId);
+
+			var userProfile = this.profileService.GetById(post.ProfileId);
+
+			var postObject = JsonConvert.SerializeObject(new
+			{
+				Post = post, 
+				UserProfile = new
+				{
+					UserId = userProfile.UserId,
+					Username = userProfile.Username,
+					FullName = $"{userProfile.Name} {userProfile.Surname}",
+					ProfilePicture = userProfile.ProfilePicture,
+				}
+			});
+
+			return Ok(postObject);
+		}
+
+
+		// For Post as a Message
+		// -> Share button on posts
+		// -> Share button will need a popup with contacts to select
+		// -> each contact will need data attributes: 
+		//		-> conversationId
+		//		-> senderUsername
+		//		-> content -> postId
 	}
 }
