@@ -32,32 +32,49 @@ namespace Spacebook.WebApiController
 			this.profileService = profileService;
 		}
 
-		[HttpPost]
-        public IActionResult NewMessage(int conversationId, int senderId, string messageType, string content)
-		{
-			Console.WriteLine(content);
-
-			var newMessage = new Message()
-			{
-				ConversationId = conversationId,
-				SenderId = senderId,
-				MessageType = messageType,
-				Content = content,
-				Timestamp = DateTime.UtcNow,
-				Seen = false
-			};
-
-			this.messageService.Add(newMessage);
-
-			return this.Ok();
-		}
-
-
 		[HttpGet]
 		public object GetContacts()
 		{
 			return JsonConvert.SerializeObject(this.profileService.GetAll());
 		}
+
+		[HttpGet]
+		public async Task<int> GetConversationId(string contactUsername)
+		{
+			var profiles = profileService.GetAll();
+
+			var spacebookUser = (SpacebookUser)await this.userManager.GetUserAsync(User);
+			var thisUser = spacebookUser.Email;
+
+			// Gets Conversation id of chat between this user and selected user (user's chat selected on front-end)
+			var conversationId = conversationService.GetAll()
+				.Join(profiles, a => a.ParticipantOne, b => b.UserId, (a, b) => new { Conversation = a, ProfileB = b })
+				.Join(profiles, ab => ab.Conversation.ParticipantTwo, c => c.UserId, (ab, c) => new { ab.Conversation, ab.ProfileB, ProfileC = c })
+				.Where(abcp =>
+					(abcp.ProfileB.Email == contactUsername && abcp.ProfileC.Email == thisUser)
+					|| (abcp.ProfileC.Email == contactUsername && abcp.ProfileB.Email == thisUser))
+				.Select(abcp => abcp.Conversation.ConversationId)
+				.ToList();
+
+			// this user does not have a chat history with the selected user - create a conversation between users
+			if (conversationId.Count < 1)
+			{
+				var thisUserProfile = this.profileService.GetByEmail(thisUser);
+				var contactProfile = this.profileService.GetByEmail(contactUsername);
+
+				var newConversation = this.conversationService.Add(new Conversation
+				{
+					CreatedAt = DateTime.Now,
+					ParticipantOne = thisUserProfile.UserId,
+					ParticipantTwo = contactProfile.UserId
+				});
+
+				return newConversation.ConversationId;
+			}
+
+			return conversationId[0];
+		}
+
 
 		[HttpGet]
 		public async Task<object> GetMessages(int conversationId)
@@ -85,8 +102,8 @@ namespace Spacebook.WebApiController
 						UserProfile = new
 						{
 							UserId = userProfile.UserId,
-							Username = userProfile.Username,
-							FullName = $"{userProfile.Name} {userProfile.Surname}",
+							Username = userProfile.Email,
+							FullName = userProfile.DisplayName,
 							ProfilePicture = userProfile.ProfilePicture,
 						}
 					});
@@ -102,42 +119,33 @@ namespace Spacebook.WebApiController
 			return JsonConvert.SerializeObject(returnObj);
 		}
 
-		[HttpGet]
-		public async Task<int> GetConversationId(string contactUsername)
+
+
+
+		[HttpPost]
+        public IActionResult NewMessage(int conversationId, int senderId, string messageType, string content)
 		{
-			var profiles = profileService.GetAll();
+			Console.WriteLine(content);
 
-			var spacebookUser = (SpacebookUser)await this.userManager.GetUserAsync(User);
-			var thisUser = spacebookUser.Email;
-
-			// Gets Conversation id of chat between this user and selected user (user's chat selected on front-end)
-			var conversationId = conversationService.GetAll()
-				.Join(profiles, a => a.ParticipantOne, b => b.UserId, (a, b) => new { Conversation = a, ProfileB = b })
-				.Join(profiles, ab => ab.Conversation.ParticipantTwo, c => c.UserId, (ab, c) => new { ab.Conversation, ab.ProfileB, ProfileC = c })
-				.Where(abcp =>
-					(abcp.ProfileB.Username == contactUsername && abcp.ProfileC.Username == thisUser)
-					|| (abcp.ProfileC.Username == contactUsername && abcp.ProfileB.Username == thisUser))
-				.Select(abcp => abcp.Conversation.ConversationId)
-				.ToList();
-
-			// this user does not have a chat history with the selected user - create a conversation between users
-			if (conversationId.Count < 1)
+			var newMessage = new Message()
 			{
-				var thisUserProfile = this.profileService.GetByUsername(thisUser);
-				var contactProfile = this.profileService.GetByUsername(contactUsername);
+				ConversationId = conversationId,
+				SenderId = senderId,
+				MessageType = messageType,
+				Content = content,
+				Timestamp = DateTime.UtcNow,
+				Seen = false
+			};
 
-				var newConversation = this.conversationService.Add(new Conversation
-				{
-					CreatedAt = DateTime.Now,
-					ParticipantOne = thisUserProfile.UserId,
-					ParticipantTwo = contactProfile.UserId
-				});
+			this.messageService.Add(newMessage);
 
-				return newConversation.ConversationId;
-			}
-
-			return conversationId[0];
+			return this.Ok();
 		}
+
+
+		
+
+		
 
 
 		[HttpGet]
@@ -155,7 +163,7 @@ namespace Spacebook.WebApiController
 				{
 					UserId = userProfile.UserId,
 					Username = userProfile.Username,
-					FullName = $"{userProfile.Name} {userProfile.Surname}",
+					FullName = userProfile.DisplayName,
 					ProfilePicture = userProfile.ProfilePicture,
 				}
 			});

@@ -38,6 +38,7 @@ $(document).ready(function () {
         url: "/MessageWebApi/GetContacts",
         type: "GET",
         success: (response) => {
+            // Response: Profile
             showContacts(JSON.parse(response));
         },
         error: (xhr, textStatus, err) => {
@@ -84,24 +85,22 @@ $(document).ready(function () {
         // contactUsername is the username/email of the contact you click on
         var contactUsername = $(e.target).closest(".contact").attr("data-username");
 
-        console.log(contactUsername);
-
         $.ajax({
             url: "/MessageWebApi/GetConversationId",
             type: "GET",
             data: {
                 "contactUsername": contactUsername
             },
-            success: (response) => {
+            success: (conversationId) => {
 
-                $(".message-container").attr("data-conversation-id", response);
+                $(".message-container").attr("data-conversation-id", conversationId);
                 $("#messages-list").html("");
 
                 $.ajax({
                     url: "/MessageWebApi/GetMessages",
                     type: "GET",
                     data: {
-                        "conversationId": response
+                        "conversationId": conversationId
                     },
                     success: (response) => {
                         showMessages(JSON.parse(response));
@@ -128,10 +127,10 @@ function showContacts(contacts) {
     $.each(contacts, (i, v) => {
         contactList +=
             `
-            <div class="contact" data-username="${v.Username}">
+            <div class="contact" data-username="${v.Email}">
 				<div class="details">
-					<p class="name">${v.Name} ${v.Surname}</p>
-					<p class="username">${v.Username.split("@")[0]}</p>
+					<p class="name">${v.DisplayName}</p>
+					<p class="username">${v.Email.split("@")[0]}</p>
 				</div>
 			</div>
             `;

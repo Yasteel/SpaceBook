@@ -60,7 +60,7 @@
 		public async Task SendMessage(int conversationId, string senderUsername, string messageType, string content)
 		{
 			var conversation = this.conversationService.GetById(conversationId);
-			var senderId = this.profileService.GetByUsername(senderUsername).UserId;
+			var senderId = this.profileService.GetByEmail(senderUsername).UserId;
 
 			// toUser is the user that the message is being sent to / the recipient
 			int toUser = (int)(conversation.ParticipantOne == senderId ? conversation.ParticipantTwo : conversation.ParticipantOne)!;
@@ -69,13 +69,10 @@
 			var toUserEmail = this.profileService.GetById(toUser).Email!;
 
 
-			// Checks if the recipient is online, if not - adds message to the database
-			if (ConnectedUsers.Users.ContainsKey(toUserEmail))
+			// Checks if recipient is also the sender or if user is not online -> adds message directly to database
+			if (senderId == toUser || !ConnectedUsers.Users.ContainsKey(toUserEmail))
 			{
-				await Clients.Client(ConnectedUsers.Users[toUserEmail]).SendAsync("ReceiveMessage", conversationId, senderId, messageType, content);
-			}
-			else
-			{
+
 				var newMessage = new Message()
 				{
 					ConversationId = conversationId,
@@ -87,6 +84,10 @@
 				};
 
 				this.messageService.Add(newMessage);
+			}
+			else
+			{
+				await Clients.Client(ConnectedUsers.Users[toUserEmail]).SendAsync("ReceiveMessage", conversationId, senderId, messageType, content);
 			}
 		}
 	}
