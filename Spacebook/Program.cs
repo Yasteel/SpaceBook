@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 using Spacebook;
 using Spacebook.Data;
+using Spacebook.Hubs;
 using Spacebook.Interfaces;
 using Spacebook.Models;
 using Spacebook.Services;
@@ -24,12 +25,17 @@ internal class Program
         builder.Services.AddDefaultIdentity<SpacebookUser>(options => options.SignIn.RequireConfirmedAccount = false)
             .AddEntityFrameworkStores<AuthDbContext>();
 
+        builder.Services.AddScoped<IMessageService, MessageService>();
         builder.Services.AddScoped<IProfileService, ProfileService>();
+        builder.Services.AddScoped<IConversationService,  ConversationService>();
+        builder.Services.AddScoped<IPostService, PostService>();
 
         // Add services to the container.
         builder.Services.AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
-        
-        builder.Services.ConfigureApplicationCookie(options =>
+		builder.Services.AddSignalR();
+
+
+		builder.Services.ConfigureApplicationCookie(options =>
         {
             options.LoginPath = "/Auth/Index";
             options.AccessDeniedPath = "/Auth/AccessDenied";
@@ -45,8 +51,9 @@ internal class Program
 
         builder.Services.AddScoped<IValidator<Post>, PostValidator>();
         builder.Services.AddScoped<ISearchFunctionalityService, SearchFunctionalityService>();
+        builder.Services.AddHttpContextAccessor();
 
-        var app = builder.Build();
+		var app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
@@ -84,6 +91,8 @@ internal class Program
                 .RequireAuthorization(); // Restrict access to this route to authenticated users
         });
 
+		app.MapHub<ConnectionHub>("/ConnectionHub");
+        
         app.Run();
     }
 }
