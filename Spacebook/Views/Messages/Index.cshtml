@@ -1,0 +1,45 @@
+﻿@{
+	ViewData["Title"] = "Messages";
+}
+@using Microsoft.AspNetCore.Identity
+
+@using Spacebook.Data;
+
+<head>
+	<link href="~/css/chatstyles.css" rel="stylesheet" />
+</head>
+
+@{
+	@inject UserManager<SpacebookUser> UserManager
+
+	var spacebookUser = (SpacebookUser)await UserManager.GetUserAsync(User);
+}
+
+<div class="main-container">
+	<div class="contact-container">
+		<div class="search">
+			<input type="text" placeholder="Search"/>
+		</div>
+		<div class="contact-list">
+		</div>
+	</div>
+	<div class="message-container" data-conversation-id="">
+		<div class="messages">
+			<ul id="messages-list"></ul>
+		</div>
+		<div class="controls">
+			<input type="hidden" value="@spacebookUser.Email" id="username"/>
+			<input type="text" class="form-control" id="messageInput" value="" placeholder="Type Message" />
+			<button id="attachButton" class="btn btn-outline-success"><i class="fa-solid fa-paperclip"></i></button>
+			<button id="sendButton" class="btn btn-outline-success"><i class="fa-regular fa-paper-plane"></i></button>
+		</div>
+	</div>
+</div>
+
+<script>
+	var currentUser = "@spacebookUser.Email";
+</script>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/signalr/clientHub.js"></script>

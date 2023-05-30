@@ -8,7 +8,7 @@
         public BlobContainerClient CreateContainer(string containerName)
         {
             var blobServiceClient = CreateConnection();
-            return blobServiceClient.CreateBlobContainer(containerName);
+            return blobServiceClient.CreateBlobContainer(containerName, PublicAccessType.BlobContainer);
         }
 
         /* 

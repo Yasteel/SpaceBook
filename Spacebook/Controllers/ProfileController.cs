@@ -59,6 +59,7 @@
             }
 
             var profile = profileService.GetByEmail(user.Email);
+
             if (profile == null)
             {
                 return NotFound();
