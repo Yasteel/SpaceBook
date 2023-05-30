@@ -47,7 +47,7 @@
         {
             var comments = this.commentService.FindAllByField("OriginalValue", post.PostId);
             var likes = this.likesService.FindAllByField("PostId", post.PostId);
-            var profile = this.profileService.FindByField("UserId", post.ProfileId);
+            var profile = this.profileService.GetById(post.ProfileId);
 
             var contentFeed = new ContentFeed()
             {
