@@ -5,33 +5,36 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    using Spacebook.Interfaces;
     using Spacebook.Models;
+    using Spacebook.ViewModel;
 
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IPostService postService;
+        private readonly IProfileService profileService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(
+                              IPostService postService,
+                              IProfileService profileService)
         {
-            _logger = logger;
+            this.postService = postService;
+            this.profileService = profileService;
+
         }
 
         [Authorize]
         public IActionResult Index()
         {
-            return View();
+            List<ContentFeed> contentFeeds = new List<ContentFeed>();
+
+            var posts = postService.GetAll();
+            
+
+            return View(posts);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+       
     }
 }

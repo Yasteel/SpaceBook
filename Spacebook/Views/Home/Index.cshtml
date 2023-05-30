@@ -1,8 +1,33 @@
-﻿@{
+﻿@using Spacebook.Models;
+@model IEnumerable<Post>
+
+<link rel="stylesheet" type="text/css" href="~/css/home.css">
+
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="images">
+    @foreach (var post in Model)
+    {
+        <div onclick="showPopup(@post.ProfileId, '@post.Caption', @post.PostId)">
+            <div class="item-content">
+                <img src="@post.MediaUrl" />
+                <div class="item-options">
+                    <div>
+                        <div class="address">@post.Caption</div>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+    }
 </div>
+
+
+
+<script>
+</script>
+
