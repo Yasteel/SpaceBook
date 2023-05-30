@@ -1,5 +1,6 @@
 ﻿namespace Spacebook.Services
 {
+    using Microsoft.EntityFrameworkCore;
     using Spacebook.Interfaces;
     using Spacebook.Models;
 
@@ -22,6 +23,5 @@
         {
             return this.context.Profile.FirstOrDefault(_ => _.Email == email)!;
         }
-
     }
 }

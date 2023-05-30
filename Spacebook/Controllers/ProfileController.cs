@@ -39,6 +39,16 @@
             return View(profile);
         }
 
+        public async Task<IActionResult> ViewProfile(string email)
+        {
+            var profile = profileService.GetByEmail(email);
+            if (profile == null)
+            {
+                return NotFound();
+            }
+            return View(profile);
+        }
+
         public async Task<IActionResult> Edit()
         {
             var user = await userManager.GetUserAsync(User);

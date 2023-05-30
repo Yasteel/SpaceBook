@@ -6,5 +6,5 @@
 		Profile GetByUsername(string username);
 
 		Profile GetByEmail(string email);
-	}
+    }
 }
