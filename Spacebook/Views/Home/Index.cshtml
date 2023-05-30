@@ -8,11 +8,11 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="images">
+<div class="contentFeed">
     @foreach (var content in Model)
     {
         
-        <div class="card bg-light mb-3" style="max-width: 18rem;">
+        <div id="contentCard" class="card bg-light mb-3">
 
             <div class="card-header">
               
@@ -35,6 +35,12 @@
                             <video src="@content.Post.MediaUrl"></video>
                         }
                     }
+                </div>
+                <div class="contentCounters">
+                    <p>
+                        <span>Likes &nbsp @content.Likes.Count()</span>
+                        <span>Comments &nbsp @content.Comments.Count()</span>
+                    </p>
                 </div>
             </div>
         </div>
