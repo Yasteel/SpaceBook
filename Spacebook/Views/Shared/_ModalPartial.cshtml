@@ -58,7 +58,7 @@
                                     @(Html.DevExtreme().TagBox()
                                         .ID("ShareTagBox")
                                         .DataSource(d => d.Mvc().Controller("ProfileApi").LoadAction("Get").Key("UserId"))
-                                        .DisplayExpr("Username")
+                                        .DisplayExpr("Email")
                                         .ValueExpr("UserId")
                                         .Placeholder("Choose people to share with...")
                                         .ShowClearButton(true)
@@ -78,16 +78,6 @@
     </div>
 </div>
     
-    
-    
-    
-    
-    
-    
-    
-    
-
-
 <script src="~/js/pages/createPost.js"></script>
 
 
