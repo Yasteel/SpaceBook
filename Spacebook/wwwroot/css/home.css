@@ -16,18 +16,21 @@
 }
 
 #contentCard {
-    max-width: 100%;
-    width: 400px;
-    height: 400px;
-    max-height: 100%;
+    width: fit-content;
+    height:fit-content;
 }
 
 #feedMedia image {
-    width: 60%;
-    height: 60%;
+    width: 100%;
+    height: 100%;
 }
 
 #feedMedia video {
-    width: 60%;
-    height: 60%;
+    width: 100%;
+    height: 100%;
+}
+
+#contentIcons span {
+    padding-top: 20px;
+    padding-right: 20px;
 }
