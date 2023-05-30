@@ -8,6 +8,7 @@ using Spacebook.Models;
 
 namespace Spacebook.WebApiController
 {
+
 	public class MessageWebApiController : Controller
 	{
 		private readonly IMessageService messageService;
@@ -15,6 +16,7 @@ namespace Spacebook.WebApiController
 		private readonly IPostService postService;
 		private readonly UserManager<SpacebookUser> userManager;
 		private readonly IProfileService profileService;
+		private readonly IAzureBlobStorageService storageService;
 
 		public MessageWebApiController
 		(
@@ -23,13 +25,15 @@ namespace Spacebook.WebApiController
 			IConversationService conversationService,
 			IPostService postService,
 			UserManager<SpacebookUser> userManager
-		)
-        {
+,
+			IAzureBlobStorageService storageService)
+		{
 			this.messageService = messageService;
 			this.conversationService = conversationService;
 			this.postService = postService;
 			this.userManager = userManager;
 			this.profileService = profileService;
+			this.storageService = storageService;
 		}
 
 		[HttpGet]
@@ -119,9 +123,6 @@ namespace Spacebook.WebApiController
 			return JsonConvert.SerializeObject(returnObj);
 		}
 
-
-
-
 		[HttpPost]
         public IActionResult NewMessage(int conversationId, int senderId, string messageType, string content)
 		{
@@ -141,12 +142,6 @@ namespace Spacebook.WebApiController
 
 			return this.Ok();
 		}
-
-
-		
-
-		
-
 
 		[HttpGet]
 		//[Route("/GetPost/{postId}")]
@@ -171,6 +166,37 @@ namespace Spacebook.WebApiController
 			return Ok(postObject);
 		}
 
+		[HttpPost]
+		public async Task<IActionResult> Upload(Message model)
+		{
+			if (model == null)
+			{
+				return this.BadRequest("{\"Error\":[\"Could not complete request. Invalid data.\"]}");
+			}
+
+			var user = await userManager.GetUserAsync(User);
+
+			if (user == null)
+			{
+				return BadRequest();
+			}
+
+			string? fileURI;
+
+			if (model.MessageImage != null)
+			{
+				fileURI = storageService.UploadBlob(model.MessageImage, user.Id);
+
+				var url = "{\"url\": \"" + fileURI + "\"}";
+
+				return Ok(url);
+			}
+
+			var noImage = "{\"status\": \"No Image\"}";
+
+			return Ok(noImage);
+
+		}
 
 		// For Post as a Message
 		// -> Share button on posts

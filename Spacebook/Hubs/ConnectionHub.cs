@@ -57,11 +57,10 @@
 			return base.OnDisconnectedAsync(exception);
 		}
 
-		public async Task SendMessage(int conversationId, string senderUsername, string messageType, string content)
+		public async Task SendMessage(int conversationId, string senderUsername, string messageType, string content, string url)
 		{
 			var conversation = this.conversationService.GetById(conversationId);
 			var senderId = this.profileService.GetByEmail(senderUsername).UserId;
-
 			// toUser is the user that the message is being sent to / the recipient
 			int toUser = (int)(conversation.ParticipantOne == senderId ? conversation.ParticipantTwo : conversation.ParticipantOne)!;
 
@@ -79,6 +78,7 @@
 					SenderId = senderId,
 					MessageType = messageType,
 					Content = content,
+					MessageImageUrl = url,
 					Timestamp = DateTime.UtcNow,
 					Seen = false
 				};
@@ -87,7 +87,7 @@
 			}
 			else
 			{
-				await Clients.Client(ConnectedUsers.Users[toUserEmail]).SendAsync("ReceiveMessage", conversationId, senderId, messageType, content);
+				await Clients.Client(ConnectedUsers.Users[toUserEmail]).SendAsync("ReceiveMessage", conversationId, senderId, messageType, content, url);
 			}
 		}
 	}
