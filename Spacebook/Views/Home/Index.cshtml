@@ -1,8 +1,63 @@
-﻿@{
+﻿@using Spacebook.ViewModel;
+@model IEnumerable<ContentFeed>
+
+<link rel="stylesheet" type="text/css" href="~/css/home.css">
+
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+@foreach (var content in Model)
+{
+        
+    <div id="contentCard" class="card bg-light mb-3">
+
+        <div class="card-header">
+              
+            <p>@content.Profile.Email</p>
+            <p>@content.Post.Timestamp</p>
+        </div>
+        <div class="card-body">
+            <div id="feedCaption">
+                <textarea>@content.Post.Caption</textarea>
+            </div>
+            <div id="feedMedia">
+                @if (content.Post.Type != null)
+                {
+                    if (content.Post.Type.Contains("image"))
+                    {
+                        <image src="@content.Post.MediaUrl"></image>
+                    }
+                    else
+                    {
+                        <video src="@content.Post.MediaUrl"></video>
+                    }
+                }
+            </div>
+            <div class="contentCounters">
+                <p>
+                    <span>Likes &nbsp @content.Likes.Count()</span>
+                    <span>Comments &nbsp @content.Comments.Count()</span>
+                </p>
+            </div>
+            <div id="contentIcons">
+                <span>
+                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                </span>
+                <span>
+                    <i class='far fa-comment'></i>
+                 </span>
+                 <span><i class="fa-regular fa-paper-plane"></i></span>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+<script>
+</script>
+

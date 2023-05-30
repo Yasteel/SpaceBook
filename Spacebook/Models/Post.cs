@@ -35,6 +35,10 @@
         [NotMapped]
         public IFormFile? VideoFile { get; set; }
 
+        
+
+
+
         /*// Name inside parenthesis here needs to be the same as the Variable Name
         [ForeignKey(nameof(this.ProfileId))] 
         public Profile? ProfileEntity { get; set; }*/
