@@ -25,10 +25,10 @@
         public bool Seen { get; set; }
 
 
-        [ForeignKey(nameof(this.ConversationId))]
+        /*[ForeignKey(nameof(this.ConversationId))]
         public Conversation? ConversationEntity { get; set; }
 
         [ForeignKey(nameof(this.SenderId))]
-        public Profile? ProfileEntity { get; set; }
+        public Profile? ProfileEntity { get; set; }*/
     }
 }

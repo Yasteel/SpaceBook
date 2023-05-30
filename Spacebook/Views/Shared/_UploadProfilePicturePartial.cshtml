@@ -18,15 +18,16 @@
                     <div class="row justify-content-center h-100">
                         <div id="mediaColumn" class="col-sm" style="display: none;">
                             <div id="imageBox" style="display: none;">
-                                <img id="displayImage" src="" width="700"/>
+                                <img id="displayImage" src=""/>
                             </div>
                         </div>
-                        <br />
-                        <hr />
                         <div class="col-sm">
-                            <form id="createPostForm" method="post" action="ProfileWebApi/Upload" onsubmit="uploadImage(event)" enctype="multipart/form-data">
+                            <form id="createPostForm" method="post" onsubmit="uploadImage(event)" enctype="multipart/form-data">
                                 <div class="flex-container">
                                     <div class="flex-child" id="mediaUpload">
+                                        <label asp-for="ProfilePictureFile">
+                                            <i class="fa fa-camera fa-lg" aria-hidden="true" onclick="clearErrorMessage()"> Upload Image</i>
+                                        </label>
                                         <input class="inputFile" type="file" accept="image/*" asp-for="ProfilePictureFile" onchange="handleImageUpload()" />
                                     </div>
                                 </div>
@@ -37,6 +38,8 @@
                        
                     </div>
                 </div>
+            </div>
+            <div class="modal-footer">
             </div>
         </div>
     </div>
