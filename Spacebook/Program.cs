@@ -46,6 +46,8 @@ internal class Program
         builder.Services.AddScoped<IHashTagService, HashTagService>();
         builder.Services.AddScoped<IProfileService, ProfileService>();
         builder.Services.AddScoped<ISharedPostService, SharedPostService>();
+        builder.Services.AddScoped<ICommentService, CommentService>();
+        builder.Services.AddScoped<ILikesService, LikesService>();
 
         builder.Services.AddScoped<IValidator<Post>, PostValidator>();
 

@@ -62,10 +62,11 @@
                 return this.BadRequest("{\"Error\":[\"Could not complete request. Invalid data.\"]}");
             }
 
-            string userId = userManager.GetUserId(User);
+            
 
             // use this to save to database
             string? fileURI;
+            string userId = userManager.GetUserId(User);
             if (post.ImageFile != null) 
             {
                 fileURI = storageService.UploadBlob(post.ImageFile, userId);
@@ -81,8 +82,11 @@
 
             post.Timestamp = DateTime.Now;
 
-            //TODO get profile ID
-            post.ProfileId = 1;
+            //Get profile id
+            var userEmail = userManager.GetUserName(User);
+            var profile = profileService.GetByEmail(userEmail);
+
+            post.ProfileId = (int) profile.UserId;
 
             this.postService.Add(post);
 
@@ -100,7 +104,7 @@
                 var hashTag = new HashTag()
                 {
                     PostId = id,
-                    HashTagText = tag.Substring(1),
+                    HashTagText = tag.Substring(1).ToLower(),
                 };
 
                 this.hashTagService.Add(hashTag);
