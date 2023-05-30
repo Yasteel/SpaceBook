@@ -1,7 +1,5 @@
 ﻿namespace Spacebook.Controllers
 {
-    using System.Diagnostics;
-
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -14,14 +12,19 @@
     {
         private readonly IPostService postService;
         private readonly IProfileService profileService;
+        private readonly ICommentService commentService;
+        private readonly ILikesService likesService;
 
         public HomeController(
                               IPostService postService,
-                              IProfileService profileService)
+                              IProfileService profileService,
+                              ICommentService commentService,
+                              ILikesService likesService)
         {
             this.postService = postService;
             this.profileService = profileService;
-
+            this.commentService = commentService;
+            this.likesService = likesService;
         }
 
         [Authorize]
@@ -30,11 +33,31 @@
             List<ContentFeed> contentFeeds = new List<ContentFeed>();
 
             var posts = postService.GetAll();
-            
 
-            return View(posts);
+            foreach (var post in posts) 
+            {
+                var contentFeed = GetContentFeed(post);
+                contentFeeds.Add(contentFeed);
+
+            }
+            return View(contentFeeds);
         }
 
-       
+        private ContentFeed GetContentFeed(Post post) 
+        {
+            var comments = this.commentService.FindAllByField("OriginalValue", post.PostId);
+            var likes = this.likesService.FindAllByField("PostId", post.PostId);
+            var profile = this.profileService.FindByField("UserId", post.ProfileId);
+
+            var contentFeed = new ContentFeed()
+            {
+                Comments = comments,
+                Likes = likes,
+                Post = post,
+                Profile = profile
+            };
+
+            return contentFeed;
+        }
     }
 }

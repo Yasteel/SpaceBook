@@ -1,5 +1,5 @@
-﻿@using Spacebook.Models;
-@model IEnumerable<Post>
+﻿@using Spacebook.ViewModel;
+@model IEnumerable<ContentFeed>
 
 <link rel="stylesheet" type="text/css" href="~/css/home.css">
 
@@ -9,19 +9,34 @@
 }
 
 <div class="images">
-    @foreach (var post in Model)
+    @foreach (var content in Model)
     {
-        <div onclick="showPopup(@post.ProfileId, '@post.Caption', @post.PostId)">
-            <div class="item-content">
-                <img src="@post.MediaUrl" />
-                <div class="item-options">
-                    <div>
-                        <div class="address">@post.Caption</div>
-                    </div>
+        
+        <div class="card bg-light mb-3" style="max-width: 18rem;">
+
+            <div class="card-header">
+                <image id="profileImage" src="@content.Profile.ProfilePicture"></image>
+                <p>@content.Profile.Email</p>
+                <p>@content.Post.Timestamp</p>
+            </div>
+            <div class="card-body">
+                <div id="feedCaption">
+                    <textarea>@content.Post.Caption</textarea>
+                </div>
+                <div id="feedMedia">
+                    @if (content.Post.Type != null)
+                    {
+                        if (content.Post.Type.Contains("image"))
+                        {
+                            <image src="@content.Post.MediaUrl"></image>
+                        }
+                        else
+                        {
+                            <video src="@content.Post.MediaUrl"></video>
+                        }
+                    }
                 </div>
             </div>
-
-            
         </div>
     }
 </div>
