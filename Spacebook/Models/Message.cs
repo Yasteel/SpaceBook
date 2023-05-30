@@ -20,6 +20,11 @@
 
         public string? Content { get; set; }
 
+        public string? MessageImageUrl { get; set; }
+
+        [NotMapped]
+        public IFormFile? MessageImage { get; set; }
+
         public DateTime Timestamp { get; set; }
 
         public bool Seen { get; set; }

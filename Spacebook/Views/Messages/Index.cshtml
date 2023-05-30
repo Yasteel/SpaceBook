@@ -30,7 +30,8 @@
 		<div class="controls">
 			<input type="hidden" value="@spacebookUser.Email" id="username"/>
 			<input type="text" class="form-control" id="messageInput" value="" placeholder="Type Message" />
-			<button id="attachButton" class="btn btn-outline-success"><i class="fa-solid fa-paperclip"></i></button>
+			<input type="file" name="fileUpload" id="fileUpload">
+			<button id="attachButton" class="btn btn-outline-success" onclick="onCreateButtonClicked()" data-toggle="modal" data-target="#uploadMediaModal"><i class="fa-solid fa-paperclip"></i></button>
 			<button id="sendButton" class="btn btn-outline-success"><i class="fa-regular fa-paper-plane"></i></button>
 		</div>
 	</div>
