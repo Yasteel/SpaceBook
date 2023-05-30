@@ -1,14 +1,14 @@
-﻿using Spacebook.Interfaces;
-using Spacebook.Models;
-
-namespace Spacebook.Services
+﻿namespace Spacebook.Services
 {
+    using Spacebook.Interfaces;
+    using Spacebook.Models;
+
 	public class ProfileService : GenericService<Profile>, IProfileService
 	{
 		private readonly ApplicationDbContext context;
 
 		public ProfileService(ApplicationDbContext context)
-            : base(context)
+            :base(context)
         {
 			this.context = context;
 		}
@@ -17,5 +17,11 @@ namespace Spacebook.Services
         {
             return this.context.Profile.FirstOrDefault(_ => _.Username == username)!;
         }
+
+        public Profile GetByEmail(string email)
+        {
+            return this.context.Profile.FirstOrDefault(_ => _.Email == email)!;
+        }
+
     }
 }

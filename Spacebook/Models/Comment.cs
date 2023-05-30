@@ -17,12 +17,12 @@
 
 
 
-        [ForeignKey(nameof(this.OriginalPost))]
+        /*[ForeignKey(nameof(this.OriginalPost))]
         public Post? OriginalEntity { get; set; }
 
 
         [ForeignKey(nameof(this.CommentPost))]
         public Post? CommentEntity { get; set; }
-
+*/
     }
 }

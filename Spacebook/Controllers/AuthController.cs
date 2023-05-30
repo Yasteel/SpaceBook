@@ -3,29 +3,38 @@
     using System;
     using System.Threading.Tasks;
 
+    using global::Spacebook.Interfaces;
+    using global::Spacebook.Models;
+
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.Extensions.Logging;
     using Microsoft.AspNetCore.Mvc;
-
-    using Spacebook.Models;
-    using Spacebook.Data;
+    using Microsoft.Extensions.Logging;
 
     public class AuthController : Controller
     {
         private readonly SignInManager<SpacebookUser> signInManager;
         private readonly UserManager<SpacebookUser> userManager;
         private readonly IUserStore<SpacebookUser> userStore;
-        private readonly IUserEmailStore<SpacebookUser> emailStore;
+		private readonly IProfileService profileService;
+		private readonly IUserEmailStore<SpacebookUser> emailStore;
         private readonly ILogger<AuthController> logger;
 
-        public AuthController(SignInManager<SpacebookUser> signInManager, UserManager<SpacebookUser> userManager, ILogger<AuthController> logger, IUserStore<SpacebookUser> userStore)
+        public AuthController
+        (
+            SignInManager<SpacebookUser> signInManager, 
+            UserManager<SpacebookUser> userManager, 
+            ILogger<AuthController> logger, 
+            IUserStore<SpacebookUser> userStore, 
+            IProfileService profileService
+        )
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.logger = logger;
             this.userStore = userStore;
-            this.emailStore = GetEmailStore();
+			this.profileService = profileService;
+			this.emailStore = GetEmailStore();
         }
 
         public string ReturnUrl { get; set; }
@@ -37,6 +46,7 @@
         {
             return this.View();
         }
+        
         public IActionResult Index()
         {
             return View();
@@ -75,7 +85,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(Register model, string? returnUrl = null)
+        public async Task<IActionResult> Register(Profile model, string? returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
 
@@ -83,7 +93,7 @@
             {
                 var user = CreateUser();
 
-                await userStore.SetUserNameAsync(user, model.Username, CancellationToken.None);
+                await emailStore.SetUserNameAsync(user, model.Email, CancellationToken.None);
                 await emailStore.SetEmailAsync(user, model.Email, CancellationToken.None);
 
                 var result = await userManager.CreateAsync(user, model.Password);
@@ -91,7 +101,13 @@
                 if (result.Succeeded)
                 {
                     await signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
+					
+                    this.profileService.Add(new Profile
+					{
+						Email = model.Email,
+					});
+
+                    return RedirectToAction("Edit", "Profile");
                 }
 
                 foreach (var error in result.Errors)

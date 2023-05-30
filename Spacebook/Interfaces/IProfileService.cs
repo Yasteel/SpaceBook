@@ -1,9 +1,10 @@
-﻿using Spacebook.Models;
-
-namespace Spacebook.Interfaces
+﻿namespace Spacebook.Interfaces
 {
-	public interface IProfileService : IGenericService<Profile>
+    using Spacebook.Models;
+    public interface IProfileService: IGenericService<Profile>
 	{
 		Profile GetByUsername(string username);
+
+		Profile GetByEmail(string email);
 	}
 }

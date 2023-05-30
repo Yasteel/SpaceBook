@@ -1,24 +1,96 @@
-﻿
+﻿@model Post
 
-<div class="modal fade" id="uploadMediaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<link rel="stylesheet" type="text/css" href="~/css/main.css">
+
+<div class="modal fade modal-lg" id="uploadMediaModal" tabindex="-1" role="dialog" aria-labelledby="uploadMediaModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <h5 class="modal-title" id="modalHeader">Create new post</h5>
+        <button id="closeModal" type="button" data-bs-dismiss="modal" onclick="reset()">
+            <span class="close" aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+           
             <div class="modal-body">
-                <form method="post" asp-action="Index" asp-controller="Create" enctype="multipart/form-data">
-                    <input type="file" name="file" />
-                    <button type="submit">Upload File</button>
-                </form>
+                <p id="errorField" style="display: none;">error</p>
+                <div class="container-fluid h-100">
+                    <div class="row justify-content-center h-100">
+                        <div id="mediaColumn" class="col-sm" style="display: none;">
+                            <div id="imageBox" style="display: none;">
+                                <img id="displayImage" src="" />
+                            </div>
+                            <div id="videoBox" style="display: none;">
+                                <video id="displayVideo" src="" controls>
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <form id="createPostForm" method="post" action="CreateApi/Post" enctype="multipart/form-data">
+                                
+                                <div id="captionPost">
+                                    <textarea asp-for="Caption" placeholder="Share your thoughts. Add photos, videos or hashtags" onclick="clearErrorMessage()"></textarea>
+                                </div>
+
+                                <div class="flex-container">
+                                    <div class="flex-child" id="mediaUpload">
+                                        <label asp-for="ImageFile">
+                                            <i class="fa fa-camera fa-lg" aria-hidden="true" onclick="clearErrorMessage()"></i>
+                                        </label>
+                                        <input class="inputFile" type="file" accept="image/*" asp-for="ImageFile" onchange="handleImageUpload()" />
+                                    </div>
+                                    <div class="flex-child" id="videoUpload">
+                                        <label asp-for="VideoFile">
+                                            <i class="fa fa-video-camera fa-lg" aria-hidden="true" onclick="clearErrorMessage()"></i>
+                                        </label>
+                                        <input class="inputFile" type="file" accept="video/*" asp-for="VideoFile" onchange="handleVideoUpload()" />
+                                    </div>
+                                </div>
+                                   
+                                <div id="accessLevelBox">
+                                    <label asp-for="AccessLevel" >Share</label>
+                                    <select asp-for="AccessLevel" onchange="accessLevelChanged(value)">
+                                        <option value="public">public</option>
+                                        <option value="private">private</option>
+                                    </select>
+                                </div>
+                                <div id="dx-sharebox" style="display: none;">
+                                    @(Html.DevExtreme().TagBox()
+                                        .ID("ShareTagBox")
+                                        .DataSource(d => d.Mvc().Controller("ProfileApi").LoadAction("Get").Key("UserId"))
+                                        .DisplayExpr("Username")
+                                        .ValueExpr("UserId")
+                                        .Placeholder("Choose people to share with...")
+                                        .ShowClearButton(true)
+                                        )
+
+                                    @Html.HiddenFor(m => m.SharedIDs)
+                                </div>
+                               
+                                <button id="postButton" class="btn btn-primary" type="submit">Post</button>
+                            </form>
+                        </div>
+                       
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+<script src="~/js/pages/createPost.js"></script>
+
+

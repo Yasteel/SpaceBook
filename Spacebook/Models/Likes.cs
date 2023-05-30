@@ -17,10 +17,10 @@
 
         public DateTime Timestamp { get; set; }
 
-        [ForeignKey(nameof(this.ProfileId))]
+        /*[ForeignKey(nameof(this.ProfileId))]
         public Profile? ProfileEntity { get; set; }
 
         [ForeignKey(nameof(this.PostId))]
-        public Post? PostEntity { get; set; }
+        public Post? PostEntity { get; set; }*/
     }
 }

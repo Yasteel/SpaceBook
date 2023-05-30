@@ -1,9 +1,14 @@
+﻿using FluentValidation;
+
 using Microsoft.EntityFrameworkCore;
+
 using Spacebook;
 using Spacebook.Data;
 using Spacebook.Hubs;
 using Spacebook.Interfaces;
+using Spacebook.Models;
 using Spacebook.Services;
+using Spacebook.Validation;
 
 internal class Program
 {
@@ -37,7 +42,13 @@ internal class Program
         });
 
         builder.Services.AddScoped<IAzureBlobStorageService, AzureBlobStorageService>();
-		
+        builder.Services.AddScoped<IPostService, PostService>();
+        builder.Services.AddScoped<IHashTagService, HashTagService>();
+        builder.Services.AddScoped<IProfileService, ProfileService>();
+        builder.Services.AddScoped<ISharedPostService, SharedPostService>();
+
+        builder.Services.AddScoped<IValidator<Post>, PostValidator>();
+        builder.Services.AddScoped<ISearchFunctionalityService, SearchFunctionalityService>();
         builder.Services.AddHttpContextAccessor();
 
 		var app = builder.Build();
@@ -51,6 +62,7 @@ internal class Program
         }
 
         app.UseHttpsRedirection();
+        app.UseDefaultFiles();
         app.UseStaticFiles();
 
         app.UseRouting();
@@ -62,9 +74,22 @@ internal class Program
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
 
-		app.MapHub<ConnectionHub>("/ConnectionHub");
+        app.MapRazorPages();
 
-		app.MapRazorPages();
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            // Add another route for the default page when there's no logged-in user
+            endpoints.MapControllerRoute(
+                name: "defaultNoUser",
+                pattern: "{controller=Auth}/{action=Index}/{id?}")
+                .RequireAuthorization(); // Restrict access to this route to authenticated users
+        });
+
+		app.MapHub<ConnectionHub>("/ConnectionHub");
         
         app.Run();
     }
