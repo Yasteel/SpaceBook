@@ -29,6 +29,8 @@ internal class Program
         builder.Services.AddScoped<IProfileService, ProfileService>();
         builder.Services.AddScoped<IConversationService,  ConversationService>();
         builder.Services.AddScoped<IPostService, PostService>();
+        builder.Services.AddScoped<ILikeService, LikeService>();
+        builder.Services.AddScoped<ICommentService, CommentService>();
 
         // Add services to the container.
         builder.Services.AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
