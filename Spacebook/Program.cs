@@ -42,7 +42,7 @@ internal class Program
         builder.Services.AddScoped<ISharedPostService, SharedPostService>();
 
         builder.Services.AddScoped<IValidator<Post>, PostValidator>();
-        builder.Services.AddScoped<ISearchFunctionalityService, SearchFunctionalityService>();
+        builder.Services.AddScoped<ISearchService, SearchService>();
 
         var app = builder.Build();
 
