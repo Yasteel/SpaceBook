@@ -3,8 +3,8 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Hosting;
-
-    using Newtonsoft.Json;
+	using Microsoft.IdentityModel.Tokens;
+	using Newtonsoft.Json;
 
     using Spacebook.Interfaces;
     using Spacebook.Models;
@@ -43,7 +43,12 @@
 
                 JsonConvert.PopulateObject(values, profile);
 
-                profileService.Update(profile);
+				if(profile.ProfilePicture.IsNullOrEmpty())
+                {
+                    profile.ProfilePicture = "https://payconnect.blob.core.windows.net/2c9aca41-40f7-4e88-b854-1e5d6ba0f234/2c9aca41-40f7-4e88-b854-1e5d6ba0f234d4e5741f-9baf-4361-b5e3-89f908715ead";
+                }
+
+				profileService.Update(profile);
 
                 return RedirectToAction("Edit", "Profile", profile);
             }

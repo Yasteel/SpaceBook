@@ -20,9 +20,10 @@
     <div class="row">
         <form method="post" id="myForm" enctype="multipart/form-data" onsubmit="submitForm(event)">
             <input type="hidden" asp-for="@Model.UserId" />
+            <input type="hidden" asp-for="@Model.ProfilePicture" />
             <div class="row">
                 <label class="col-2" asp-for="@Model.DisplayName"></label>
-                <input class="col" type="text" asp-for="@Model.DisplayName" />
+                <input class="col" type="text" asp-for="@Model.DisplayName" required/>
             </div>
             <br />
             <div class="row">
@@ -69,7 +70,7 @@
             dataType: "JSON",
             data: { values: JSON.stringify(formObject)},
             success: function (response) {
-                console.log("it worked");
+                console.log("it worked now");
             }
         });
     }

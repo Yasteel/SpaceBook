@@ -32,6 +32,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\js\pages\" />
     <Folder Include="wwwroot\icons\" />
   </ItemGroup>

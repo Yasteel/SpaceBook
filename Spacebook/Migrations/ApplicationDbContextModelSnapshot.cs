@@ -131,6 +131,9 @@ namespace Spacebook.Migrations
                         .HasColumnType("int")
                         .HasColumnName("fkConversationId");
 
+                    b.Property<string>("MessageImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MessageType")
                         .HasColumnType("nvarchar(max)");
 
