@@ -44,7 +44,6 @@ namespace Spacebook.WebApiController
 			{
 				var contentFeed = GetPostInfo(post, thisUserProfile.UserId);
 				contentFeeds.Add(contentFeed);
-
 			}
 
 			return JsonConvert.SerializeObject(contentFeeds);
@@ -58,6 +57,26 @@ namespace Spacebook.WebApiController
 
 			var likedPost = this.likeService.GetAll().Where(_ => _.PostId == post.PostId && _.ProfileId == thisUserId);
 
+			var time = "";
+			var minutes = 0;
+			var hours = (DateTime.Now - post.Timestamp).Hours;
+			minutes = (DateTime.Now - post.Timestamp).Minutes;
+
+			if (hours < 1)
+			{
+				time = "Posted " + minutes + " minutes ago";
+			}
+			else if (hours >= 1 && hours <= 24)
+			{
+				time = "Posted " + hours + " hours and " + minutes + " minutes ago";
+			}
+			else
+			{
+				time = "Posted on " + post.Timestamp.ToString("dd/MM/yyyy");
+			}
+
+
+
 			var contentFeed = new
 			{
 				Post = new
@@ -66,7 +85,7 @@ namespace Spacebook.WebApiController
 					Type = post.Type,
 					MediaUrl = post.MediaUrl,
 					Caption = post.Caption,
-					Timestamp = post.Timestamp.ToLongDateString(),
+					Timestamp = time,
 					AccessLevel = post.AccessLevel,
 					SharedID = post.SharedIDs,
                     CommentCount = commentCount,

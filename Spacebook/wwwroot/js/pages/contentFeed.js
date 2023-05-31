@@ -93,7 +93,7 @@
 });
 
 function showContentFeed(feed) {
-    
+    console.log("awe");
     $("main.container").html('');
 
     var contentFeed = "";
@@ -102,14 +102,19 @@ function showContentFeed(feed) {
         console.log(v);
         contentFeed +=
             `
-    <div id="contentCard" class="card bg-light mb-3" data-postId="${v.Post.PostId}">
+    <div id="contentCard" class="card" data-postId="${v.Post.PostId}">
 
-        <div class="card-header">
-              
-            <p>${v.Profile.Email}</p>
+        <div class="card-title">
+            <p>
+                <span>
+                    <image class="profile-image" src="${v.Profile.ProfilePicture}"></image>
+                </span>
+                <span id="titleText">${v.Profile.Email}</span>
+            </p>
             <p>${v.Post.Timestamp}</p>
         </div>
-        <div class="card-body">
+
+        <div id="contentBody" class="card-body">
             <div id="feedCaption">
                 <textarea>${v.Post.Caption}</textarea>
             </div>
@@ -132,6 +137,7 @@ function showContentFeed(feed) {
                     <span id="commentCount">Comments &nbsp ${v.Post.CommentCount}</span>
                 </p>
             </div>
+
             <div id="contentIcons">
                 <span>
                     <i class="fa fa-thumbs-up" data-liked="${v.LikedPost}"></i>
