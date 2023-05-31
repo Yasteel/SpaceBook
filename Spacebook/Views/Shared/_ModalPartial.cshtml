@@ -54,15 +54,11 @@
                                         <option value="private">private</option>
                                     </select>
                                 </div>
+                                <div id="selected-emails"></div>
                                 <div id="dx-sharebox" style="display: none;">
-                                    @(Html.DevExtreme().TagBox()
-                                        .ID("ShareTagBox")
-                                        .DataSource(d => d.Mvc().Controller("ProfileApi").LoadAction("Get").Key("UserId"))
-                                        .DisplayExpr("Email")
-                                        .ValueExpr("UserId")
-                                        .Placeholder("Choose people to share with...")
-                                        .ShowClearButton(true)
-                                        )
+                                   <select onchange="saveSelectedChoices()" id="shareBox" class="select" multiple data-mdb-placeholder="Choose who you want share with" multiple">
+                                   </select>
+                                   
                                </div>
                                
                                 <button id="postButton" class="btn btn-primary" type="submit">Post</button>

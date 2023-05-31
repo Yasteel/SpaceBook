@@ -2,10 +2,9 @@
     border: none;
     outline: none;
     width: 100%;
-    border-bottom: 1px solid #ccc; /* You can adjust the color and thickness of the outline */
 }
 
-#profileImage {
+.profile-image {
     display: inline-block;
     width: 20px;
     height: 20px;

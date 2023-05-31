@@ -40,7 +40,9 @@
                 contentFeeds.Add(contentFeed);
 
             }
-            return View(contentFeeds);
+
+            List<ContentFeed> sortedContent = contentFeeds.OrderByDescending(_ => _.Post.Timestamp).ToList();
+            return View(sortedContent);
         }
 
         private ContentFeed GetContentFeed(Post post) 
