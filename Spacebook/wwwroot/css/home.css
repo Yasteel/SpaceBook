@@ -38,3 +38,7 @@
 i.fa-thumbs-up[data-liked="true"]{
     color: blue !important;
 }
+
+.comment[data-visible="false"]{
+    display: none;
+}

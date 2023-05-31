@@ -4,6 +4,6 @@
 
 	public interface ILikeService : IGenericService<Likes>
 	{
-		public int LikeCount(int postId);
+		public int GetLikeCount(int postId);
 	}
 }

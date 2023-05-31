@@ -38,7 +38,7 @@ namespace Spacebook.WebApiController
 
             List<object> contentFeeds = new List<object>();
 
-			var posts = postService.GetAll();
+			var posts = postService.GetAll().Where(_ => _.Type != "Comment");
 
 			foreach (var post in posts)
 			{
@@ -52,8 +52,8 @@ namespace Spacebook.WebApiController
 
 		private object GetPostInfo(Post post, int? thisUserId)
 		{
-            var commentCount = this.commentService.FindAllByField("OriginalValue", post.PostId).Count();
-			var likeCount = this.likeService.LikeCount(post.PostId);
+			var commentCount = this.commentService.GetCommentCount(post.PostId);
+			var likeCount = this.likeService.GetLikeCount(post.PostId);
 			var profile = this.profileService.GetById(post.ProfileId);
 
 			var likedPost = this.likeService.GetAll().Where(_ => _.PostId == post.PostId && _.ProfileId == thisUserId);

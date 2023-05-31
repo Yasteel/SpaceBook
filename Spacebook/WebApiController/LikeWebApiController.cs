@@ -61,7 +61,7 @@ namespace Spacebook.WebApiController
 		[HttpGet]
 		public int GetLikeCount(int postId)
 		{
-			return this.likeService.LikeCount(postId);
+			return this.likeService.GetLikeCount(postId);
 		}
 	}
 }

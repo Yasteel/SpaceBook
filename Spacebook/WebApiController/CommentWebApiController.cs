@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Spacebook.Interfaces;
 using Spacebook.Models;
 
@@ -13,13 +14,13 @@ namespace Spacebook.WebApiController
 		private readonly UserManager<SpacebookUser> userManager;
 
 		public CommentWebApiController
-        (
-            ICommentService commentService,
+		(
+			ICommentService commentService,
 			IPostService postService,
 			IProfileService profileService,
 			UserManager<SpacebookUser> userManager
 		)
-        {
+		{
 			this.commentService = commentService;
 			this.postService = postService;
 			this.profileService = profileService;
@@ -31,7 +32,7 @@ namespace Spacebook.WebApiController
 		{
 			var spacebookUser = (SpacebookUser)await this.userManager.GetUserAsync(User);
 			var thisUserProfile = this.profileService.GetByEmail(spacebookUser.Email);
-			
+
 			// First thing is to make a post with a type -> "Comment"
 			var commentPost = this.postService.Add(new Post
 			{
@@ -39,6 +40,7 @@ namespace Spacebook.WebApiController
 				Type = "Comment",
 				Caption = comment,
 				Timestamp = DateTime.UtcNow,
+				AccessLevel = "Public"
 			});
 
 			// secondly with the newPost Entity, use the PostId to insert into the comments table
@@ -50,5 +52,43 @@ namespace Spacebook.WebApiController
 
 			return Ok();
 		}
-    }
+
+		[HttpGet]
+		public object GetCommentsForPost(int originalPostId)
+		{
+			var commentList = this.commentService.GetAll().Where(_ => _.OriginalPost == originalPostId);
+			var commentPosts = new List<object>();
+
+			foreach (var comment in commentList)
+			{
+				var post = this.postService.GetById((int)comment.CommentPost!);
+
+				var profile = this.profileService.GetById(post.ProfileId);
+
+
+				commentPosts.Add(new
+				{
+					Profile = new
+					{
+						DisplayName = profile.DisplayName,
+						Email = profile.Email,
+					},
+					Post = new
+					{
+						PostId = post.PostId,
+						Caption = post.Caption,
+						Timestamp = post.Timestamp.ToLongDateString(),
+					}
+				});
+			}
+
+			return JsonConvert.SerializeObject(commentPosts);
+		}
+
+		[HttpGet]
+		public int GetCommentCount(int postId)
+		{
+			return this.commentService.GetCommentCount(postId);
+		}
+	}
 }

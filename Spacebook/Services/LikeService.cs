@@ -13,7 +13,7 @@
 			this.context = context;
 		}
 
-        public int LikeCount(int postId)
+        public int GetLikeCount(int postId)
         {
             return this.context.Likes.Count(_ => _.PostId == postId);
         }

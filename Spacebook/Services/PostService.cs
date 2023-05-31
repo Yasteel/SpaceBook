@@ -22,5 +22,12 @@ namespace Spacebook.Services
 
 			return entity;
 		}
+
+		public new Post GetById(int id)
+		{
+			var post = this.context.Post.FirstOrDefault(_ => _.PostId == id);
+
+			return post;
+		}
 	}
 }
