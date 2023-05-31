@@ -1,5 +1,6 @@
 ﻿const profileIdSet = new Set();
 let form = document.getElementById('createPostForm');
+const url = new URL(form.action);
 
 document.getElementById('createPostForm').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -10,8 +11,6 @@ document.getElementById('createPostForm').addEventListener('submit', function (e
     let VideoFile = document.getElementById('VideoFile').files[0];
     let AccessLevel = document.getElementById('AccessLevel').value;
     let SharedIDs = getSelectedProfileIds();
-
-    const url = new URL(form.action);
 
     // Perform form validation
     if (Caption.trim() === '') {
@@ -114,25 +113,58 @@ function handleVideoUpload() {
     reader.readAsDataURL(video);
 }
 
-function getSelectedProfileIds() {
-    let items = $("#ShareTagBox").dxTagBox("option", "selectedItems");
+function getProfiles() {
+    fetch("ProfileApi/Get", {
+        method: 'GET'
+    })
+        .then(response => response.json())
+        .then(data => displayData(data))
+        .catch(function (error) {
+            reset();
+            alert('cannot fetch all users');
+            console.log(error);
+        });
+}
 
-    items.forEach(item => {
-        let profileID = item.UserId;
-        profileIdSet.add(profileID);
+function displayData(data) {
+    var selectBox = document.getElementById("shareBox");
+    selectBox.innerHTML = "";
+    data.forEach(item => {
+        selectBox.options.add( new Option(item.Email, item.UserId) );
     });
+}
 
+function saveSelectedChoices() {
+    var selectedEmails = document.getElementById("selected-emails");
+
+    let option = document.getElementById("shareBox");
+    profileIdSet.add(option.value);
+    console.log(option.text);
+
+        if (!profileIdSet.has(option.value))
+        {
+            var email = option.text;
+            var span = document.createElement('span');
+            span.textContent = email + "&nbsp";
+            selectedEmails.appendChild(span);
+        }
+    
+
+}
+
+function getSelectedProfileIds()
+{
     let IdString = Array.from(profileIdSet).join(',');
-    $('#SharedIDs').val(IdString);
-
     return IdString;
 }
 
 function accessLevelChanged(value)
 {
-    console.log(value);
+    var sharebox = document.getElementById("shareBox");
+    
     if (value == "private")
     {
+        getProfiles();
         document.getElementById("dx-sharebox").style.display = "block";
     }
     else
