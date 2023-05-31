@@ -2,6 +2,7 @@
 {
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Hosting;
 
     using Newtonsoft.Json;
 
@@ -13,15 +14,17 @@
     {
         private readonly UserManager<SpacebookUser> userManager;
         private readonly IProfileService profileService;
+        private readonly IAzureBlobStorageService storageService;
 
         public ProfileWebApiController
         (
             UserManager<SpacebookUser> userManager,
-            IProfileService profileService
-        )
+            IProfileService profileService,
+            IAzureBlobStorageService storageService)
         {
             this.userManager = userManager;
             this.profileService = profileService;
+            this.storageService = storageService;
         }
 
         [HttpPost]
@@ -50,6 +53,42 @@
             }
 
             return RedirectToAction("Edit", "Profile");
+        }
+
+        [HttpPost("Upload")]
+        public async Task<IActionResult> Upload(Profile model)
+        {
+            if (model == null)
+            {
+                return this.BadRequest("{\"Error\":[\"Could not complete request. Invalid data.\"]}");
+            }
+
+            var user = await userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            var userProfile = profileService.GetByEmail(user.Email);
+
+            if (userProfile == null)
+            { 
+                return NotFound(); 
+            }
+
+            string? fileURI;
+
+            if(model.ProfilePictureFile != null)
+            {
+                fileURI = storageService.UploadBlob(model.ProfilePictureFile, user.Id);
+                userProfile.ProfilePicture = fileURI;
+            }
+
+            this.profileService.Update(userProfile);
+
+            return Ok();
+
         }
     }
 }

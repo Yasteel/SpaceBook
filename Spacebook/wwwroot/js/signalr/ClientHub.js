@@ -53,27 +53,52 @@ $(document).ready(function () {
         var messageType = "";
         var content = $("#messageInput").val();
 
+        var fileInput = document.getElementById("fileUpload");
+        var file = fileInput.files[0];
+
+        var formData = new FormData();
+        formData.append('MessageImage', file);
+
         if (content != null) {
             messageType = "Text";
         }
 
-        console.log({
-            "conversationId": conversationId,
-            "senderUsername": senderUsername,
-            "messageType": messageType,
-            "content": content
+        fetch("https://localhost:7232/MessageWebApi/Upload", {
+            method: 'POST',
+            body: formData
+        })
+        .then(function (response) {
+            if (!response.ok) {
+                throw new Error('Error: ' + response.status);
+            }
+
+            return response.json();
+        })
+        .then(data => {
+            var url = data.url;
+
+            if (url == null) {
+                $("#messages-list").append(`<li class="to">${content}</li>`);
+            }
+            else
+            {
+                $("#messages-list").append(`<li class="to"> <img src = "${url}" alt = "Image Not Found" /> <br /> ${ content }</li>`);
+            }
+
+            connection.invoke("SendMessage", conversationId, senderUsername, messageType, content, url)
+                .catch((err) => {
+                    return console.error(err.toString());
+                });
+
+
+            $("#messageInput").val("");
+            e.preventDefault();
+
+        })
+        .catch(error => {
+            throw new Error('Error: ' + error);
         });
 
-        $("#messages-list").append(`<li class="to">${content}</li>`);
-
-        connection.invoke("SendMessage", conversationId, senderUsername, messageType, content)
-        .catch((err) => {
-            return console.error(err.toString());
-        });
-
-
-        $("#messageInput").val("");
-        e.preventDefault();
     });
 
     $(document).on("click", "div.contact", (e) => {
@@ -150,7 +175,14 @@ function showMessages(messageProperties) {
 
             switch (v.Message.MessageType) {
                 case "Text":
-                    messageList += v.Message.Content;
+                    `<div>`
+                    if (v.Message.MessageImageUrl == null) {
+                        messageList += v.Message.Content;
+                    }
+                    else {
+                        messageList += `<img src="${v.Message.MessageImageUrl}" alt="Image Not Found" /> <br />` + v.Message.Content;
+                    }
+                    `</div>`
                     break;
 
                 case "Image":

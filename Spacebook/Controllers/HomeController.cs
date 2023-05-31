@@ -1,37 +1,63 @@
 ﻿namespace Spacebook.Controllers
 {
-    using System.Diagnostics;
-
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    using Spacebook.Interfaces;
     using Spacebook.Models;
+    using Spacebook.ViewModel;
 
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IPostService postService;
+        private readonly IProfileService profileService;
+        private readonly ICommentService commentService;
+        private readonly ILikesService likesService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(
+                              IPostService postService,
+                              IProfileService profileService,
+                              ICommentService commentService,
+                              ILikesService likesService)
         {
-            _logger = logger;
+            this.postService = postService;
+            this.profileService = profileService;
+            this.commentService = commentService;
+            this.likesService = likesService;
         }
 
         [Authorize]
         public IActionResult Index()
         {
-            return View();
+            List<ContentFeed> contentFeeds = new List<ContentFeed>();
+
+            var posts = postService.GetAll();
+
+            foreach (var post in posts) 
+            {
+                var contentFeed = GetContentFeed(post);
+                contentFeeds.Add(contentFeed);
+
+            }
+            return View(contentFeeds);
         }
 
-        public IActionResult Privacy()
+        private ContentFeed GetContentFeed(Post post) 
         {
-            return View();
-        }
+            var comments = this.commentService.FindAllByField("OriginalValue", post.PostId);
+            var likes = this.likesService.FindAllByField("PostId", post.PostId);
+            var profile = this.profileService.GetById(post.ProfileId);
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var contentFeed = new ContentFeed()
+            {
+                Comments = comments,
+                Likes = likes,
+                Post = post,
+                Profile = profile
+            };
+
+            return contentFeed;
         }
     }
 }
