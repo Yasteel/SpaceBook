@@ -43,6 +43,14 @@
     padding-right: 20px;
 }
 
+i.fa-thumbs-up[data-liked="true"]{
+    color: blue !important;
+}
+
+.comment[data-visible="false"]{
+    display: none;
+}
+
 #titleText {
     color: darkblue;
     font-weight: bold;

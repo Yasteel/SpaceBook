@@ -4,7 +4,17 @@
     using Spacebook.Models;
     public class CommentService: GenericService<Comment>, ICommentService
     {
-        public CommentService(ApplicationDbContext context)
-            : base(context) { } 
-    }
+		private readonly ApplicationDbContext context;
+
+		public CommentService(ApplicationDbContext context)
+            : base(context)
+		{
+			this.context = context;
+		}
+
+		public int GetCommentCount(int postId)
+		{
+			return this.context.Comment.Count(_ => _.OriginalPost == postId);
+		}
+	}
 }
