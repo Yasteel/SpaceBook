@@ -82,7 +82,7 @@ $(document).ready(function () {
             }
             else
             {
-                $("#messages-list").append(`<li class="to"> <img src = "${url}" alt = "Image Not Found" /> <br /> ${ content }</li>`);
+                $("#messages-list").append(`<li class="to"> <img src = "${url}" alt = "Image Not Found" style="max-width: 150px; max-height: 150px;"/> <br /> ${ content }</li>`);
             }
 
             connection.invoke("SendMessage", conversationId, senderUsername, messageType, content, url)
@@ -180,7 +180,7 @@ function showMessages(messageProperties) {
                         messageList += v.Message.Content;
                     }
                     else {
-                        messageList += `<img src="${v.Message.MessageImageUrl}" alt="Image Not Found" /> <br />` + v.Message.Content;
+                        messageList += `<img src="${v.Message.MessageImageUrl}" alt="Image Not Found" style="max-width: 150px; max-height: 150px;"/> <br />` + v.Message.Content;
                     }
                     `</div>`
                     break;

@@ -5,8 +5,6 @@
     using Spacebook.Interfaces;
     using Spacebook.Models;
 
-    [Route("api/[controller]")]
-    [ApiController]
     public class ProfileApiController : ControllerBase
     {
         private readonly IProfileService _profileService;

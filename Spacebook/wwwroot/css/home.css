@@ -2,25 +2,33 @@
     border: none;
     outline: none;
     width: 100%;
-    border-bottom: 1px solid #ccc; /* You can adjust the color and thickness of the outline */
 }
 
-#profileImage {
+.profile-image {
     display: inline-block;
     width: 20px;
     height: 20px;
     border-radius: 50%;
+    border: black;
+    background-color: aquamarine;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
 }
 
 #contentCard {
-    width: fit-content;
-    height:fit-content;
+    display:flex;
+    position: relative;
+    left: 20%;
+    width: 100%;
+    max-width: 50rem;
+    max-height: 50rem;
+    height: 100%;
+    margin: 2rem;
 }
 
 #feedMedia image {
+    background-color: black;
     width: 100%;
     height: 100%;
 }
@@ -41,4 +49,19 @@ i.fa-thumbs-up[data-liked="true"]{
 
 .comment[data-visible="false"]{
     display: none;
+}
+
+#titleText {
+    color: darkblue;
+    font-weight: bold;
+    font-style: italic;
+}
+
+#feedCaption {
+    margin-left:1rem;
+}
+
+#feedMedia {
+    width: 100%;
+    height: 100%;
 }

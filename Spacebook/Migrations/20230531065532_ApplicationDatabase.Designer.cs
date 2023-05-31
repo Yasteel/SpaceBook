@@ -12,8 +12,8 @@ using Spacebook;
 namespace Spacebook.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230530060948_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20230531065532_ApplicationDatabase")]
+    partial class ApplicationDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -133,6 +133,9 @@ namespace Spacebook.Migrations
                     b.Property<int?>("ConversationId")
                         .HasColumnType("int")
                         .HasColumnName("fkConversationId");
+
+                    b.Property<string>("MessageImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MessageType")
                         .HasColumnType("nvarchar(max)");
