@@ -49,7 +49,7 @@ internal class Program
         builder.Services.AddScoped<IProfileService, ProfileService>();
         builder.Services.AddScoped<ISharedPostService, SharedPostService>();
         builder.Services.AddScoped<ICommentService, CommentService>();
-        builder.Services.AddScoped<ILikesService, LikesService>();
+        builder.Services.AddScoped<ILikeService, LikeService>();
 
         builder.Services.AddScoped<IValidator<Post>, PostValidator>();
 
