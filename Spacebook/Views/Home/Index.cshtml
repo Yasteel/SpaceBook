@@ -12,28 +12,35 @@
 @foreach (var content in Model)
 {
     var time = "";
-    if (content.Post.Timestamp > DateTime.Now.AddHours(-24))
+    var minutes = 0;
+    var hours = (DateTime.Now - content.Post.Timestamp).Hours;
+    minutes = (DateTime.Now - content.Post.Timestamp).Minutes;
+
+    if (hours < 1 )
     {
-        time = "Posted on " + content.Post.Timestamp.ToString("dd/MM/yyyy");
+         time = "Posted " + minutes + " minutes ago";
+    }
+    else if (hours >= 1 && hours <= 24)
+    {
+        time = "Posted " + hours + " hours and " + minutes + " minutes ago";
     }
     else
     {
-        time = "Posted " + content.Post.Timestamp.ToString("HH") + " hours and " + content.Post.Timestamp.ToString("MM") + " minutes ago";
+        time = "Posted on " + content.Post.Timestamp.ToString("dd/MM/yyyy");
     }
         
     <div id="contentCard" class="card">
 
         <div class="card-title">
-
             <p>
                 <span>
                     <image class="profile-image" src="@content.Profile.ProfilePicture" onerror="this.onerror=null;this.src='images/default_avatar.png';"></image>
                 </span>
-                <span>@content.Profile.Email</span>
+                <span id="titleText">@content.Profile.Email</span>
             </p>
             <p>@time</p>
         </div>
-        <div class="card-body">
+        <div id="contentBody" class="card-body">
             <div id="feedCaption">
                 <textarea>@content.Post.Caption</textarea>
             </div>
