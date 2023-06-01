@@ -74,15 +74,16 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="~/js/pages/search.js"></script>
+	<link href="~/css/globalstyles.css" rel="stylesheet" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
 
 <body>
     @if (SignInManager.IsSignedIn(User))
     {
-        <div class="row">
+        @*<div class="row">
             <div class="col-2">
-                <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <nav class="navbar navbar-expand-sm navbar-toggleable-md">
                     <div class="container-fluid">
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                                 aria-expanded="false" aria-label="Toggle navigation">
@@ -131,8 +132,78 @@
                     </div>
                 </nav>
             </div>
+			<div class="col navbar">
+				
+            </div>
+            <div class="col">
+                <main class="container">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>*@
 
-            <div class="col" style="padding-top : 50px; margin-right: 100px; margin-left:50px;">
+        <div class="root">
+			<div class="nav">
+                <div class="header">
+                    <h2>Spacebook</h2>
+                    <input type="text" id="searchTerm" placeholder="Search posts..." />
+                    <ul id="results"></ul>
+                </div>
+                <div class="body">
+					<ul>
+						<li>
+							<a asp-controller="Home" asp-action="Index" class="active">
+                                <span><i class="fa-solid fa-house"></i></span>
+                                Home
+							</a>
+						</li>
+						<li>
+							<a asp-controller="Profile" asp-action="Index">
+                                <span><i class="fa-solid fa-user"></i></span>
+                                Profile
+							</a>
+						</li>
+						<li>
+                            <a onclick="onCreateButtonClicked()" data-toggle="modal" data-target="#uploadMediaModal" id="createPost">
+                                <span><i class="fa-solid fa-plus"></i></span>
+                                New Post
+							</a>
+						</li>
+						<li>
+							<a href="">
+                                <span><i class="fa-solid fa-bell"></i></span>
+                                Notification
+							</a>
+						</li>
+						@*<li>
+							<a href="">
+                                <span><i class="fa-solid fa-compass"></i></span>
+                                Explore
+							</a>
+						</li>*@
+						<li>
+							<a asp-controller="Messages" asp-action="Index">
+                                <span><i class="fa-solid fa-message"></i></span>
+                                Messages
+							</a>
+						</li>
+						@*<li>
+                            <input type="text" id="searchTerm" placeholder="Search posts..." />
+                            <ul id="results"></ul>
+						</li>
+						<li>
+							<a href="">
+								<span></span>
+                                Share
+							</a>
+						</li>*@
+                    </ul>
+                </div>
+                <div class="footer">
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+			<div class="content">
                 <main class="container">
                     @RenderBody()
                 </main>

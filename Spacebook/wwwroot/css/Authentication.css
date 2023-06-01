@@ -1,15 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-:root {
-    --primary: #33ff58;
-}
-
-main.container{
+﻿main.container{
     width: 100vw;
     height: 100vh;
     display: flex;
