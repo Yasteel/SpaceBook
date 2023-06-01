@@ -143,8 +143,24 @@ namespace Spacebook.WebApiController
 			return this.Ok();
 		}
 
+
+		[HttpPost]
+		public async Task<object> SharePost(string username, int postId)
+		{
+			var conversationId = await this.GetConversationId(username);
+
+			var spacebookUser = (SpacebookUser)await this.userManager.GetUserAsync(User);
+			var thisUser = spacebookUser.Email;
+
+			int senderId = (int)this.profileService.GetByEmail(thisUser).UserId!;
+
+			this.NewMessage(conversationId, senderId, "Post", postId.ToString());
+
+			return Ok();
+		}
+
+
 		[HttpGet]
-		//[Route("/GetPost/{postId}")]
 		public Object GetPost(int postId)
 		{
 			var post = this.postService.GetById(postId);

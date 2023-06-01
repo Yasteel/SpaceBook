@@ -73,7 +73,10 @@
     <script src="~/js/devextreme/aspnet/dx.aspnet.data.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="~/js/pages/search.js"></script>
+	<script src="~/js/pages/search.js"></script>
+	<link href="~/css/home.css" rel="stylesheet" />
+
+    @await RenderSectionAsync("Styles", required: false);
 </head>
 
 <body>
