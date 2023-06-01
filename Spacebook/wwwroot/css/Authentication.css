@@ -1,0 +1,111 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+:root {
+    --primary: #33ff58;
+}
+
+main.container{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.row {
+    width: 500px;
+    padding: 1.5rem 1rem;
+    margin-top: 2rem;
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 0 5px 0px var(--primary);
+}
+
+.row h1{
+    text-align: center;
+    font-family: 'Poppins', Helvetica, sans-serif;
+    text-transform: capitalize;
+}
+
+.row > div {
+    width: 100%;
+}
+
+.row .header{
+    border-bottom: 1px solid lightgray;
+    margin-bottom: 1rem;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+
+form > div {
+    width: 100%;
+}
+
+form > div.text-danger ul{
+    list-style-type: none;
+    text-align: center;
+}
+
+form > div > input{
+    padding: .9rem;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid var(--primary);
+    outline: none;
+    transition: border-left-width ease-in-out 200ms;
+}
+
+form > div > input:is(:focus){
+    border-left-width: 10px;
+}
+
+form .checkbox input{
+    color: var(--primary) !important;
+}
+
+button[type="submit"] {
+    width: 100%;
+    border: 1px solid #33ff58;
+    border-radius: 5px;
+    background: #33ff58;
+    color: white;
+    font-weight: 500;
+    padding: 1rem;
+    transition: background ease-in-out 200ms;
+}
+
+button[type="submit"]:is(:hover,:focus) {
+    background-color: transparent;
+    color: #33ff58;
+    border-color: #33ff58;
+    box-shadow: none;
+    font-weight: 600;
+}
+
+:is(.register-link, .login-link) {
+    margin-top: 1rem;
+}
+
+:is(.register-link, .login-link) p {
+    text-align: center;
+}
+
+:is(.register-link, .login-link) p a{
+    color: black;
+}
+
+:is(.register-link, .login-link) p a:is(:hover, :focus){
+    color: var(--primary);
+}
