@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-2">
         <div style="max-height: 150px; max-width:150px;">
-            <img src=@Model.ProfilePicture class="rounded-circle" alt="Profile Picture" width="150" height="150">
+            <img src=@Model.ProfilePicture class="profile-picture" alt="Profile Picture">
         </div>
     </div>
     <div class="col">
@@ -111,5 +111,16 @@
     .item-content img {
         height: 300px;
         object-fit: cover;
+    }
+    .profile-picture {
+        display: inline-block;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: black;
+        background-color: aquamarine;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
     }
 </style>

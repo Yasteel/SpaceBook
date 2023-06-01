@@ -64,14 +64,20 @@
 
 				profileService.Update(profile);
 
-                return RedirectToAction("Edit", "Profile", profile);
+                var response = new
+                {
+                    success = true,
+                    message = "Profile updated successfully!"
+                };
+
+                return Ok(response);
             }
             else
             {
                 this.ModelState.AddModelError(string.Empty, "Invalid registration attempt.");
             }
 
-            return RedirectToAction("Edit", "Profile");
+            return BadRequest();
         }
 
         [HttpPost("Upload")]
