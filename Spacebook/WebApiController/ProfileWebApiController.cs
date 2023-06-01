@@ -2,12 +2,13 @@
 {
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Hosting;
 	using Microsoft.IdentityModel.Tokens;
+
 	using Newtonsoft.Json;
 
     using Spacebook.Interfaces;
     using Spacebook.Models;
+    using Spacebook.Services;
 
     [Route("api/[controller]")]
     public class ProfileWebApiController : Controller
@@ -25,6 +26,19 @@
             this.userManager = userManager;
             this.profileService = profileService;
             this.storageService = storageService;
+        }
+
+        [HttpGet]
+        public IActionResult GetById(int Id)
+        {
+            var profile = profileService.GetById(Id);
+
+            if (profile != null)
+            {
+                return Ok(profile);
+            }
+
+            return BadRequest();
         }
 
         [HttpPost]
