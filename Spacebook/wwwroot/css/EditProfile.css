@@ -11,7 +11,8 @@ main.container {
     align-items: center;
 }
 
-main.container div > .row {
+main.container #editProfile > 
+.row {
     width: 500px;
     padding: 1.5rem 1rem;
     margin-top: 2rem;
@@ -21,28 +22,32 @@ main.container div > .row {
 }
 
 
+#editProfile > 
 .row .header {
     border-bottom: 1px solid lightgray;
     margin-bottom: .5rem;
 }
 
+#editProfile > 
 .row .header h1 {
     text-align: center;
     font-family: 'Poppins', Helvetica, sans-serif;
     text-transform: capitalize;
 }
 
+#editProfile > 
 .row .profileInfo{
-    margin-bottom: 1rem;
     display: grid;
     place-items: center;
 }
 
+#editProfile > 
 .row .profileInfo #imageEdit{
     position: relative;
     cursor: pointer;
 }
 
+#editProfile > 
 .row .profileInfo #imageEdit::after {
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
@@ -53,10 +58,12 @@ main.container div > .row {
     color: black;
 }
 
+#editProfile > 
 .row .profileInfo #imageEdit:hover::after{
     color: var(--primary);
 }
 
+#editProfile > 
 .row .profileInfo a:is(:hover, :focus){
     color: var(--primary);
     cursor: pointer;
@@ -104,11 +111,7 @@ form .row.text-danger ul{
     text-align: center;
 }
 
-form .row #bio{
-    height: fit-content;
-}
-
-button[type="submit"] {
+#editProfile button[type="submit"] {
     width: 100%;
     border: 1px solid #33ff58;
     border-radius: 5px;
@@ -119,7 +122,7 @@ button[type="submit"] {
     transition: background ease-in-out 200ms;
 }
 
-button[type="submit"]:is(:hover,:focus) {
+#editProfile button[type="submit"]:is(:hover,:focus) {
     background-color: transparent;
     color: #33ff58;
     border-color: #33ff58;
