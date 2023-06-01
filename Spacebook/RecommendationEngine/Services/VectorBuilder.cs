@@ -11,7 +11,7 @@ namespace Spacebook.RecommendationEngine.Services
         private IEnumerable<HashTag> hashTags;
         private IEnumerable<Likes>? likes;
 
-        public void LoadData(List<Post> posts, List<Likes> likes, List<HashTag> hashTags)
+        public void LoadData(IEnumerable<Post> posts, IEnumerable<Likes> likes, IEnumerable<HashTag> hashTags)
         {
             this.allTagNames = hashTags.Select(_ => _.HashTagText).Distinct();
             this.posts = posts;

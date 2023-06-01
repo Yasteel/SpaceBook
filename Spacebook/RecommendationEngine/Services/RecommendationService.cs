@@ -14,7 +14,12 @@
 
         private readonly IVectorBuilder vectorBuilder;
         private readonly IUserVectorBuilder userVectorBuilder;
-        
+
+        private IEnumerable<string?>? allTagNames;
+        private IEnumerable<Post>? posts;
+        private IEnumerable<HashTag>? hashTags;
+        private IEnumerable<Likes>? likes;
+
         public RecommendationService(IHashTagService hashTagService,
                                      IPostService postService,
                                      ILikeService likeService,
@@ -30,10 +35,12 @@
 
         public List<Post> GetPosts(int userProfileId)
         {
-            var allTagNames = hashTagService.GetAll()
-                .Select(_ => _.HashTagText).Distinct();
+            BuildRepositories();
 
-            if (!allTagNames.Any())
+            allTagNames = hashTagService.GetAll()
+                .Select(_ => _.HashTagText).ToHashSet();
+
+            if (!allTagNames.Any() || posts == null)
             {
                 return new List<Post>();
 
@@ -41,7 +48,22 @@
 
             var predictions = GetPredictionValues(userProfileId);
             var sortedPosts = GetSortedPosts(predictions);
+            var filteredPosts = GetFilteredPosts(sortedPosts, userProfileId);
 
+            return sortedPosts;
+        }
+
+        private List<Post> GetFilteredPosts(List<Post> sortedPosts, int userProfileId)
+        {
+            //remove users own posts
+            sortedPosts.RemoveAll(_ => _.ProfileId == userProfileId);
+
+            //remove all already liked posts
+            if (likes != null)
+            {
+                var likedPosts = likes.Where(_ => _.ProfileId == userProfileId).Select(_ => _.PostId).ToList();
+                sortedPosts.RemoveAll(_ => likedPosts.Contains(_.PostId));
+            }
             return sortedPosts;
         }
 
@@ -59,18 +81,25 @@
             return sortedPosts;
         }
 
-
-
-        public Dictionary<int, double> GetPredictionValues(int userProfileId)
+        private Dictionary<int, double> GetPredictionValues(int userProfileId)
         {
-            BuildRepositories();
+            vectorBuilder.LoadData(posts, likes, hashTags);
+            userVectorBuilder.LoadData(posts, likes, hashTags, userProfileId);
 
             var postVectorTable = vectorBuilder.GetPostVectorTable();
-            var userVector = userVectorBuilder.GetUserVector(userProfileId, postVectorTable);
+            var userVector = userVectorBuilder.GetUserVector(postVectorTable);
 
-            Dictionary<int, double> predictions = new Dictionary<int, double>();
+            var predIctedValues = CreatePredictions(postVectorTable, userVector);
 
-            foreach (var postVector in postNormalizedTable)
+            return predIctedValues;
+        }
+
+        private Dictionary<int, double> CreatePredictions(Dictionary<int, IDictionary<string, double>> postVectorTable,
+                                                          Dictionary<string, double> userVector)
+        {
+            var predictions = new Dictionary<int, double>();
+
+            foreach (var postVector in postVectorTable)
             {
                 double dotProduct = 0;
 
@@ -85,9 +114,9 @@
 
         private void BuildRepositories()
         {
-            posts = postService.GetAll();
-            hashTags = hashTagService.GetAll();
-            likes = likeService.GetAll();
+            this.posts = postService.GetAll();
+            this.hashTags = hashTagService.GetAll();
+            this.likes = likeService.GetAll();
         }
     }
 }

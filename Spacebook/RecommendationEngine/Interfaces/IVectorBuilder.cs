@@ -4,7 +4,7 @@ namespace Spacebook.RecommendationEngine.Interfaces
 {
     public interface IVectorBuilder
     {
-        void LoadData(List<Post> posts, List<Likes> likes, List<HashTag> hashTags);
+        void LoadData(IEnumerable<Post> posts, IEnumerable<Likes> likes, IEnumerable<HashTag> hashTags);
 
         Dictionary<int, IDictionary<string, double>> GetPostVectorTable();
 

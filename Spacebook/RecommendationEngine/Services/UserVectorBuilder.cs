@@ -10,7 +10,7 @@
         private IEnumerable<Likes>? likes;
         private int userProfileId;
 
-        public void LoadData(List<Post> posts, List<Likes> likes, List<HashTag> hashTags, int userProfileId)
+        public void LoadData(IEnumerable<Post> posts, IEnumerable<Likes> likes, IEnumerable<HashTag> hashTags, int userProfileId)
         {
             this.allTagNames = hashTags.Select(_ => _.HashTagText).Distinct();
             this.posts = posts;

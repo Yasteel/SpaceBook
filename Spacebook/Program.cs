@@ -60,6 +60,8 @@ internal class Program
         builder.Services.AddScoped<ISearchService, SearchService>();
 
         builder.Services.AddScoped<IRecommdationService, RecommendationService>();
+        builder.Services.AddScoped<IVectorBuilder, VectorBuilder>();
+        builder.Services.AddScoped<IUserVectorBuilder, UserVectorBuilder>();
 
         
         builder.Services.AddHttpContextAccessor();

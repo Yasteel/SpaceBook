@@ -4,13 +4,9 @@
 
     public interface IUserVectorBuilder
     {
-        void LoadData(List<string> allTagNames,
-                      List<Post> posts,
-                      List<Likes> likes,
-                      List<HashTag> hashTags,
-                      int userProfileId);
+        void LoadData(IEnumerable<Post> posts, IEnumerable<Likes> likes, IEnumerable<HashTag> hashTags, int userProfileId);
 
-        Dictionary<string, double> GetUserVector(
+        public Dictionary<string, double> GetUserVector(
             Dictionary<int, IDictionary<string, double>> postVectorTable);
     }
 }
