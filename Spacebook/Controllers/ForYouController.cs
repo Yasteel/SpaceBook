@@ -4,7 +4,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Spacebook.Interfaces;
     using Spacebook.Models;
-    using Spacebook.RecommendationEngine;
+    using Spacebook.RecommendationEngine.Interfaces;
     using Spacebook.Services;
     public class ForYouController : Controller
     {
@@ -28,7 +28,7 @@
             var userEmail = userManager.GetUserName(User);
             var profile = profileService.GetByEmail(userEmail);
 
-            recommenderService.BuildPostBinaryVectors(profile.UserId);
+            recommenderService.GetPosts((int) profile.UserId);
             return View();
         }
     }

@@ -7,7 +7,8 @@ using Spacebook.Data;
 using Spacebook.Hubs;
 using Spacebook.Interfaces;
 using Spacebook.Models;
-using Spacebook.RecommendationEngine;
+using Spacebook.RecommendationEngine.Interfaces;
+using Spacebook.RecommendationEngine.Services;
 using Spacebook.Services;
 using Spacebook.Validation;
 
