@@ -297,3 +297,19 @@ function showContacts(postId) {
 
     $(".send-post-modal").attr("data-visible", "true");
 }
+
+function test(searchTerm) {
+    $.ajax({
+        url: "/Search/SearchUsers",
+        method: "GET",
+        data: {
+            searchTerm: searchTerm
+        },
+        success: (response) => {
+            console.log(response);
+        },
+        error: (xhr, textStatus, errorThrown) => {
+            console.log(errorThrown);
+        }
+    });
+}
