@@ -1,4 +1,12 @@
-﻿@model Profile
+﻿@using Newtonsoft.Json;
+@model Profile
+
+@{
+    var httpClient = new HttpClient();
+    var response = await httpClient.GetAsync($"https://localhost:7232/api/PostWebApi?id={Model.UserId}");
+    var responseData = await response.Content.ReadAsStringAsync();
+    var posts = JsonConvert.DeserializeObject<List<Post>>(responseData);
+}
 
 <div class="row">
     <div class="col-2">
@@ -19,7 +27,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <p>0 posts</p>
+                <p>@posts.Count() posts</p>
             </div>
             <div class="col">
                 <p>13 followers</p>
@@ -42,3 +50,51 @@
 </div>
 <hr />
 
+@{
+    if (posts != null && posts.Count() > 0)
+    {
+        <div class="container">
+            @for (int i = 0; i < posts.Count; i++)
+            {
+                if (i % 3 == 0)
+                {
+                    @:<div class="row">
+                }
+
+                var post = posts[i];
+
+                <div class="col-md-4" onclick="showPopup(@post.PostId)">
+                    <div class="item-content">
+                        <img src="@post.MediaUrl" width="100%" />
+                    </div>
+                </div>
+
+                if ((i + 1) % 3 == 0 || i == posts.Count - 1)
+                {
+                    @:</div>
+                }
+                <br />
+            }
+        </div>
+    }
+    else
+    {
+        <div  class="d-flex justify-content-center align-items-center" style="height: 200px;">
+            <h2>No Posts Yet</h2>
+        </div>
+    }
+}
+
+<script>
+    function showPopup(Id)
+    {
+        console.log("we got here", Id)
+    }
+</script>
+
+<style>
+    .item-content img {
+        height: 300px;
+        object-fit: cover;
+    }
+</style>

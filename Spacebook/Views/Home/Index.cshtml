@@ -49,11 +49,15 @@
                 {
                     if (content.Post.Type.Contains("image"))
                     {
-                        <image src="@content.Post.MediaUrl"></image>
+                        <div class="item-content">
+                            <image src="@content.Post.MediaUrl" width="100%"></image>
+                        </div>
                     }
                     else
                     {
-                        <video src="@content.Post.MediaUrl"></video>
+                        <div class="item-content">
+                            <video src="@content.Post.MediaUrl" width="100%"></video>
+                        </div>
                     }
                 }
             </div>

@@ -6,14 +6,20 @@
 
 .profile-image {
     display: inline-block;
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     border: black;
     background-color: aquamarine;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
+}
+
+.item-content img {
+    height: 500px;
+    object-fit: cover;
+    background-color:black;
 }
 
 #contentCard {
@@ -46,7 +52,7 @@
 #titleText {
     color: darkblue;
     font-weight: bold;
-    font-style: italic;
+    font-size:15px;
 }
 
 #feedCaption {
