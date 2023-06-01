@@ -1,3 +1,141 @@
-﻿@model Post
+﻿@using Newtonsoft.Json;
+@model Post
 
-<p>Media URL: <a href="@Model.MediaUrl">@Model.MediaUrl</a></p>
+@{
+    var httpClient = new HttpClient();
+
+    var response = await httpClient.GetAsync($"https://localhost:7232/api/ProfileWebApi?id={Model.ProfileId}");
+    var responseData = await response.Content.ReadAsStringAsync();
+    var profile = JsonConvert.DeserializeObject<Profile>(responseData);
+
+    var postsResponse = await httpClient.GetAsync($"https://localhost:7232/api/PostWebApi?id={Model.ProfileId}");
+    var postsResponseData = await postsResponse.Content.ReadAsStringAsync();
+    var posts = JsonConvert.DeserializeObject<List<Post>>(postsResponseData);
+}
+
+<link rel="stylesheet" type="text/css" href="~/css/ViewPost.css">
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="contentCard" class="card bg-light mb-3">
+    <div class="row">
+        <div class="col-8">
+            <div id="feedMedia" class="item-content">
+                @if (Model.Type != null)
+                {
+                    if (Model.Type.Contains("image"))
+                    {
+                        <image src="@Model.MediaUrl" width="100%"></image>
+                    }
+                    else
+                    {
+                        <video src="@Model.MediaUrl"></video>
+                    }
+                }
+            </div>
+        </div>
+        <div class="col" style="width:100%">
+            <br />
+            <div class="row">
+                <div class="col-2">
+                    <image class="profile-image" src="@profile.ProfilePicture"></image>
+                </div>
+                <div class="col">
+                    <h3>@profile.DisplayName</h3>
+                </div>
+            </div>
+            <hr />
+            <div>
+                <div id="feedCaption">
+                    <br />
+                    <h5>@Model.Caption</h5>
+                    <p>@Model.Timestamp</p>
+                </div>
+                <br />
+           @*     <div class="contentCounters">
+                    <p>
+                        <span>Likes &nbsp @content.Likes.Count()</span>
+                        <span>Comments &nbsp @content.Comments.Count()</span>
+                    </p>
+                </div>
+                <div>
+                    <span>
+                        <i class="fa fa-thumbs-up"></i>
+                    </span>
+                    <span>
+                        <i class='far fa-comment'></i>
+                    </span>
+                    <span>
+                        <i class="fa-regular fa-paper-plane"></i>
+                    </span>
+                </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<hr />
+<br />
+
+@{
+    if (posts != null && posts.Count() > 0)
+    {
+        <p>More posts from <span style="font-weight:700">@profile.DisplayName</span></p>
+        <div class="container">
+            @for (int i = 0; i < posts.Count; i++)
+            {
+                if (i % 3 == 0)
+                {
+                    @:<div class="row">
+                }
+
+                var post = posts[i];
+
+                <div class="col-md-4" onclick="showPost(@post.PostId)">
+                    <div class="list-content">
+                        @if (@post.Type != null)
+                        {
+                            if (@post.Type.Contains("image"))
+                            {
+                                <image src="@post.MediaUrl"  width="100%"></image>
+                            }
+                            else
+                            {
+                                <video src="@post.MediaUrl"  width="100%"></video>
+                            }
+                        }
+                    </div>
+                </div>
+
+                if ((i + 1) % 3 == 0 || i == posts.Count - 1)
+                {
+                    @:</div>
+                }
+                <br />
+            }
+        </div>
+    }
+    else
+    {
+        <div  class="d-flex justify-content-center align-items-center" style="height: 200px;">
+            <h2>No Posts Yet</h2>
+        </div>
+    }
+}
+
+<script>
+    function showPost(Id)
+    {
+        console.log("we got here", Id)
+        window.location.href = '@Url.Action("ViewPost", "Posts")' + '?id=' + Id;
+    }
+</script>
+
+<style>
+    .list-content img {
+        height: 300px;
+        object-fit: cover;
+    }
+</style>

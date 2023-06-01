@@ -63,9 +63,19 @@
 
                 var post = posts[i];
 
-                <div class="col-md-4" onclick="showPopup(@post.PostId)">
+                <div class="col-md-4" onclick="showPost(@post.PostId)">
                     <div class="item-content">
-                        <img src="@post.MediaUrl" width="100%" />
+                        @if (@post.Type != null)
+                        {
+                            if (@post.Type.Contains("image"))
+                            {
+                                <image src="@post.MediaUrl"  width="100%"></image>
+                            }
+                            else
+                            {
+                                <video src="@post.MediaUrl"  width="100%"></video>
+                            }
+                        }
                     </div>
                 </div>
 
@@ -86,9 +96,10 @@
 }
 
 <script>
-    function showPopup(Id)
+    function showPost(Id)
     {
         console.log("we got here", Id)
+        window.location.href = '@Url.Action("ViewPost", "Posts")' + '?id=' + Id;
     }
 </script>
 
