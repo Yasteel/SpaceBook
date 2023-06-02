@@ -12,8 +12,8 @@ using Spacebook;
 namespace Spacebook.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230531065532_ApplicationDatabase")]
-    partial class ApplicationDatabase
+    [Migration("20230602020049_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

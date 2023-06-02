@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Spacebook.Migrations.AuthDb
 {
     /// <inheritdoc />
-    public partial class AuthDatabase : Migration
+    public partial class AuthMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

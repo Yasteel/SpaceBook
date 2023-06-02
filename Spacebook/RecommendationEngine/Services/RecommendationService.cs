@@ -33,7 +33,7 @@
             this.userVectorBuilder = userVectorBuilder;
         }
 
-        public List<Post> GetPosts(int userProfileId)
+        public IEnumerable<Post> GetPosts(int userProfileId)
         {
             BuildRepositories();
 
@@ -47,6 +47,12 @@
             };
 
             var predictions = GetPredictionValues(userProfileId);
+
+            if (allPredicationsZero(predictions))
+            {
+                return new List<Post>();
+            }
+
             var sortedPosts = GetSortedPosts(predictions);
             var filteredPosts = GetFilteredPosts(sortedPosts, userProfileId);
 
@@ -114,9 +120,14 @@
 
         private void BuildRepositories()
         {
-            this.posts = postService.GetAll();
+            this.posts = postService.GetAll().Where(_ => _.Type != "Comment"); ;
             this.hashTags = hashTagService.GetAll();
             this.likes = likeService.GetAll();
+        }
+
+        private bool allPredicationsZero(Dictionary<int, double> predications)
+        {
+            return predications.All(_ => _.Value == 0);
         }
     }
 }
