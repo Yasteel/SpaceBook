@@ -81,67 +81,6 @@
 <body>
     @if (SignInManager.IsSignedIn(User))
     {
-        @*<div class="row">
-            <div class="col-2">
-                <nav class="navbar navbar-expand-sm navbar-toggleable-md">
-                    <div class="container-fluid">
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                                aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="row navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                            <div class="col-auto bg-dark">
-                                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                                    <h2>Spacebook</h2>
-                                    <hr />
-                                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                                        <li class="nav-item"><a href="#" class="nav-link">Home / Feed</a></li>
-                                        <br />
-                                        <li class="nav-item">
-                                            <a class="nav-link" asp-controller="Profile" asp-action="Index">Profile</a>
-                                        </li>
-                                        <br />
-                                        <li class="nav-item">
-                                            <a class="nav-link" onclick="onCreateButtonClicked()" data-toggle="modal" data-target="#uploadMediaModal">
-                                                Create
-                                            </a>
-                                        </li>
-                                        <br />
-                                        <li>
-                                            <input type="text" id="searchTerm" placeholder="Search posts..." />
-                                            <ul id="results"></ul>
-                                            
-                                        </li>
-                                        <br />
-                                        <li class="nav-item"><a href="#contact" class="nav-link">Notifications</a></li>
-                                        <br />
-                                        <li class="nav-item"><a asp-controller="ForYou" asp-action="Index" class="nav-link">For You</a></li>
-                                        <br />
-                                        <li class="nav-item"><a asp-controller="Messages" asp-action="Index" class="nav-link">Messages</a></li>
-                                        <br />
-                                        <li class="nav-item"><a href="#contact" class="nav-link">Share</a></li>
-                                        <br />
-                                        <partial name="_LoginPartial" />
-                                    </ul>
-                                    
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </nav>
-            </div>
-			<div class="col navbar">
-				
-            </div>
-            <div class="col">
-                <main class="container">
-                    @RenderBody()
-                </main>
-            </div>
-        </div>*@
-
         <div class="root">
 			<div class="nav">
                 <div class="header">
@@ -152,13 +91,13 @@
                 <div class="body">
 					<ul>
 						<li>
-							<a asp-controller="Home" asp-action="Index" class="active">
+							<a asp-controller="Home" asp-action="Index" id="home-link">
                                 <span><i class="fa-solid fa-house"></i></span>
                                 Home
 							</a>
 						</li>
 						<li>
-							<a asp-controller="Profile" asp-action="Index">
+							<a asp-controller="Profile" asp-action="Index" id="profile-link" >
                                 <span><i class="fa-solid fa-user"></i></span>
                                 Profile
 							</a>
@@ -170,7 +109,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="">
+							<a href="" id="notification-link">
                                 <span><i class="fa-solid fa-bell"></i></span>
                                 Notification
 							</a>
@@ -182,7 +121,7 @@
 							</a>
 						</li>*@
 						<li>
-							<a asp-controller="Messages" asp-action="Index">
+							<a asp-controller="Messages" asp-action="Index" id="message-link">
                                 <span><i class="fa-solid fa-message"></i></span>
                                 Messages
 							</a>

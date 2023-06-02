@@ -93,7 +93,6 @@
 });
 
 function showContentFeed(feed) {
-    console.log("awe");
     $("main.container").html('');
 
     var contentFeed = "";
@@ -109,14 +108,14 @@ function showContentFeed(feed) {
                 <span>
                     <image class="profile-image" src="${v.Profile.ProfilePicture}"></image>
                 </span>
-                <span id="titleText">${v.Profile.Email}</span>
+                <span id="titleText">${v.Profile.DisplayName}</span>
             </p>
             <p>${v.Post.Timestamp}</p>
         </div>
 
         <div id="contentBody" class="card-body">
             <div id="feedCaption">
-                <textarea>${v.Post.Caption}</textarea>
+                <p class="caption">${v.Post.Caption}</p>
             </div>
             <div id="feedMedia">`;
 
@@ -125,7 +124,7 @@ function showContentFeed(feed) {
                 contentFeed += `<image src="${v.Post.MediaUrl}"></image>`;
             }
             else {
-                contentFeed += `<video src="${v.Post.MediaUrl}"></video>`;
+                contentFeed += `<video src="${v.Post.MediaUrl}" controls></video>`;
             }
         }
 
@@ -216,9 +215,14 @@ function showComments(postId, response) {
         comments +=
             `
                 <div class="comment-box">
-                    <p>${v.Profile.DisplayName}</p>
-                    <p>${v.Post.Caption}</p>
-                    <p>${v.Post.Timestamp}</p>
+                    <div>
+                        <p>${v.Profile.DisplayName}</p>
+                        <p>${v.Post.Caption}</p>                    
+                    </div>
+                    <div>
+                        <p>${v.Post.Timestamp}</p>
+                    </div>
+
                 </div>
             `;
     });

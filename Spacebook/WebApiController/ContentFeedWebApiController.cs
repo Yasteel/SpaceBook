@@ -39,7 +39,7 @@ namespace Spacebook.WebApiController
             List<object> contentFeeds = new List<object>();
 
 			var posts = postService.GetAll().Where(_ => _.Type != "Comment");
-
+			posts = posts.OrderByDescending(_ => _.Timestamp);
 			foreach (var post in posts)
 			{
 				var contentFeed = GetPostInfo(post, thisUserProfile.UserId);
