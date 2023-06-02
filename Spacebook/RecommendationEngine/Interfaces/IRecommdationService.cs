@@ -4,6 +4,6 @@ namespace Spacebook.RecommendationEngine.Interfaces
 {
     public interface IRecommdationService
     {
-        List<Post> GetPosts(int userProfileId);
+        IEnumerable<Post> GetPosts(int userProfileId);
     }
 }

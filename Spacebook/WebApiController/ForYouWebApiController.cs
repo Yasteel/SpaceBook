@@ -40,7 +40,13 @@
 
             List<object> contentFeeds = new List<object>();
 
-            var posts = recommenderService.GetPosts((int)thisUserProfile.UserId);
+            var posts = recommenderService.GetPosts((int) thisUserProfile.UserId);
+
+            if (!posts.Any())
+            {
+                posts = postService.GetAll().Where(_ => _.Type != "Comment");
+                posts = posts.OrderByDescending(_ => _.Timestamp);
+            }
 
             foreach (var post in posts)
             {

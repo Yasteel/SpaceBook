@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Spacebook.Interfaces;
-using Spacebook.Models;
-using Spacebook.ViewModel;
-
-namespace Spacebook.WebApiController
+﻿namespace Spacebook.WebApiController
 {
-	public class ContentFeedWebApiController : Controller
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
+    using Spacebook.Interfaces;
+    using Spacebook.Models;
+    public class ContentFeedWebApiController : Controller
 	{
 		private readonly IPostService postService;
 		private readonly IProfileService profileService;
@@ -39,8 +37,10 @@ namespace Spacebook.WebApiController
             List<object> contentFeeds = new List<object>();
 
 			var posts = postService.GetAll().Where(_ => _.Type != "Comment");
+            posts = posts.OrderByDescending(_ => _.Timestamp);
 
-			foreach (var post in posts)
+
+            foreach (var post in posts)
 			{
 				var contentFeed = GetPostInfo(post, thisUserProfile.UserId);
 				contentFeeds.Add(contentFeed);
@@ -74,7 +74,6 @@ namespace Spacebook.WebApiController
 			{
 				time = "Posted on " + post.Timestamp.ToString("dd/MM/yyyy");
 			}
-
 
 
 			var contentFeed = new

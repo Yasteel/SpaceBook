@@ -33,7 +33,7 @@
             this.userVectorBuilder = userVectorBuilder;
         }
 
-        public List<Post> GetPosts(int userProfileId)
+        public IEnumerable<Post> GetPosts(int userProfileId)
         {
             BuildRepositories();
 
