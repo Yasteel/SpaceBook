@@ -47,6 +47,12 @@
             };
 
             var predictions = GetPredictionValues(userProfileId);
+
+            if (allPredicationsZero(predictions))
+            {
+                return new List<Post>();
+            }
+
             var sortedPosts = GetSortedPosts(predictions);
             var filteredPosts = GetFilteredPosts(sortedPosts, userProfileId);
 
@@ -117,6 +123,11 @@
             this.posts = postService.GetAll().Where(_ => _.Type != "Comment"); ;
             this.hashTags = hashTagService.GetAll();
             this.likes = likeService.GetAll();
+        }
+
+        private bool allPredicationsZero(Dictionary<int, double> predications)
+        {
+            return predications.All(_ => _.Value == 0);
         }
     }
 }
