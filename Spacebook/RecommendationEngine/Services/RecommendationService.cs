@@ -114,7 +114,7 @@
 
         private void BuildRepositories()
         {
-            this.posts = postService.GetAll();
+            this.posts = postService.GetAll().Where(_ => _.Type != "Comment"); ;
             this.hashTags = hashTagService.GetAll();
             this.likes = likeService.GetAll();
         }
