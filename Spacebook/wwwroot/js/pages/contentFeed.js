@@ -149,9 +149,6 @@
 });
 
 function showContentFeed(feed) {
-    console.log("awe");
-    $("main.container").html('');
-
     $(".main-container").html('');
 
     var contentFeed = "";
