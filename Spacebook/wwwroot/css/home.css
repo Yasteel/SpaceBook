@@ -103,21 +103,100 @@ i.fa-thumbs-up[data-liked="true"]{
     height: 100%;
 }
 
-.comment{
+.send-post-modal[data-visible="false"] {
+    display: none;
+}
+
+.send-post-modal[data-visible="true"] {
+    display: flex;
+}
+
+.send-post-modal {
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    z-index: 2;
+}
+
+.modal-container{
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    border: 1px solid white;
+}
+
+.modal-container > div{
+    padding: 1rem;
+    background: white;
+    color: black;
+
+}
+
+.modal-container .head{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid lightgray;
+}
+
+.modal-container .body{
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid white;
+}
+
+.modal-container .body .contact{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: .2rem;
+    padding: .5rem;
+    border-bottom: 1px solid lightgray;
+}
+
+.modal-container button{
+    background: #186ef0;
+    border: none;
+    outline: none;
+    padding: .6rem 1.2rem;
+    border-radius: 5px;
+    color: white;
+}
+
+
+.modal-container .footer{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.send-post-modal p{
+    margin: 0;
+    padding: 0;
+    font-size: .9rem;
+}
+
+.comment {
     margin-top: 1rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
-.comment #userComment{
+.comment #userComment {
     min-height: 75px;
     margin-bottom: 1rem;
     border: 1px solid black;
     padding: 1rem;
 }
 
-.comment button.post-comment{
+.comment button.post-comment {
     padding: .5rem;
     border: 1px solid var(--primary);
     border-radius: 5px;
@@ -127,12 +206,12 @@ i.fa-thumbs-up[data-liked="true"]{
     transition: background ease-in-out 300ms;
 }
 
-.comment button.post-comment:hover{
+.comment button.post-comment:hover {
     background: rgba(var(--primary-rgb), 0);
     color: var(--primary);
 }
 
-.comment-box{
+.comment-box {
     margin: 2rem 0;
     padding: 1rem;
     display: flex;
@@ -140,6 +219,3 @@ i.fa-thumbs-up[data-liked="true"]{
     box-shadow: 0 0 5px 0 lightgray;
 }
 
-.comment-box div:first-child{
-
-}

@@ -10,7 +10,9 @@
         }
     });
 
-    $(document).on("click", ".fa.fa-thumbs-up", function (e) {
+    // Event Handlers
+
+    $(document).on("click", ".fa.fa-thumbs-up", (e) => {
         var liked = $(e.target).attr("data-liked");
         var postId = $(e.target).closest("#contentCard").attr("data-postId");
 
@@ -108,10 +110,46 @@
         
     });
 
+    // For Modal
+    $(document).on("click", ".far.fa-paper-plane", (e) => {
+        var postId = $(e.target).closest("#contentCard").attr("data-postId");
+        showContacts(postId);
+    });
+
+    $(document).on("click", ".send-post-modal button.cancel", (e) => {
+        $(".send-post-modal").attr("data-visible", "false");
+        $(".send-post-modal .body").html("");
+    });
+
+    $(document).on("click", ".fa-solid.fa-x", (e) => {
+        $(".send-post-modal button.cancel").click();
+    });
+    
+    $(document).on("click", "button.share", (e) => {
+        var username = $(e.target).attr("data-username");
+        var postId = $(e.target).closest(".send-post-modal").attr("data-postId");
+
+        $.ajax({
+            url: "/MessageWebApi/SharePost",
+            method: "POST",
+            data: {
+                username: username,
+                postId: JSON.parse(postId)
+            },
+            success: (response) => {
+                console.log("post Shared");
+            },
+            error: (xhr, textStatus, errorThrown) => {
+                console.log(errorThrown);
+            }
+        });
+
+    });
+
 });
 
 function showContentFeed(feed) {
-    $("main.container").html('');
+    $(".main-container").html('');
 
     var contentFeed = "";
 
@@ -162,7 +200,7 @@ function showContentFeed(feed) {
                 <span>
                     <i class='far fa-comment'></i>
                  </span>
-                 <span><i class="fa-regular fa-paper-plane"></i></span>
+                 <span><i class="far fa-paper-plane"></i></span>
             </div>
             <div class="comment" data-visible="false">
                 
@@ -188,7 +226,7 @@ function showContentFeed(feed) {
     });
 
 
-    $("main.container").append(contentFeed);
+    $(".main-container").append(contentFeed);
 }
 
 function updatePostLikeCount(postId) {
@@ -246,4 +284,54 @@ function showComments(postId, response) {
     });
 
     $(`#contentCard[data-postId="${postId}"]`).find(".comments").append(comments);
+}
+
+function showContacts(postId) {
+    $(".send-post-modal").attr("data-postId", postId);
+
+    $.ajax({
+        url: "/MessageWebApi/GetContacts",
+        method: "GET",
+        success: (response) => {
+            var contacts = JSON.parse(response);
+            $(".send-post-modal .body").html("");
+            var contactList = "";
+
+            $.each(contacts, (i, v) => {
+                contactList +=
+                    `
+                    <div class="contact" >
+				        <div class="information">
+					        <p class="username">${v.Email}</p>
+					        <p class="display-name">${v.DisplayName}</p>
+				        </div>
+				        <button class="share" data-username="${v.Email}">Share</button>
+			        </div>
+                    `;
+            });
+
+            $(".send-post-modal .body").append(contactList);
+        },
+        error: (xhr, textStatus, errorThrown) => {
+            console.log(errorThrown);
+        }
+    });
+
+    $(".send-post-modal").attr("data-visible", "true");
+}
+
+function test(searchTerm) {
+    $.ajax({
+        url: "/Search/SearchUsers",
+        method: "GET",
+        data: {
+            searchTerm: searchTerm
+        },
+        success: (response) => {
+            console.log(response);
+        },
+        error: (xhr, textStatus, errorThrown) => {
+            console.log(errorThrown);
+        }
+    });
 }

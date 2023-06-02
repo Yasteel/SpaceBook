@@ -8,8 +8,8 @@ using System.Linq;
 
 namespace Spacebook.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    //[Route("api/[controller]")]
+    //[ApiController]
     public class SearchController : ControllerBase
     {
         private readonly ISearchService _searchService;
@@ -26,6 +26,14 @@ namespace Spacebook.Controllers
 
             return Ok(_searchService.Searching(lowerCaseSearchTerm));
         }
-    }
+
+		[HttpGet]
+		public object SearchUsers(string searchTerm)
+		{
+			var lowerCaseSearchTerm = searchTerm.ToLower();
+
+			return Ok(_searchService.users(lowerCaseSearchTerm));
+		}
+	}
 }
 
