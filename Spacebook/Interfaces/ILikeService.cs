@@ -5,5 +5,7 @@
 	public interface ILikeService : IGenericService<Likes>
 	{
 		public int GetLikeCount(int postId);
+
+		public string GetEmail(int postId);
 	}
 }

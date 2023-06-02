@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 
 using Microsoft.EntityFrameworkCore;
-
+using OPENAI.Data;
 using Spacebook;
 using Spacebook.Data;
 using Spacebook.Hubs;
@@ -50,6 +50,7 @@ internal class Program
         builder.Services.AddScoped<ISharedPostService, SharedPostService>();
         builder.Services.AddScoped<ICommentService, CommentService>();
         builder.Services.AddScoped<ILikeService, LikeService>();
+        builder.Services.AddScoped<INotificationService, NotificationService>();
 
         builder.Services.AddScoped<IValidator<Post>, PostValidator>();
 
@@ -95,6 +96,8 @@ internal class Program
                 name: "defaultNoUser",
                 pattern: "{controller=Auth}/{action=Index}/{id?}")
                 .RequireAuthorization(); // Restrict access to this route to authenticated users
+
+            endpoints.MapHub<NotificationHub>("/notificationHub");
         });
 
 		app.MapHub<ConnectionHub>("/ConnectionHub");

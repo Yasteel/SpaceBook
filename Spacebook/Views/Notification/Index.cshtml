@@ -1,0 +1,36 @@
+﻿<h2>This is where we notify</h2>
+
+@(
+Html.DevExtreme().DataGrid<Spacebook.Models.Notification>()
+    .ID("gridContainer")
+    .ShowBorders(true)
+    .Editing(editing =>
+    {
+        editing.Mode(GridEditMode.Form);
+        editing.UseIcons(true);
+        editing.Texts(_ => _.AddRow("A"));
+        editing.RefreshMode(GridEditRefreshMode.Reshape);
+        editing.AllowDeleting(true);
+  
+    })
+
+    .Toolbar(toolbar => {
+        toolbar.Items(items => {
+            items.Add()
+                .Name("addRowButton")
+                .ShowText(ToolbarItemShowTextMode.Always);
+        });
+    })
+
+    .Columns(columns =>
+    {
+        columns.AddFor(_ => _.NotificationText);
+    })
+
+    .DataSource(_ => _.Mvc()
+        .Controller("NotificationWebApi")
+        .LoadAction("Get")
+        .Key("NotificationId")
+    )
+
+)

@@ -15,7 +15,6 @@ namespace Spacebook.Services
         public SearchService(ApplicationDbContext context, AuthDbContext authDbContext) 
         {
             this._context = context;
-            this._authContext = authDbContext;
         }
 
         public List<SearchResult> Searching(string searchTerm) 
@@ -25,13 +24,9 @@ namespace Spacebook.Services
 
         public List<SearchResult> post(string lowerCaseSearchTerm) 
         {
-            var away = _context.Post
-                .Where(post => post.Caption.ToLower().Contains(lowerCaseSearchTerm))
-                .Select(post => new SearchResult { Type = "Post", Text = post.PostId.ToString() })
-                .ToList();
             return _context.Post
                 .Where(post => post.Caption.ToLower().Contains(lowerCaseSearchTerm))
-                .Select(post => new SearchResult { Type = "Post", Text = post.PostId.ToString() })
+                .Select(post => new SearchResult { Type = "#" +post.Caption, Text = post.PostId.ToString() })
                 .ToList();
         }
 
@@ -46,9 +41,9 @@ namespace Spacebook.Services
 
         public List<SearchResult> users(string lowerCaseSearchTerm) 
         {
-           return _authContext.Users
-                .Where(user => user.UserName.ToLower().Contains(lowerCaseSearchTerm))
-                .Select(user => new SearchResult { Type = "User", Text = user.Email })
+            return _context.Profile
+                .Where(user => user.Email.ToLower().Contains(lowerCaseSearchTerm) || user.DisplayName.ToLower().Contains(lowerCaseSearchTerm))
+                .Select(user => new SearchResult { Type = "@" +user.DisplayName, Text = user.Email})
                 .ToList();
         }
 

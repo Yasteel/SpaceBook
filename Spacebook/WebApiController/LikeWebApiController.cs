@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using OPENAI.Data;
 using Spacebook.Interfaces;
 using Spacebook.Models;
 
@@ -11,24 +13,33 @@ namespace Spacebook.WebApiController
 		private readonly IPostService postService;
 		private readonly IProfileService profileService;
 		private readonly UserManager<SpacebookUser> userManager;
+		private readonly IHubContext<NotificationHub> _hubContext;
+		private readonly INotificationService notificationService;
+		
 
 		public LikeWebApiController
         (
             ILikeService likeService,
 			IPostService postService,
 			IProfileService profileService,
-			UserManager<SpacebookUser> userManager
+			UserManager<SpacebookUser> userManager,
+			IHubContext<NotificationHub> hubContext,
+			INotificationService notificationService
         )
         {
 			this.likeService = likeService;
 			this.postService = postService;
 			this.profileService = profileService;
 			this.userManager = userManager;
+			this._hubContext = hubContext;
+			this.notificationService = notificationService;
 		}
 
 		[HttpPost]
 		public async Task<object> Like(int postId)
 		{
+			bool success;
+
 			var spacebookUser = (SpacebookUser)await this.userManager.GetUserAsync(User);
 			var thisUserProfile = this.profileService.GetByEmail(spacebookUser.Email);
 
@@ -39,7 +50,34 @@ namespace Spacebook.WebApiController
 				Timestamp = DateTime.UtcNow,
 			});
 
-			return Ok();
+            var email = this.likeService.GetEmail(postId);
+			var username = this.profileService.GetByUsername(spacebookUser.UserName);
+			//await _hubContext.Clients.User(email).SendAsync(spacebookUser + " has like your post");
+
+			//this.likeService.Add(new Notification
+			//             {
+			//                 Username = email,
+			//                 NotificationText = spacebookUser + " has liked your post"
+			//             });
+
+			this.notificationService.Add(new Notification
+			{
+                Username = email,
+                NotificationText = username + " has liked your post"
+            });
+
+			//try
+			//{
+   //             await _hubContext.Clients.User(email).SendAsync(spacebookUser + " has like your post");
+			//	success = true;
+
+   //         }
+			//catch (Exception ex) 
+			//{
+			//	success = false;	
+			//}
+
+            return Ok();
 		}
 
 		[HttpPost]

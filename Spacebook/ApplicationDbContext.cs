@@ -28,5 +28,7 @@
         public DbSet<HashTag> HashTags { get; set; }
 
         public DbSet<SharedPost> SharedPosts { get; set; }
+
+        public DbSet<Notification> Notification { get; set; }
     }
 }

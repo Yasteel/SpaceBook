@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Spacebook.Migrations
+namespace Spacebook.Migrations.ApplicationDb
 {
     /// <inheritdoc />
-    public partial class ApplicationDatabase : Migration
+    public partial class AuthDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

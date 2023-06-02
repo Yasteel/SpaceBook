@@ -16,7 +16,7 @@ $(document).ready(function () {
                     $('#results').append(
                         '<li class="list-group-item">' +
                         '<h5>' + search.Type + '</h5>' +
-                        `<a href="https://localhost:7232/${search.Type.toLowerCase() == "user" ? "Profile/ViewProfile?email=" : "Posts/ViewPost?PostId="}${search.Text}"> View Post </a>` +
+                        `<a href="https://localhost:7232/${search.Type.charAt(0) == "@" ? "Profile/ViewProfile?email=" : "Posts/ViewPost?PostId="}${search.Text}"> View Post </a>` +
                         '</li>'
                     );
                 });

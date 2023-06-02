@@ -1,4 +1,12 @@
 ﻿@model Profile
 
-<p>@Model.Email</p>
+<div style="color: blue; font-size: 20px;">@Model.DisplayName</div>
+<div style="color: red; font-size: 15px;">@Model.Email</div>
+<p style="font-style: italic;">@Model.Bio</p>
+<img src="@Model.ProfilePicture" style="width: 100px; height: 100px;" />
+<div style="color: green; font-size: 18px;">@Model.Gender</div>
+<div style="color: purple; font-size: 16px;">@Model.BirthDate</div>
+
+<div id="notificationArea"></div>
+<script src="~/js/pages/notification.js"></script>
 

@@ -1,0 +1,28 @@
+﻿.display-name {
+    color: blue;
+    font-size: 20px;
+}
+
+.email {
+    color: red;
+    font-size: 15px;
+}
+
+.bio {
+    font-style: italic;
+}
+
+.profile-picture {
+    width: 100px;
+    height: 100px;
+}
+
+.gender {
+    color: green;
+    font-size: 18px;
+}
+
+.birth-date {
+    color: purple;
+    font-size: 16px;
+}
