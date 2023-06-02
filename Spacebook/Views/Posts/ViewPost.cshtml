@@ -19,6 +19,11 @@
     ViewData["Title"] = "Home Page";
 }
 
+@section Styles{
+    <link href="~/css/ViewPosts.css" rel="stylesheet" />
+}
+
+
 <div id="contentCard" class="card bg-light mb-3">
     <div class="row">
         <div class="col-8">
@@ -27,11 +32,11 @@
                 {
                     if (Model.Type.Contains("image"))
                     {
-                        <image src="@Model.MediaUrl" width="100%"></image>
+                        <img src="@Model.MediaUrl" width="100%" />
                     }
                     else
                     {
-                        <video src="@Model.MediaUrl"></video>
+                        <video src="@Model.MediaUrl" controls></video>
                     }
                 }
             </div>
