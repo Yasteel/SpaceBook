@@ -1,0 +1,131 @@
+﻿main.container div > .row{
+    border: 1px solid black;
+}
+
+main.container {
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+main.container #editProfile > 
+.row {
+    width: 500px;
+    padding: 1.5rem 1rem;
+    margin-top: 2rem;
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 0 5px 0px var(--primary);
+}
+
+
+#editProfile > 
+.row .header {
+    border-bottom: 1px solid lightgray;
+    margin-bottom: .5rem;
+}
+
+#editProfile > 
+.row .header h1 {
+    text-align: center;
+    font-family: 'Poppins', Helvetica, sans-serif;
+    text-transform: capitalize;
+}
+
+#editProfile > 
+.row .profileInfo{
+    display: grid;
+    place-items: center;
+}
+
+#editProfile > 
+.row .profileInfo #imageEdit{
+    position: relative;
+    cursor: pointer;
+}
+
+#editProfile > 
+.row .profileInfo #imageEdit::after {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f044";
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    color: black;
+}
+
+#editProfile > 
+.row .profileInfo #imageEdit:hover::after{
+    color: var(--primary);
+}
+
+#editProfile > 
+.row .profileInfo a:is(:hover, :focus){
+    color: var(--primary);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+
+form .row{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+form .row.joined{
+    flex-direction: row;
+}
+
+form .row label{
+    display: block;
+}
+
+form .row :is(input, select){
+    padding: .6rem;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid var(--primary);
+    outline: none;
+    transition: border-left-width ease-in-out 200ms;
+}
+
+form > .row :is(input, select):is(:focus) {
+    border-left-width: 10px;
+}
+
+form .row.text-danger ul{
+    list-style-type: none;
+    text-align: center;
+}
+
+#editProfile button[type="submit"] {
+    width: 100%;
+    border: 1px solid #33ff58;
+    border-radius: 5px;
+    background: #33ff58;
+    color: white;
+    font-weight: 500;
+    padding: .6rem;
+    transition: background ease-in-out 200ms;
+}
+
+#editProfile button[type="submit"]:is(:hover,:focus) {
+    background-color: transparent;
+    color: #33ff58;
+    border-color: #33ff58;
+    box-shadow: none;
+    font-weight: 600;
+}

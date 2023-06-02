@@ -8,6 +8,10 @@
     var posts = JsonConvert.DeserializeObject<List<Post>>(responseData);
 }
 
+@section Styles{
+    <link href="~/css/profile.css" rel="stylesheet" />
+}
+
 <div class="row">
     <div class="col-2">
         <div style="max-height: 150px; max-width:150px;">
@@ -53,7 +57,7 @@
 @{
     if (posts != null && posts.Count() > 0)
     {
-        <div class="container">
+        <div class="container" id="postContainer">
             @for (int i = 0; i < posts.Count; i++)
             {
                 if (i % 3 == 0)
@@ -65,15 +69,18 @@
 
                 <div class="col-md-4" onclick="showPost(@post.PostId)">
                     <div class="item-content">
-                        @if (@post.Type != null)
+                        @if (@post.Type != null && post.Type != "Comment")
                         {
                             if (@post.Type.Contains("image"))
                             {
                                 <image src="@post.MediaUrl"  width="100%"></image>
+                                <h5 class="center">@post.Caption</h5>
+
                             }
-                            else
+                            else if(@post.Type.Contains("video") || @post.Type.Contains("mp4") )
                             {
-                                <video src="@post.MediaUrl"  width="100%"></video>
+                                <video src="@post.MediaUrl"  width="100%" controls></video>
+                                <h5 class="center">@post.Caption</h5>
                             }
                         }
                         else
@@ -108,10 +115,7 @@
 </script>
 
 <style>
-    .item-content img {
-        height: 300px;
-        object-fit: cover;
-    }
+    
     .profile-picture {
         display: inline-block;
         width: 150px;
@@ -124,3 +128,10 @@
         background-size: cover;
     }
 </style>
+
+
+<script>
+	$(document).ready(() => {
+		$("a#profile-link").addClass("active");
+	});
+</script>

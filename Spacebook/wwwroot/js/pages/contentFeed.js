@@ -75,25 +75,42 @@
     $(document).on("click", ".show-comments", (e) => {
         var postId = $(e.target).closest("#contentCard").attr("data-postId");
 
-        $.ajax({
-            url: "/CommentWebApi/GetCommentsForPost",
-            method: "GET",
-            data: {
-                originalPostId: parseInt(postId)
-            },
-            success: (response) => {
-                showComments(postId, JSON.parse(response));
-            },
-            error: (xhr, textStatus, errorThrown) => {
-                console.log(errorThrown);
-            }
-        });
+
+        if ($(".show-comments").hasClass("hide-comments")) {
+
+            $(".show-comments").html(`Show Comments<i class="fa-solid fa-chevron-down"></i>`);
+
+            $(`#contentCard[data-postId="${postId}"]`).find(".comments").html("");
+            $(".show-comments").removeClass("hide-comments");
+
+        }
+        else {
+            $.ajax({
+                url: "/CommentWebApi/GetCommentsForPost",
+                method: "GET",
+                data: {
+                    originalPostId: parseInt(postId)
+                },
+                success: (response) => {
+
+                    $(".show-comments").addClass("hide-comments");
+                    $(".show-comments").html(`Hide Comments<i class="fa-solid fa-chevron-up"></i>`);
+
+                    showComments(postId, JSON.parse(response));
+                },
+                error: (xhr, textStatus, errorThrown) => {
+                    console.log(errorThrown);
+                }
+            });
+        }
+
+
+        
     });
 
 });
 
 function showContentFeed(feed) {
-    console.log("awe");
     $("main.container").html('');
 
     var contentFeed = "";
@@ -109,14 +126,14 @@ function showContentFeed(feed) {
                 <span>
                     <image class="profile-image" src="${v.Profile.ProfilePicture}"></image>
                 </span>
-                <span id="titleText">${v.Profile.Email}</span>
+                <span id="titleText">${v.Profile.DisplayName}</span>
             </p>
             <p>${v.Post.Timestamp}</p>
         </div>
 
         <div id="contentBody" class="card-body">
             <div id="feedCaption">
-                <textarea>${v.Post.Caption}</textarea>
+                <p class="caption">${v.Post.Caption}</p>
             </div>
             <div id="feedMedia">`;
 
@@ -125,7 +142,7 @@ function showContentFeed(feed) {
                 contentFeed += `<image src="${v.Post.MediaUrl}"></image>`;
             }
             else {
-                contentFeed += `<video src="${v.Post.MediaUrl}"></video>`;
+                contentFeed += `<video src="${v.Post.MediaUrl}" controls></video>`;
             }
         }
 
@@ -216,9 +233,14 @@ function showComments(postId, response) {
         comments +=
             `
                 <div class="comment-box">
-                    <p>${v.Profile.DisplayName}</p>
-                    <p>${v.Post.Caption}</p>
-                    <p>${v.Post.Timestamp}</p>
+                    <div>
+                        <p>${v.Profile.DisplayName}</p>
+                        <p>${v.Post.Caption}</p>                    
+                    </div>
+                    <div>
+                        <p>${v.Post.Timestamp}</p>
+                    </div>
+
                 </div>
             `;
     });

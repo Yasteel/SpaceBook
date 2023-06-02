@@ -1,4 +1,13 @@
-﻿input[type="text"], input[type="password"], textarea {
+﻿.root{
+    overflow: hidden;
+}
+
+main.container{
+    height: 100vh;
+    overflow-y: scroll;
+}
+
+input[type="text"], input[type="password"], textarea {
     border: none;
     outline: none;
     width: 100%;
@@ -23,15 +32,19 @@
 }
 
 #contentCard {
-    display:flex;
+    display: flex;
+    flex-direction: column;
     position: relative;
     left: 20%;
     width: 100%;
-    max-width: 50rem;
-    max-height: 50rem;
-    height: 100%;
+    max-width: 40rem;
+    height: fit-content;
     margin: 2rem;
+    padding: 1rem;
+    border: none;
+    box-shadow: 0 0 5px 0 var(--primary);
 }
+
 
 #feedMedia image {
     background-color: black;
@@ -44,14 +57,27 @@
     height: 100%;
 }
 
+#contentIcons {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 1rem;
+}
+
 #contentIcons span {
     padding-top: 20px;
     padding-right: 20px;
+    cursor: pointer;
+    font-size: 1.3rem;
 }
 
 i.fa-thumbs-up[data-liked="true"]{
-    color: blue !important;
+    color: blue;
 }
+
+#contentIcons span:hover {
+    color: var(--primary);
+}
+
 
 .comment[data-visible="false"]{
     display: none;
@@ -67,7 +93,53 @@ i.fa-thumbs-up[data-liked="true"]{
     margin-left:1rem;
 }
 
+#feedCaption  .caption {
+    white-space: pre-wrap;
+}
+
+
 #feedMedia {
     width: 100%;
     height: 100%;
+}
+
+.comment{
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.comment #userComment{
+    min-height: 75px;
+    margin-bottom: 1rem;
+    border: 1px solid black;
+    padding: 1rem;
+}
+
+.comment button.post-comment{
+    padding: .5rem;
+    border: 1px solid var(--primary);
+    border-radius: 5px;
+    background: rgba(var(--primary-rgb), 1);
+    color: white;
+    font-weight: 400;
+    transition: background ease-in-out 300ms;
+}
+
+.comment button.post-comment:hover{
+    background: rgba(var(--primary-rgb), 0);
+    color: var(--primary);
+}
+
+.comment-box{
+    margin: 2rem 0;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 5px 0 lightgray;
+}
+
+.comment-box div:first-child{
+
 }
