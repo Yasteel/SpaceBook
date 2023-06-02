@@ -1,13 +1,9 @@
-﻿:root{
-    --accent: lime;
-}
-
-.row{
+﻿.row{
 }
 
 .container{
-    width: 100vw;
-    height: 80vh;
+    width: 100%;
+    height: 100%;
 }
 
 .main-container{
@@ -16,7 +12,8 @@
     height: 100%;
     display: flex;
     flex-direction: row;
-    gap: 1rem
+    gap: 1rem;
+    padding: 1rem;
 }
 
 .main-container > div{
@@ -26,7 +23,7 @@
 .message-container {
     max-height: 100%;
     
-    width: 75%;
+    width: 65%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -39,14 +36,44 @@
 .controls{
     display: flex;
     gap: 1rem;
+    padding: 1rem;
 }
 
-ul#messages-list li{
+.controls .btn{
+    border: 1px solid var(--primary);
+    color: var(--primary);
+}
+
+.controls .btn:is(:hover, :focus){
+    background: var(--primary);
+    color: white;
+}
+
+ul#messages-list{
+    display: flex;
+    flex-direction: column;
+}
+
+ul#messages-list li {
+    min-width: 120px;
     list-style-type: none;
-    border-radius: 10px 10px 0 10px;
-    padding: .5rem;
+    padding: .5rem 1rem;
     background: rgba(0,0,0,0.3);
     margin-bottom: .7rem;
+}
+
+ul#messages-list li.to{
+    border-radius: 10px 10px 0 10px;
+    align-self: flex-end;
+}
+
+ul#messages-list li.to.seen{
+    background: rgba(var(--primary-rgb), 0.3);
+}
+
+ul#messages-list li.from{
+    border-radius: 10px 10px 10px 0;
+    align-self: flex-start;
 }
 
 /*Post Messages*/
@@ -61,8 +88,8 @@ ul#messages-list li{
 
 /* Contact List Section */
 .contact-container {
-    width: 25%;
-    background: rgba(0,0,0,0.8);
+    width: 35%;
+    background: var(--bg-color);
     color: white;
     padding: 1rem;
     border-radius: 15px;
@@ -93,11 +120,11 @@ ul#messages-list li{
 }
 
 .contact.active{
-    border-color: var(--accent);
+    border-color: var(--primary);
 }
 
 .contact.active p.username{
-    color: var(--accent);   
+    color: var(--primary);   
 }
 
 .details{

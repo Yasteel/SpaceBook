@@ -1,9 +1,10 @@
 ﻿@{
 	ViewData["Title"] = "Messages";
 }
-@using Microsoft.AspNetCore.Identity
+@model Profile;
+@using Microsoft.AspNetCore.Identity;
 
-@using Spacebook.Data;
+@*@using Spacebook.Data;*@
 
 <head>
 	<link href="~/css/chatstyles.css" rel="stylesheet" />
@@ -30,17 +31,17 @@
 		<div class="controls">
 			<input type="hidden" value="@spacebookUser.Email" id="username"/>
 			<input type="text" class="form-control" id="messageInput" value="" placeholder="Type Message" />
-			<label for="fileUpload" class="custom-file-upload btn btn-outline-success">
+			<label for="fileUpload" class="custom-file-upload btn">
 				<i class="fa-solid fa-paperclip"></i>
 			</label>
 			<input type="file" name="fileUpload" id="fileUpload" style="display: none;">
-			<button id="sendButton" class="btn btn-outline-success"><i class="fa-regular fa-paper-plane"></i></button>
+			<button id="sendButton" class="btn"><i class="fa-regular fa-paper-plane"></i></button>
 		</div>
 	</div>
 </div>
 
 <script>
-	var currentUser = "@spacebookUser.Email";
+	var currentUser = @Model.UserId;
 </script>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

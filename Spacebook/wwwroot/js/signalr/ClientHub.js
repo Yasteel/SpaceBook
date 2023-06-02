@@ -142,6 +142,12 @@ $(document).ready(function () {
         });
 
     });
+
+    $(document).on("keypress", "#messageInput", (e) => {
+        if (e.key == "Enter") {
+            $("#sendButton").click();
+        }
+    });
 });
 
 
@@ -171,7 +177,9 @@ function showMessages(messageProperties) {
         var messageList = "";
 
         $.each(messageProperties, (i, v) => {
-            messageList += `<li class="${v.SenderId == currentUser ? "to" : "from"}">`;
+            console.log(v);
+            console.log(currentUser);
+            messageList += `<li class="${v.Message.SenderId == currentUser ? "to" : "from"} ${v.Message.Seen ? "seen" : "" }">`;
 
             switch (v.Message.MessageType) {
                 case "Text":
