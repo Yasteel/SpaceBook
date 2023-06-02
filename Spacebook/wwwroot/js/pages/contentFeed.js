@@ -75,19 +75,37 @@
     $(document).on("click", ".show-comments", (e) => {
         var postId = $(e.target).closest("#contentCard").attr("data-postId");
 
-        $.ajax({
-            url: "/CommentWebApi/GetCommentsForPost",
-            method: "GET",
-            data: {
-                originalPostId: parseInt(postId)
-            },
-            success: (response) => {
-                showComments(postId, JSON.parse(response));
-            },
-            error: (xhr, textStatus, errorThrown) => {
-                console.log(errorThrown);
-            }
-        });
+
+        if ($(".show-comments").hasClass("hide-comments")) {
+
+            $(".show-comments").html(`Show Comments<i class="fa-solid fa-chevron-down"></i>`);
+
+            $(`#contentCard[data-postId="${postId}"]`).find(".comments").html("");
+            $(".show-comments").removeClass("hide-comments");
+
+        }
+        else {
+            $.ajax({
+                url: "/CommentWebApi/GetCommentsForPost",
+                method: "GET",
+                data: {
+                    originalPostId: parseInt(postId)
+                },
+                success: (response) => {
+
+                    $(".show-comments").addClass("hide-comments");
+                    $(".show-comments").html(`Hide Comments<i class="fa-solid fa-chevron-up"></i>`);
+
+                    showComments(postId, JSON.parse(response));
+                },
+                error: (xhr, textStatus, errorThrown) => {
+                    console.log(errorThrown);
+                }
+            });
+        }
+
+
+        
     });
 
 });

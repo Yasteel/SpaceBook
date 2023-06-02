@@ -39,6 +39,10 @@
     padding: 1rem;
 }
 
+.controls #messageInput{
+    border: 1px solid var(--primary);
+}
+
 .controls .btn{
     border: 1px solid var(--primary);
     color: var(--primary);
