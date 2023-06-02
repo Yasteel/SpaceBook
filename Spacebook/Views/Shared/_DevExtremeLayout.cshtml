@@ -73,67 +73,76 @@
     <script src="~/js/devextreme/aspnet/dx.aspnet.data.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="~/js/pages/search.js"></script>
-
-    @await RenderSectionAsync("Styles", required: false);
+    <script src="~/js/pages/search.js"></script>
+	<link href="~/css/globalstyles.css" rel="stylesheet" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 
 <body>
     @if (SignInManager.IsSignedIn(User))
     {
-        <div class="row">
-            <div class="col-2">
-                <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-                    <div class="container-fluid">
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                                aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="row navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                            <div class="col-auto bg-dark">
-                                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                                    <h2>Spacebook</h2>
-                                    <hr />
-                                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                                        <li class="nav-item"><a href="#" class="nav-link">Home / Feed</a></li>
-                                        <br />
-                                        <li class="nav-item">
-                                            <a class="nav-link" asp-controller="Profile" asp-action="Index">Profile</a>
-                                        </li>
-                                        <br />
-                                        <li class="nav-item">
-                                            <a class="nav-link" onclick="onCreateButtonClicked()" data-toggle="modal" data-target="#uploadMediaModal">
-                                                Create
-                                            </a>
-                                        </li>
-                                        <br />
-                                        <li>
-                                            <input type="text" id="searchTerm" placeholder="Search posts..." />
-                                            <ul id="results"></ul>
-                                            
-                                        </li>
-                                        <br />
-                                        <li class="nav-item"><a href="#contact" class="nav-link">Notifications</a></li>
-                                        <br />
-                                        <li class="nav-item"><a href="#contact" class="nav-link">Explore</a></li>
-                                        <br />
-                                        <li class="nav-item"><a asp-controller="Messages" asp-action="Index" class="nav-link">Messages</a></li>
-                                        <br />
-                                        <li class="nav-item"><a href="#contact" class="nav-link">Share</a></li>
-                                        <br />
-                                        <partial name="_LoginPartial" />
-                                    </ul>
-                                    
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </nav>
+        <div class="root">
+			<div class="nav">
+                <div class="header">
+                    <h2>Spacebook</h2>
+                    <input type="text" id="searchTerm" placeholder="Search posts..." />
+                    <ul id="results"></ul>
+                </div>
+                <div class="body">
+					<ul>
+						<li>
+							<a asp-controller="Home" asp-action="Index" id="home-link">
+                                <span><i class="fa-solid fa-house"></i></span>
+                                Home
+							</a>
+						</li>
+						<li>
+							<a asp-controller="Profile" asp-action="Index" id="profile-link" >
+                                <span><i class="fa-solid fa-user"></i></span>
+                                Profile
+							</a>
+						</li>
+						<li>
+                            <a onclick="onCreateButtonClicked()" data-toggle="modal" data-target="#uploadMediaModal" id="createPost">
+                                <span><i class="fa-solid fa-plus"></i></span>
+                                New Post
+							</a>
+						</li>
+						<li>
+							<a href="" id="notification-link">
+                                <span><i class="fa-solid fa-bell"></i></span>
+                                Notification
+							</a>
+						</li>
+						<li>
+							<a asp-controller="ForYou" asp-action="Index" id="forYou-link">
+                                <span><i class="fa-solid fa-hashtag"></i></span>
+                                For You
+							</a>
+						</li>
+						<li>
+							<a asp-controller="Messages" asp-action="Index" id="message-link">
+                                <span><i class="fa-solid fa-message"></i></span>
+                                Messages
+							</a>
+						</li>
+						@*<li>
+                            <input type="text" id="searchTerm" placeholder="Search posts..." />
+                            <ul id="results"></ul>
+						</li>
+						<li>
+							<a href="">
+								<span></span>
+                                Share
+							</a>
+						</li>*@
+                    </ul>
+                </div>
+                <div class="footer">
+                    <partial name="_LoginPartial" />
+                </div>
             </div>
-
-            <div class="col" style="padding-top : 50px; margin-right: 100px; margin-left:50px;">
+			<div class="content">
                 <main class="container">
                     @RenderBody()
                 </main>

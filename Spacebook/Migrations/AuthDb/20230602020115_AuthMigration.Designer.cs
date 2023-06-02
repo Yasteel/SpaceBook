@@ -12,8 +12,8 @@ using Spacebook.Data;
 namespace Spacebook.Migrations.AuthDb
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20230531065854_AuthDatabase")]
-    partial class AuthDatabase
+    [Migration("20230602020115_AuthMigration")]
+    partial class AuthMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

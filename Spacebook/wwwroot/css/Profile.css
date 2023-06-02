@@ -1,0 +1,24 @@
+﻿.root {
+    overflow: hidden;
+}
+
+main.container {
+    height: 100vh;
+    overflow-y: scroll;
+    padding: 1rem;
+}
+
+.item-content {
+    box-shadow: 0 0 5px 0 var(--primary);
+    min-height: 300px;
+    width: 300px;
+    object-fit: cover;
+    padding: 1rem;
+    cursor: pointer;
+    text-transform: capitalize;
+}
+
+.item-content:is(:hover, :focus){
+    box-shadow: 0 0 10px 0 var(--primary);
+
+}

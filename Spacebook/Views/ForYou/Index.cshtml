@@ -1,0 +1,15 @@
+﻿@section Styles{
+	<link href="~/css/home.css" rel="stylesheet" />
+}
+
+@{
+	ViewData["Title"] = "For You";
+}
+
+<script src="~/js/pages/forYouFeed.js"></script>
+
+<script>
+	$(document).ready(() => {
+		$("a#forYou-link").addClass("active");
+	});
+</script>

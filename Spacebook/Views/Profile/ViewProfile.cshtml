@@ -1,4 +1,112 @@
-﻿@model Profile
+﻿@using Newtonsoft.Json;
+@model Profile
 
-<p>@Model.Email</p>
+@{
+    var httpClient = new HttpClient();
+    var response = await httpClient.GetAsync($"https://localhost:7232/api/PostWebApi?id={Model.UserId}");
+    var responseData = await response.Content.ReadAsStringAsync();
+    var posts = JsonConvert.DeserializeObject<List<Post>>(responseData);
+}
 
+<div class="row">
+    <div class="col-2">
+        <div style="max-height: 150px; max-width:150px;">
+            <img src=@Model.ProfilePicture class="rounded-circle" alt="Profile Picture" width="150" height="150">
+        </div>
+    </div>
+    <div class="col">
+        <div class="row">
+            <div class="col-8">
+                <h2>@Model.Email</h2>
+            </div>
+            <div class="col">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>@posts.Count() posts</p>
+            </div>
+            <div class="col">
+                <p>13 followers</p>
+            </div>
+            <div class="col">
+                <p>38 following</p>
+            </div>
+        </div>
+        <div class="row">
+            @{
+                var name = Model.DisplayName != null ? Model.DisplayName : Model.Username;
+            }
+            <p class="fw-bold">@name</p>
+            @if(Model.Bio != null)
+            {
+                <p>@Model.Bio</p>
+            }
+        </div>
+    </div>
+</div>
+<hr />
+
+@{
+    if (posts != null && posts.Count() > 0)
+    {
+        <div class="container">
+            @for (int i = 0; i < posts.Count; i++)
+            {
+                if (i % 3 == 0)
+                {
+                    @:<div class="row">
+                }
+
+                var post = posts[i];
+
+                <div class="col-md-4" onclick="showPost(@post.PostId)">
+                    <div class="item-content">
+                        @if (@post.Type != null)
+                        {
+                            if (@post.Type.Contains("image"))
+                            {
+                                <image src="@post.MediaUrl"  width="100%"></image>
+                            }
+                            else
+                            {
+                                <video src="@post.MediaUrl"  width="100%"></video>
+                            }
+                        }
+                        else
+                        {
+                            <h5 class="center">@post.Caption</h5>
+                        }
+                    </div>
+                </div>
+
+                if ((i + 1) % 3 == 0 || i == posts.Count - 1)
+                {
+                    @:</div>
+                }
+                <br />
+            }
+        </div>
+    }
+    else
+    {
+        <div  class="d-flex justify-content-center align-items-center" style="height: 200px;">
+            <h2>No Posts Yet</h2>
+        </div>
+    }
+}
+
+<script>
+    function showPost(Id)
+    {
+        console.log("we got here", Id)
+        window.location.href = '@Url.Action("ViewPost", "Posts")' + '?id=' + Id;
+    }
+</script>
+
+<style>
+    .item-content img {
+        height: 300px;
+        object-fit: cover;
+    }
+</style>

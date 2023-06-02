@@ -13,15 +13,17 @@
         private readonly SignInManager<SpacebookUser> signInManager;
         private readonly UserManager<SpacebookUser> userManager;
         private readonly IProfileService profileService;
+        private readonly IPostService postService;
 
-        public ProfileController(SignInManager<SpacebookUser> signInManager, UserManager<SpacebookUser> userManager, IProfileService profileService)
-        {
-            this.signInManager = signInManager;
-            this.userManager = userManager;
-            this.profileService = profileService;
-        }
+		public ProfileController(SignInManager<SpacebookUser> signInManager, UserManager<SpacebookUser> userManager, IProfileService profileService, IPostService postService)
+		{
+			this.signInManager = signInManager;
+			this.userManager = userManager;
+			this.profileService = profileService;
+			this.postService = postService;
+		}
 
-        public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index()
         {
             var user = await userManager.GetUserAsync(User);
 

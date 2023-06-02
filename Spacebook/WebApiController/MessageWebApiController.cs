@@ -84,7 +84,8 @@ namespace Spacebook.WebApiController
 		public async Task<object> GetMessages(int conversationId)
 		{
 			var spacebookUser = (SpacebookUser)await this.userManager.GetUserAsync(User);
-			var thisUser = spacebookUser.Email;
+			var thisUser = this.profileService.GetByEmail(spacebookUser.Email);
+			
 
 			// Finds messages that exist between the 2 users
 			var messages = this.messageService.GetByConversationId(conversationId);
@@ -94,6 +95,12 @@ namespace Spacebook.WebApiController
 
 			foreach (var message in messages)
 			{
+				if (thisUser.UserId != message.SenderId)
+				{
+					message.Seen = true;
+					this.UpdateMessageStatus(message);
+				}
+
 				if (message.MessageType == "Post")
 				{
 					var post = this.postService.GetById(Int32.Parse(message.Content!));
@@ -214,12 +221,10 @@ namespace Spacebook.WebApiController
 
 		}
 
-		// For Post as a Message
-		// -> Share button on posts
-		// -> Share button will need a popup with contacts to select
-		// -> each contact will need data attributes: 
-		//		-> conversationId
-		//		-> senderUsername
-		//		-> content -> postId
+		[HttpPost]
+		public void UpdateMessageStatus(Message message)
+		{
+			this.messageService.Update(message);
+		}
 	}
 }
