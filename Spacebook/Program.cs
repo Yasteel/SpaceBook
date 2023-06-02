@@ -7,6 +7,8 @@ using Spacebook.Data;
 using Spacebook.Hubs;
 using Spacebook.Interfaces;
 using Spacebook.Models;
+using Spacebook.RecommendationEngine.Interfaces;
+using Spacebook.RecommendationEngine.Services;
 using Spacebook.Services;
 using Spacebook.Validation;
 
@@ -32,6 +34,8 @@ internal class Program
         builder.Services.AddScoped<ILikeService, LikeService>();
         builder.Services.AddScoped<ICommentService, CommentService>();
 
+        
+
         // Add services to the container.
         builder.Services.AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 		builder.Services.AddSignalR();
@@ -54,6 +58,10 @@ internal class Program
         builder.Services.AddScoped<IValidator<Post>, PostValidator>();
 
         builder.Services.AddScoped<ISearchService, SearchService>();
+
+        builder.Services.AddScoped<IRecommdationService, RecommendationService>();
+        builder.Services.AddScoped<IVectorBuilder, VectorBuilder>();
+        builder.Services.AddScoped<IUserVectorBuilder, UserVectorBuilder>();
 
         
         builder.Services.AddHttpContextAccessor();
